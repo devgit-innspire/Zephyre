@@ -1,0 +1,70 @@
+---
+import Img from './Img.astro';
+import { seasons } from '../data/site';
+---
+<section class="seasons" data-seasons aria-labelledby="seasons-h">
+  {seasons.map((s, i) => (
+    <div class:list={['season-bg', i === 0 && 'is-active']} id={`season-${s.key}`} role="tabpanel" aria-labelledby={`tab-${s.key}`}>
+      <Img src={s.img} alt={`Zephyr Estate in ${s.label.toLowerCase()}`} sizes="100vw" />
+    </div>
+  ))}
+  <div class="wrap seasons-inner">
+    <p class="eyebrow">Four seasons, one ridge</p>
+    <h2 id="seasons-h">When will <em class="wind">you</em> come?</h2>
+    <div class="season-tabs" role="tablist" aria-label="Seasons">
+      {seasons.map((s, i) => (
+        <button role="tab" id={`tab-${s.key}`} aria-controls={`season-${s.key}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>
+          <span class="st-label">{s.label}</span>
+          <span class="st-months">{s.months}</span>
+        </button>
+      ))}
+    </div>
+    <div class="season-copy">
+      {seasons.map((s, i) => (
+        <p class:list={['season-text', i === 0 && 'is-active']} data-for={s.key}>{s.text}</p>
+      ))}
+    </div>
+    <button class="btn light" data-enquire>Plan my season</button>
+  </div>
+</section>
+
+<script>
+  // Keep the copy in sync with the active panel
+  document.querySelectorAll<HTMLElement>('[data-seasons]').forEach((root) => {
+    root.querySelectorAll<HTMLButtonElement>('[role=tab]').forEach((t) =>
+      t.addEventListener('click', () => {
+        const key = t.id.replace('tab-', '');
+        root.querySelectorAll<HTMLElement>('.season-text').forEach((p) => p.classList.toggle('is-active', p.dataset.for === key));
+      }),
+    );
+  });
+</script>
+
+<style>
+  .seasons { position: relative; min-height: min(92vh, 860px); display: flex; align-items: flex-end; color: #fff; overflow: hidden; background: var(--pine-night); }
+  .season-bg { position: absolute; inset: 0; opacity: 0; transition: opacity 1s var(--ease); }
+  .season-bg.is-active { opacity: 1; }
+  .season-bg :global(img) { width: 100%; height: 100%; object-fit: cover; transform: scale(1.06); transition: transform 6s var(--ease); }
+  .season-bg.is-active :global(img) { transform: scale(1); }
+  .seasons::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10, 16, 12, 0.2) 0%, rgba(10, 16, 12, 0.5) 45%, rgba(10, 16, 12, 0.9) 100%); pointer-events: none; }
+  .seasons-inner { position: relative; z-index: 1; padding-block: 120px 72px; }
+  .seasons .eyebrow { color: var(--ember); }
+  .seasons h2 { max-width: 12ch; }
+  .seasons em.wind { color: var(--ember); }
+  .season-tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 36px 0 24px; max-width: 760px; }
+  @media (min-width: 700px) { .season-tabs { grid-template-columns: repeat(4, 1fr); } }
+  .season-tabs button {
+    display: grid; gap: 4px; text-align: left; padding: 14px 18px; min-height: 64px;
+    border: 1px solid rgba(255, 255, 255, 0.28); border-radius: 16px;
+    background: rgba(255, 255, 255, 0.06); color: #fff;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    transition: background-color 250ms, border-color 250ms, color 250ms;
+  }
+  .season-tabs button:hover { background: rgba(255, 255, 255, 0.14); }
+  .season-tabs button[aria-selected='true'] { background: var(--paper); color: var(--pine-night); border-color: var(--paper); }
+  .st-label { font: 500 1.5rem/1 var(--font-display); }
+  .st-months { font-size: 0.78rem; letter-spacing: 0.08em; opacity: 0.8; }
+  .season-copy { display: grid; max-width: 52ch; margin-bottom: 28px; }
+  .season-text { grid-area: 1 / 1; margin: 0; font-size: 1.15rem; color: rgba(255, 255, 255, 0.9); opacity: 0; transform: translateY(8px); transition: opacity 500ms var(--ease), transform 500ms var(--ease); }
+  .season-text.is-active { opacity: 1; transform: none; }
+</style>

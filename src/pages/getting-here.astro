@@ -1,0 +1,80 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { site, distances, faqs } from '../data/site';
+const ways = [
+  { icon: 'car', title: 'By road', text: 'From Delhi, take the Delhi–Dehradun Expressway to Dehradun, climb to Mussoorie, then follow Kempty Fall Road towards Bhediyana. About 309 km, with an easy, scenic final stretch.' },
+  { icon: 'plane', title: 'By air', text: 'Jolly Grant Airport, Dehradun, is 84 km away. We can help arrange a cab from the airport on request.' },
+  { icon: 'mountain', title: 'By train', text: 'Dehradun railway station is the nearest railhead. Take a cab up via Mussoorie, or ask us to arrange one.' },
+] as const;
+---
+<Base title="Getting here" description="How to reach Zephyr Estate on Kempty Fall Road, Mussoorie: by road from Delhi, by air via Jolly Grant, or by train to Dehradun." image="aerial-forest" overHero>
+  <PageHero img="valley-wide" alt="Green Garhwal valley seen from Zephyr Estate" eyebrow="Getting here" title="The road <em>to the ridge</em>" lede={site.address}>
+    <a class="btn" style="margin-top:28px" href={site.mapsUrl} target="_blank" rel="noopener"><Icon name="pin" /> Open in Google Maps</a>
+  </PageHero>
+
+  <section class="section">
+    <div class="wrap ways">
+      {ways.map((w, i) => (
+        <article class="way reveal" data-delay={String(i)}>
+          <span class="way-icon"><Icon name={w.icon} size={26} /></span>
+          <h2>{w.title}</h2>
+          <p>{w.text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section map-sec">
+    <div class="wrap map-grid">
+      <div class="frame map"><iframe title="Map to Zephyr Estate" src={site.mapEmbed} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+      <div>
+        <p class="eyebrow">Distances</p>
+        <h2>From Zephyr Estate</h2>
+        <ul class="dist">
+          {distances.map((d) => <li><span>{d.place}</span><b>{d.km} km</b></li>)}
+        </ul>
+        <p class="tip"><Icon name="sun" /> Tip: leave Delhi early to reach by lunch, and keep the last stretch for daylight.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section faq-sec">
+    <div class="wrap narrow">
+      <h2>Before you set out</h2>
+      {faqs.map((f) => (
+        <details><summary>{f.q}<Icon name="chevron" /></summary><p>{f.a}</p></details>
+      ))}
+      <p class="cta"><button class="btn" data-enquire>Check availability</button></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ways { display: grid; gap: 22px; }
+  @media (min-width: 900px) { .ways { grid-template-columns: repeat(3, 1fr); } }
+  .way { padding: 32px; border-radius: var(--radius-l); background: var(--paper); box-shadow: var(--shadow-soft); }
+  .way-icon { display: inline-grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: var(--deodar-100); color: var(--deodar); margin-bottom: 20px; }
+  .way h2 { font-size: 2rem; margin-bottom: 10px; }
+  .way p { color: var(--ink-soft); margin: 0; }
+  .map-sec { background: var(--paper); }
+  .map-grid { display: grid; gap: 48px; align-items: center; }
+  @media (min-width: 900px) { .map-grid { grid-template-columns: 1.3fr 1fr; gap: 72px; } }
+  .map { aspect-ratio: 4 / 3; border-radius: var(--radius-l); }
+  .map iframe { width: 100%; height: 100%; border: 0; }
+  .dist { list-style: none; margin: 24px 0; padding: 0; }
+  .dist li { display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--line); font-size: 1.05rem; }
+  .dist b { font-family: var(--font-display); font-size: 1.4rem; font-weight: 500; color: var(--deodar); }
+  .tip { display: flex; gap: 10px; color: var(--ink-soft); }
+  .tip :global(svg) { color: var(--brass); flex: none; }
+  .narrow { max-width: 820px; }
+  .narrow h2 { margin-bottom: 24px; }
+  details { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 16px; padding: 20px 0; font: 500 1.3rem/1.25 var(--font-display); }
+  summary::-webkit-details-marker { display: none; }
+  summary :global(svg) { flex: none; transition: transform 300ms var(--ease); color: var(--deodar); }
+  details[open] summary :global(svg) { transform: rotate(180deg); }
+  details p { color: var(--ink-soft); padding-bottom: 20px; margin: 0; }
+  .cta { margin-top: 36px; }
+</style>

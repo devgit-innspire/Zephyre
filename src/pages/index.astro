@@ -1,0 +1,397 @@
+---
+import Base from '../layouts/Base.astro';
+import Img from '../components/Img.astro';
+import Icon from '../components/Icon.astro';
+import Ridge from '../components/Ridge.astro';
+import WindLine from '../components/WindLine.astro';
+import BookingBar from '../components/BookingBar.astro';
+import StayCard from '../components/StayCard.astro';
+import Seasons from '../components/Seasons.astro';
+import Reels from '../components/Reels.astro';
+import { site, stays, experiences, dayTimeline, distances, faqs, gallery } from '../data/site';
+---
+<Base
+  title={site.name}
+  description="A private hilltop estate of cottages, villa tents and a French duplex on Kempty Fall Road, Mussoorie. Two pools, bonfire nights, stargazing and only six rooms. Book direct."
+  overHero
+>
+  <!-- ───────── HERO ───────── -->
+  <section class="hero" aria-label="Welcome">
+    <video class="hero-video" data-autoplay autoplay muted loop playsinline preload="auto" poster="/video/hero.webp" aria-hidden="true">
+      <source src="/video/hero.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-shade"></div>
+    <div class="mist mist-1" aria-hidden="true"></div>
+    <div class="mist mist-2" aria-hidden="true"></div>
+
+    <div class="wrap hero-inner">
+      <p class="hero-eyebrow">
+        <span class="chip"><Icon name="pin" size={15} /> Kempty Fall Road · Mussoorie</span>
+        <span class="chip" hidden><Icon name="thermo" size={15} /><span data-temp></span></span>
+      </p>
+      <h1>Stay. Breathe.<br /><em>Belong.</em></h1>
+      <p class="hero-lede">A private hilltop estate of stone cottages, villa tents and a French duplex. Six rooms only, wrapped in forest, with the Garhwal hills at your feet.</p>
+      <div class="hero-bar"><BookingBar /></div>
+    </div>
+    <a href="#story" class="scroll-cue" aria-label="Scroll to discover"><span></span></a>
+  </section>
+
+  <!-- ───────── STORY ───────── -->
+  <section class="section story" id="story">
+    <div class="wrap story-grid">
+      <div class="story-copy">
+        <p class="eyebrow reveal">Zephyr · <i>n.</i> a gentle west wind</p>
+        <h2 class="reveal">A hilltop where the <em class="wind">wind slows down</em></h2>
+        <WindLine />
+        <p class="lede reveal" data-delay="1">
+          Golden mornings, green valleys, dusky evenings. The landscape at Zephyr changes by the hour, and so will you. Swing on a carved verandah, walk the vine tunnel to breakfast, swim among the pines, and end every day around the fire under a sky full of stars.
+        </p>
+        <dl class="facts reveal" data-delay="2">
+          <div><dt>6</dt><dd>rooms only<br />never crowded</dd></div>
+          <div><dt>11<small>km</small></dt><dd>to Kempty<br />Falls</dd></div>
+          <div><dt>2</dt><dd>pools in<br />the pines</dd></div>
+        </dl>
+      </div>
+      <div class="story-media">
+        <div class="frame arch story-main reveal"><Img src="hammock-porch" alt="Hammock swing on the carved-pillar verandah of a stone cottage" sizes="(min-width: 900px) 440px, 80vw" /></div>
+        <div class="frame story-float reveal" data-delay="2"><Img src="canna-valley" alt="Red canna lilies with the valley beyond" sizes="(min-width: 900px) 240px, 40vw" /></div>
+        <p class="story-note reveal" data-delay="3"><Icon name="sparkles" size={16} /> Every evening: bonfire, fairy lights & stars</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── STAYS ───────── -->
+  <section class="section stays-sec" aria-labelledby="stays-h">
+    <div class="wrap">
+      <div class="section-head split">
+        <div>
+          <p class="eyebrow">The stays</p>
+          <h2 id="stays-h">Four ways to <em class="wind">sleep on the ridge</em></h2>
+        </div>
+        <p class="lede">Cottages with timber ceilings, tents with real beds, and a duplex for families. Every room has a king bed, an ensuite, heating for crisp hill nights, and the forest right outside.</p>
+      </div>
+      <div class="stays-grid">
+        {stays.map((s, i) => <StayCard stay={s} index={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── WHOLE ESTATE ───────── -->
+  <section class="estate" id="estate" aria-labelledby="estate-h">
+    <div class="estate-bg"><Img src="aerial-day" alt="Aerial view of Zephyr Estate's cottages and tents in the forest" sizes="100vw" /></div>
+    <div class="wrap estate-inner">
+      <div class="estate-card reveal">
+        <p class="eyebrow">The Family Retreat</p>
+        <h2 id="estate-h">All six rooms. One hilltop. <em class="wind">Just yours.</em></h2>
+        <p>Take the entire estate for your family, friends or a small celebration: three cottages, two villa tents and the duplex, plus the pools, lawns and bonfire circle to yourselves.</p>
+        <ul class="ticks">
+          <li><Icon name="check" size={18} /> Sleeps a big family or friend group</li>
+          <li><Icon name="check" size={18} /> Private pools, terraces & fire circle</li>
+          <li><Icon name="check" size={18} /> Birthdays, anniversaries & reunions arranged</li>
+        </ul>
+        <button class="btn" data-enquire data-stay="Whole estate (all 6 rooms)">Enquire for the whole estate</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── A DAY AT ZEPHYR ───────── -->
+  <section class="section day" aria-labelledby="day-h">
+    <div class="wrap">
+      <div class="section-head day-head">
+        <p class="eyebrow">A day at Zephyr</p>
+        <h2 id="day-h">From clouds at dawn<br />to <em class="wind">stars at night</em></h2>
+      </div>
+      <ol class="timeline">
+        {dayTimeline.map((d, i) => (
+          <li class:list={['tl-item reveal', i % 2 && 'alt']}>
+            <div class="tl-media frame"><Img src={d.img} alt={d.title} sizes="(min-width: 900px) 520px, 90vw" /></div>
+            <div class="tl-copy">
+              <span class="tl-time">{d.time}</span>
+              <h3>{d.title}</h3>
+              <p>{d.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ───────── MIST BAND ───────── -->
+  <section class="band" aria-label="Interlude">
+    <video data-autoplay autoplay muted loop playsinline preload="none" poster="/video/mist.webp" aria-hidden="true">
+      <source src="/video/mist.mp4" type="video/mp4" />
+    </video>
+    <div class="band-copy wrap">
+      <p class="display reveal">“Some places you visit.<br />Some places <em>breathe you back in.</em>”</p>
+    </div>
+  </section>
+
+  <!-- ───────── EXPERIENCES ───────── -->
+  <section class="section exp" aria-labelledby="exp-h">
+    <div class="wrap">
+      <div class="section-head split">
+        <div>
+          <p class="eyebrow">Experiences</p>
+          <h2 id="exp-h">Little rituals <em class="wind">you will miss</em> back home</h2>
+        </div>
+        <p class="lede">Nothing is scheduled and everything is possible. Ask, and the estate arranges it, from a sunlit high tea to a candlelit proposal.</p>
+      </div>
+      <div class="exp-grid">
+        {experiences.map((e, i) => (
+          <article class:list={['exp-card reveal', `exp-${i}`]} data-delay={String(i % 3)}>
+            <div class="frame zoom"><Img src={e.img} alt={e.title} sizes="(min-width: 1100px) 400px, (min-width: 700px) 50vw, 100vw" /></div>
+            <div class="exp-copy">
+              <span class="tag">{e.tag}</span>
+              <h3>{e.title}</h3>
+              <p>{e.text}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="exp-more"><a class="link-arrow" href="/experiences">See all experiences & the 2N/3D itinerary <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <Seasons />
+
+  <Reels />
+
+  <!-- ───────── GALLERY TEASER ───────── -->
+  <section class="section moments" aria-labelledby="mom-h">
+    <div class="wrap">
+      <div class="section-head split">
+        <div>
+          <p class="eyebrow">Moments</p>
+          <h2 id="mom-h">Every corner, <em class="wind">a postcard</em></h2>
+        </div>
+        <p class="lede">Stone stairways, a vine tunnel, a Buddha garden, fairy-lit courtyards. And yes, a very friendly resident dog.</p>
+      </div>
+      <div class="mosaic">
+        {gallery.slice(0, 7).map((g, i) => (
+          <a href="/gallery" class:list={['frame zoom reveal', `m-${i}`]} data-delay={String(i % 3)} aria-label="Open gallery">
+            <Img src={g} alt="" sizes="(min-width: 900px) 33vw, 50vw" />
+          </a>
+        ))}
+      </div>
+      <p class="center"><a class="btn forest" href="/gallery">Open the full gallery</a></p>
+    </div>
+  </section>
+
+  <!-- ───────── GETTING HERE ───────── -->
+  <section class="section route on-dark grain" aria-labelledby="route-h">
+    <Ridge variant="light" flip />
+    <div class="wrap route-grid">
+      <div>
+        <p class="eyebrow">Getting here</p>
+        <h2 id="route-h">Closer than <em class="wind">you think</em></h2>
+        <p class="lede">An easy drive from Delhi, past Dehradun and up through Mussoorie, then a quiet road towards Kempty Falls and the ridge.</p>
+        <ol class="route-line" aria-label="Distances from Zephyr Estate">
+          {[...distances].reverse().map((d) => (
+            <li><span class="rl-dot"></span><span class="rl-place">{d.place}</span><span class="rl-km">{d.km} km</span></li>
+          ))}
+          <li class="rl-here"><span class="rl-dot"></span><span class="rl-place">Zephyr Estate</span><span class="rl-km">You’re home</span></li>
+        </ol>
+        <div class="route-actions">
+          <a class="btn light" href={site.mapsUrl} target="_blank" rel="noopener"><Icon name="pin" /> Get directions</a>
+          <a class="link-arrow" href="/getting-here">Travel tips <Icon name="arrow" /></a>
+        </div>
+      </div>
+      <div class="route-map frame">
+        <iframe title="Map showing Zephyr Estate on Kempty Fall Road" src={site.mapEmbed} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── FAQ ───────── -->
+  <section class="section faq" aria-labelledby="faq-h">
+    <div class="wrap faq-grid">
+      <div>
+        <p class="eyebrow">Good to know</p>
+        <h2 id="faq-h">Questions, <em class="wind">answered</em></h2>
+        <p class="lede">Anything else? We are a call or a WhatsApp away.</p>
+        <a class="btn forest" href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener"><Icon name="whatsapp" /> Ask on WhatsApp</a>
+      </div>
+      <div class="faq-list">
+        {faqs.map((f, i) => (
+          <details open={i === 0}>
+            <summary>{f.q}<Icon name="chevron" size={20} /></summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── CLOSING CTA ───────── -->
+  <section class="closing" aria-labelledby="close-h">
+    <video data-autoplay autoplay muted loop playsinline preload="none" poster="/video/bonfire.webp" aria-hidden="true">
+      <source src="/video/bonfire.mp4" type="video/mp4" />
+    </video>
+    <div class="closing-shade"></div>
+    <div class="wrap closing-inner">
+      <p class="eyebrow">Tonight, the fire is lit</p>
+      <h2 id="close-h">Your hilltop <em>is waiting.</em></h2>
+      <p class="lede">Tell us your dates. We will hold the view, warm the room and light the bonfire.</p>
+      <div class="closing-actions">
+        <button class="btn" data-enquire>Check availability <Icon name="arrow" /></button>
+        <a class="btn ghost" href={`tel:${site.phone}`}><Icon name="phone" /> {site.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* HERO */
+  .hero { position: relative; min-height: 100svh; display: flex; align-items: flex-end; color: #fff; overflow: hidden; background: var(--pine-night); }
+  .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: hero-zoom 30s var(--ease) both; }
+  @keyframes hero-zoom { from { transform: scale(1.12); } to { transform: scale(1); } }
+  .hero-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10, 16, 12, 0.35) 0%, rgba(10, 16, 12, 0.1) 35%, rgba(10, 16, 12, 0.72) 100%); }
+  .mist { position: absolute; left: -20%; right: -20%; height: 40%; pointer-events: none; opacity: 0.5; filter: blur(30px);
+    background: radial-gradient(ellipse at 30% 50%, rgba(255, 255, 255, 0.45), transparent 60%), radial-gradient(ellipse at 75% 60%, rgba(255, 255, 255, 0.3), transparent 55%); }
+  .mist-1 { bottom: 18%; animation: drift 38s linear infinite alternate; }
+  .mist-2 { bottom: 4%; opacity: 0.35; animation: drift 52s linear infinite alternate-reverse; }
+  @keyframes drift { from { transform: translateX(-8%); } to { transform: translateX(8%); } }
+  .hero-inner { position: relative; z-index: 1; padding-top: calc(var(--nav-h) + 40px); padding-bottom: clamp(40px, 7vh, 72px); }
+  .hero-eyebrow { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; animation: rise 1s var(--ease) 0.2s both; }
+  .hero h1 { text-shadow: 0 2px 30px rgba(0, 0, 0, 0.25); animation: rise 1.1s var(--ease) 0.35s both; }
+  .hero h1 em { font-style: italic; color: #f4d9b4; }
+  .hero-lede { max-width: 52ch; font-size: clamp(1.05rem, 1.5vw, 1.2rem); color: rgba(255, 255, 255, 0.9); margin: 22px 0 36px; animation: rise 1.1s var(--ease) 0.5s both; }
+  .hero-bar { max-width: 1040px; animation: rise 1.1s var(--ease) 0.65s both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(24px); } }
+  .scroll-cue { position: absolute; z-index: 1; right: var(--gutter); bottom: 40px; width: 28px; height: 46px; border: 1.5px solid rgba(255, 255, 255, 0.7); border-radius: 20px; display: none; }
+  .scroll-cue span { position: absolute; left: 50%; top: 9px; width: 3px; height: 8px; margin-left: -1.5px; border-radius: 2px; background: #fff; animation: cue 1.8s var(--ease) infinite; }
+  @keyframes cue { 0% { opacity: 0; transform: translateY(0); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(14px); } }
+  @media (min-width: 1200px) { .scroll-cue { display: block; } }
+
+  /* STORY */
+  .story-grid { display: grid; gap: 64px; align-items: center; }
+  @media (min-width: 900px) { .story-grid { grid-template-columns: 1.05fr 1fr; gap: 80px; } }
+  .story-copy h2 { margin-bottom: 14px; }
+  .story-copy .lede { margin-top: 22px; }
+  .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 40px 0 0; padding-top: 28px; border-top: 1px solid var(--line); }
+  .facts dt { font: 400 clamp(2.6rem, 5vw, 3.6rem)/1 var(--font-display); color: var(--deodar); }
+  .facts dt small { font-size: 0.4em; margin-left: 4px; font-family: var(--font-body); font-weight: 600; }
+  .facts dd { margin: 8px 0 0; font-size: 0.86rem; color: var(--ink-soft); line-height: 1.4; }
+  .story-media { position: relative; padding: 0 8% 60px 0; }
+  .story-main { aspect-ratio: 4 / 5.2; box-shadow: var(--shadow-lift); }
+  .story-float { position: absolute; right: 0; bottom: 0; width: 46%; aspect-ratio: 3 / 4; border: 8px solid var(--mist); border-radius: var(--radius-l); box-shadow: var(--shadow-soft); }
+  .story-note { position: absolute; left: -10px; bottom: 14px; display: inline-flex; gap: 8px; align-items: center; margin: 0; padding: 12px 18px; border-radius: 999px; background: var(--paper); box-shadow: var(--shadow-soft); font-size: 0.86rem; font-weight: 600; max-width: 60%; }
+  .story-note :global(svg) { color: var(--brass); flex: none; }
+
+  /* STAYS */
+  .stays-sec { background: var(--paper); }
+  .stays-grid { display: grid; gap: clamp(48px, 6vw, 72px) 40px; }
+  @media (min-width: 700px) { .stays-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1100px) { .stays-grid > :global(:nth-child(even)) { margin-top: 90px; } }
+
+  /* ESTATE */
+  .estate { position: relative; min-height: 640px; display: flex; align-items: center; overflow: hidden; }
+  .estate-bg { position: absolute; inset: 0; }
+  .estate-bg :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .estate::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(10, 16, 12, 0.55), transparent 70%); }
+  .estate-inner { position: relative; z-index: 2; padding-block: 90px; }
+  .estate-card { max-width: 540px; padding: clamp(28px, 4vw, 48px); border-radius: var(--radius-l); background: rgba(255, 253, 248, 0.94); backdrop-filter: blur(12px); box-shadow: var(--shadow-lift); }
+  .estate-card h2 { font-size: clamp(2rem, 4vw, 3.1rem); margin-bottom: 18px; }
+  .estate-card p { color: var(--ink-soft); }
+  .ticks { list-style: none; padding: 0; margin: 0 0 28px; display: grid; gap: 10px; }
+  .ticks li { display: flex; gap: 10px; align-items: flex-start; }
+  .ticks :global(svg) { color: var(--deodar); flex: none; margin-top: 3px; }
+
+  /* DAY: background drifts from dawn to night */
+  .day { background: linear-gradient(180deg, #f7efe2 0%, #f3ead8 22%, #e6eadf 45%, #e2d2b4 72%, #2a3a40 88%, var(--pine-night) 100%); }
+  .day-head { text-align: center; justify-items: center; }
+  .day-head .eyebrow::before { display: none; }
+  .timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(48px, 7vw, 100px); position: relative; }
+  @media (min-width: 900px) { .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: linear-gradient(var(--line), rgba(255, 255, 255, 0.2)); } }
+  .tl-item { display: grid; gap: 24px; align-items: center; }
+  @media (min-width: 900px) {
+    .tl-item { grid-template-columns: 1fr 1fr; gap: 90px; }
+    .tl-item.alt .tl-media { order: 2; }
+    .tl-item.alt .tl-copy { text-align: right; justify-self: end; }
+  }
+  .tl-media { aspect-ratio: 5 / 4; box-shadow: var(--shadow-soft); }
+  .tl-copy { max-width: 420px; }
+  .tl-time { display: inline-block; font: 600 0.78rem/1 var(--font-body); letter-spacing: 0.2em; text-transform: uppercase; color: var(--brass); margin-bottom: 12px; }
+  .tl-copy h3 { font-size: clamp(1.8rem, 3vw, 2.5rem); margin-bottom: 10px; }
+  .tl-copy p { color: var(--ink-soft); }
+  .tl-item:nth-child(5) .tl-copy { color: var(--on-dark); }
+  .tl-item:nth-child(5) .tl-copy p { color: var(--on-dark-soft); }
+  .tl-item:nth-child(5) .tl-time { color: var(--ember); }
+
+  /* BAND */
+  .band { position: relative; height: clamp(380px, 60vh, 620px); display: grid; place-items: center; overflow: hidden; background: var(--pine-night); color: #fff; text-align: center; }
+  .band video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.75; }
+  .band::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(10, 16, 12, 0.2), rgba(10, 16, 12, 0.6)); }
+  .band-copy { position: relative; z-index: 1; }
+  .band-copy .display { font-size: clamp(2rem, 4.6vw, 3.8rem); line-height: 1.15; }
+  .band-copy em { color: #f4d9b4; }
+
+  /* EXPERIENCES (bento) */
+  .exp-grid { display: grid; gap: 22px; }
+  @media (min-width: 700px) { .exp-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1100px) { .exp-grid { grid-template-columns: repeat(3, 1fr); gap: 48px 28px; } }
+  .exp-card { display: grid; gap: 16px; align-content: start; }
+  .exp-card .frame { aspect-ratio: 4 / 3; }
+  @media (min-width: 1100px) { .exp-card .frame { aspect-ratio: 4 / 4.6; } }
+  .exp-copy h3 { margin: 12px 0 6px; font-size: 1.6rem; }
+  .exp-copy p { color: var(--ink-soft); margin: 0; }
+  .exp-more { margin: 48px 0 0; }
+
+  /* MOMENTS mosaic */
+  .moments { background: var(--paper); }
+  .mosaic { display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr); grid-auto-rows: 160px; grid-auto-flow: dense; margin-bottom: 40px; }
+  .m-6 { grid-column: span 2; }
+  .mosaic .frame { display: block; border-radius: var(--radius); }
+  .m-0 { grid-row: span 2; }
+  .m-3 { grid-row: span 2; }
+  @media (min-width: 900px) {
+    .mosaic { grid-template-columns: repeat(4, 1fr); grid-auto-rows: 210px; gap: 16px; }
+    .m-0 { grid-column: span 2; grid-row: span 2; }
+    .m-3 { grid-row: span 2; }
+    .m-6 { grid-column: span 2; }
+  }
+  .center { text-align: center; }
+
+  /* ROUTE */
+  .route { padding-top: 0; }
+  .route :global(.ridge) { margin-bottom: clamp(60px, 8vw, 110px); color: var(--paper); }
+  .route-grid { display: grid; gap: 56px; align-items: center; position: relative; z-index: 1; }
+  @media (min-width: 900px) { .route-grid { grid-template-columns: 1fr 1.1fr; gap: 80px; } }
+  .route-line { list-style: none; margin: 32px 0; padding: 0; display: grid; }
+  .route-line li { display: grid; grid-template-columns: 18px 1fr auto; gap: 16px; align-items: center; padding: 12px 0; position: relative; }
+  .route-line li:not(:last-child)::after { content: ''; position: absolute; left: 8px; top: 30px; bottom: -10px; border-left: 1.5px dashed rgba(255, 255, 255, 0.3); }
+  .rl-dot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--on-dark-soft); background: var(--pine-night); }
+  .rl-place { font: 500 1.35rem/1.1 var(--font-display); }
+  .rl-km { font-size: 0.85rem; color: var(--on-dark-soft); font-weight: 600; letter-spacing: 0.04em; }
+  .rl-here .rl-dot { background: var(--ember); border-color: var(--ember); box-shadow: 0 0 0 6px rgba(224, 154, 82, 0.2); }
+  .rl-here .rl-place { color: var(--ember); }
+  .route-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; }
+  .route-map { aspect-ratio: 4 / 3.4; border-radius: var(--radius-l); }
+  .route-map iframe { width: 100%; height: 100%; border: 0; filter: grayscale(0.25) contrast(1.05); }
+
+  /* FAQ */
+  .faq-grid { display: grid; gap: 48px; }
+  @media (min-width: 900px) { .faq-grid { grid-template-columns: 0.9fr 1.3fr; gap: 80px; } }
+  .faq-grid .lede { margin: 18px 0 28px; }
+  .faq-list details { border-bottom: 1px solid var(--line); }
+  .faq-list summary {
+    list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px;
+    padding: 22px 0; min-height: 44px; font: 500 1.35rem/1.25 var(--font-display);
+  }
+  .faq-list summary::-webkit-details-marker { display: none; }
+  .faq-list summary :global(svg) { flex: none; transition: transform 300ms var(--ease); color: var(--deodar); }
+  .faq-list details[open] summary :global(svg) { transform: rotate(180deg); }
+  .faq-list details p { color: var(--ink-soft); padding-bottom: 22px; margin: 0; max-width: 62ch; }
+
+  /* CLOSING */
+  .closing { position: relative; min-height: 86vh; display: flex; align-items: center; overflow: hidden; background: var(--pine-night); color: #fff; }
+  .closing video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .closing-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10, 16, 12, 0.85), rgba(10, 16, 12, 0.35)); }
+  .closing-inner { position: relative; z-index: 1; padding-block: 100px; }
+  .closing .eyebrow { color: var(--ember); }
+  .closing h2 { font-size: clamp(3rem, 7vw, 5.6rem); max-width: 10ch; }
+  .closing h2 em { color: #f4d9b4; }
+  .closing .lede { color: rgba(255, 255, 255, 0.85); margin: 22px 0 34px; }
+  .closing-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+  .closing .btn.ghost { color: #fff; }
+</style>

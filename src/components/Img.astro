@@ -1,0 +1,24 @@
+---
+// Responsive <picture> over the AVIF/WebP set produced by scripts/build-media.sh.
+// Width/height come from the manifest so the browser reserves space (no CLS).
+import dims from '../data/images.json';
+interface Props {
+  src: string;
+  alt: string;
+  sizes?: string;
+  eager?: boolean;
+  class?: string;
+}
+const { src, alt, sizes = '100vw', eager = false, class: cls } = Astro.props;
+const [w, h] = (dims as Record<string, [number, number]>)[src] ?? [1600, 1200];
+const set = (ext: string) => [640, 1200, 2000].map((x) => `/images/${src}-${x}.${ext} ${x}w`).join(', ');
+---
+<picture>
+  <source type="image/avif" srcset={set('avif')} sizes={sizes} />
+  <source type="image/webp" srcset={set('webp')} sizes={sizes} />
+  <img
+    src={`/images/${src}-1200.webp`} alt={alt} width={w} height={h} class={cls}
+    loading={eager ? 'eager' : 'lazy'} decoding={eager ? 'sync' : 'async'}
+    fetchpriority={eager ? 'high' : undefined}
+  />
+</picture>

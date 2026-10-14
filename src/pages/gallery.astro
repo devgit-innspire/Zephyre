@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Img from '../components/Img.astro';
+import Reels from '../components/Reels.astro';
+import Lightbox from '../components/Lightbox.astro';
+import dims from '../data/images.json';
+
+const groups = [
+  { key: 'estate', label: 'The estate', imgs: ['aerial-day', 'aerial-tents', 'stone-stairs', 'terrace-sculpture', 'buddha-garden', 'vine-tunnel', 'vine-path', 'teepee-garden', 'stone-patio', 'cafe-yellow', 'cottage-blue-stone', 'resident-dog'] },
+  { key: 'rooms', label: 'Rooms', imgs: ['room-wood-ceiling', 'room-canopy', 'room-carved-bed', 'room-kantha', 'tent-interior', 'room-reading-nook', 'duplex-lounge', 'room-canopy-kantha', 'room-stone-chairs', 'room-garden-door', 'bath-stone', 'hammock-porch'] },
+  { key: 'pools', label: 'Pools & views', imgs: ['pool-pines', 'pools-above', 'pool-loungers', 'aerial-pools-close', 'valley-clouds', 'valley-wide', 'canna-valley', 'monsoon-mist', 'pool-winter'] },
+  { key: 'nights', label: 'Nights', imgs: ['aerial-night-glow', 'bonfire-overhead', 'courtyard-fairy', 'stars-valley', 'stars-valley-2', 'pool-night-drinks', 'swing-lights', 'teepee-bonfire', 'movie-night', 'cafe-yellow-dusk', 'candlelight-dinner', 'aerial-night-pool'] },
+];
+const alt = (s: string) => s.replace(/-\d$/, '').replace(/-/g, ' ');
+const tall = (s: string) => { const [w, h] = (dims as Record<string, number[]>)[s]; return h > w; };
+---
+<Base title="Gallery & reels" description="Photos and reels of Zephyr Estate, Mussoorie: cottages, villa tents, pools, bonfires and starry nights." image="pool-pines" overHero>
+  <PageHero img="aerial-forest" alt="Zephyr Estate seen from a drone above the forest" eyebrow="Gallery" title="See it before <em>you feel it</em>" />
+
+  <nav class="wrap tabs" aria-label="Gallery sections">
+    {groups.map((g) => <a href={`#${g.key}`}>{g.label}</a>)}
+    <a href="#reels-h">Reels</a>
+  </nav>
+
+  {groups.map((g) => (
+    <section class="section gsec" id={g.key} aria-labelledby={`${g.key}-h`}>
+      <div class="wrap">
+        <h2 id={`${g.key}-h`}>{g.label}</h2>
+        <div class="masonry">
+          {g.imgs.map((s) => (
+            <a href={`/images/${s}-2000.webp`} class:list={['frame zoom reveal', tall(s) && 'tall']} data-lb data-alt={alt(s)}>
+              <Img src={s} alt={alt(s)} sizes="(min-width: 1100px) 33vw, (min-width: 600px) 50vw, 100vw" />
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <Reels heading="Watch the estate come alive" />
+  <Lightbox />
+</Base>
+
+<style>
+  .tabs { display: flex; gap: 10px; overflow-x: auto; padding-top: 32px; padding-bottom: 4px; scrollbar-width: none; }
+  .tabs a { flex: none; padding: 12px 20px; border-radius: 999px; border: 1px solid var(--line); text-decoration: none; font-weight: 600; font-size: 0.9rem; background: var(--paper); transition: background-color 200ms, color 200ms; }
+  .tabs a:hover { background: var(--deodar); color: #fff; border-color: var(--deodar); }
+  .gsec { padding-block: 56px; }
+  .gsec h2 { margin-bottom: 28px; }
+  .masonry { columns: 1; column-gap: 14px; }
+  @media (min-width: 600px) { .masonry { columns: 2; } }
+  @media (min-width: 1100px) { .masonry { columns: 3; } }
+  .masonry .frame { display: block; margin-bottom: 14px; break-inside: avoid; aspect-ratio: 4 / 3; }
+  .masonry .frame.tall { aspect-ratio: 3 / 4; }
+</style>

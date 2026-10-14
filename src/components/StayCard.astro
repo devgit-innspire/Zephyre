@@ -1,0 +1,41 @@
+---
+import Img from './Img.astro';
+import Icon from './Icon.astro';
+import type { Stay } from '../data/site';
+interface Props { stay: Stay; index?: number }
+const { stay, index = 0 } = Astro.props;
+---
+<article class="stay reveal" data-delay={String(index % 3)}>
+  <a href={`/stays/${stay.slug}`} class="stay-media frame zoom" aria-label={`View ${stay.name}`}>
+    <Img src={stay.cover} alt={`${stay.name} at Zephyr Estate`} sizes="(min-width: 1100px) 560px, (min-width: 700px) 50vw, 100vw" />
+    <span class="stay-kind chip">{stay.kind}{stay.rooms > 1 ? ` · ${stay.rooms} ${stay.slug === 'french-duplex' ? 'bedrooms' : 'cottages'}` : ''}</span>
+  </a>
+  <div class="stay-body">
+    <h3><a href={`/stays/${stay.slug}`}>{stay.name}</a></h3>
+    <p>{stay.short}</p>
+    <ul class="stay-icons" aria-label="Highlights">
+      <li><Icon name="bed" size={16} /> King bed</li>
+      <li><Icon name="bath" size={16} /> Ensuite</li>
+      <li><Icon name="thermo" size={16} /> Heater & AC</li>
+      <li><Icon name="wifi" size={16} /> Wi-Fi</li>
+    </ul>
+    <div class="stay-actions">
+      <a class="link-arrow" href={`/stays/${stay.slug}`}>Explore the room <Icon name="arrow" /></a>
+      <button class="btn forest" data-enquire data-stay={stay.name}>Book</button>
+    </div>
+  </div>
+</article>
+
+<style>
+  .stay { display: grid; gap: 22px; }
+  .stay-media { display: block; aspect-ratio: 4 / 5; border-radius: var(--radius-l); box-shadow: var(--shadow-soft); }
+  .stay-kind { position: absolute; left: 16px; top: 16px; background: rgba(23, 33, 28, 0.45); }
+  .stay-body h3 { margin-bottom: 8px; }
+  .stay-body h3 a { text-decoration: none; }
+  .stay-body p { color: var(--ink-soft); max-width: 46ch; }
+  .stay-icons { list-style: none; padding: 0; margin: 0 0 22px; display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 0.86rem; color: var(--ink-soft); }
+  .stay-icons li { display: inline-flex; align-items: center; gap: 6px; }
+  .stay-icons :global(svg) { color: var(--deodar); }
+  .stay-actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .stay-actions .btn { min-height: 44px; padding: 0 24px; }
+</style>

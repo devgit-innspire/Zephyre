@@ -1,0 +1,116 @@
+---
+import Icon from './Icon.astro';
+import Img from './Img.astro';
+import { stays } from '../data/site';
+---
+<dialog class="enquiry" aria-labelledby="enq-title" data-enquiry>
+  <div class="enq-media" aria-hidden="true">
+    <Img src="hammock-porch" alt="" sizes="(min-width: 900px) 380px, 0px" />
+    <div class="enq-media-copy">
+      <p class="display">“Stay. Breathe. Belong.”</p>
+      <ul>
+        <li><Icon name="check" size={16} /> Direct booking, best rate</li>
+        <li><Icon name="check" size={16} /> Only six rooms on the ridge</li>
+        <li><Icon name="check" size={16} /> Celebrations arranged for you</li>
+      </ul>
+    </div>
+  </div>
+
+  <form class="enq-form" method="dialog" novalidate data-enquiry-form>
+    <button type="button" class="enq-close" aria-label="Close" data-close><Icon name="x" size={22} /></button>
+    <p class="eyebrow">Reserve your hilltop</p>
+    <h2 id="enq-title">When would you like to come?</h2>
+    <p class="enq-sub">Share a few details. We will confirm availability and the best rate on WhatsApp.</p>
+
+    <div class="enq-grid">
+      <div class="field">
+        <label for="enq-in">Check-in</label>
+        <input id="enq-in" name="checkin" type="date" required />
+        <span class="err">Choose a check-in date</span>
+      </div>
+      <div class="field">
+        <label for="enq-out">Check-out</label>
+        <input id="enq-out" name="checkout" type="date" required />
+        <span class="err">Check-out must be after check-in</span>
+      </div>
+      <div class="field">
+        <label for="enq-adults">Adults</label>
+        <select id="enq-adults" name="adults">
+          {Array.from({ length: 16 }, (_, i) => <option value={i + 1} selected={i === 1}>{i + 1}</option>)}
+        </select>
+      </div>
+      <div class="field">
+        <label for="enq-kids">Children</label>
+        <select id="enq-kids" name="children">
+          {Array.from({ length: 9 }, (_, i) => <option value={i}>{i}</option>)}
+        </select>
+      </div>
+      <div class="field span-2">
+        <label for="enq-stay">Stay</label>
+        <select id="enq-stay" name="stay">
+          <option value="Any – suggest the best">Any – suggest the best for us</option>
+          {stays.map((s) => <option value={s.name}>{s.name}</option>)}
+          <option value="Whole estate (all 6 rooms)">Whole estate · all 6 rooms</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="enq-name">Your name</label>
+        <input id="enq-name" name="name" autocomplete="name" required />
+        <span class="err">Please add your name</span>
+      </div>
+      <div class="field">
+        <label for="enq-phone">Phone</label>
+        <input id="enq-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required pattern="[+0-9 ()-]{8,}" />
+        <span class="err">Enter a valid phone number</span>
+      </div>
+      <div class="field span-2">
+        <label for="enq-note">Anything special? <span class="opt">(optional)</span></label>
+        <textarea id="enq-note" name="note" rows="2" placeholder="Birthday, anniversary, dietary needs, pets…"></textarea>
+      </div>
+    </div>
+
+    <div class="enq-actions">
+      <button type="submit" class="btn" value="whatsapp"><Icon name="whatsapp" /> Send on WhatsApp</button>
+      <button type="submit" class="btn ghost" value="email"><Icon name="mail" /> Email instead</button>
+    </div>
+    <p class="enq-fine"><Icon name="lock" size={14} /> No payment now. Your details are only used to reply to you.</p>
+  </form>
+</dialog>
+
+<style>
+  .enquiry {
+    width: min(980px, calc(100vw - 24px)); max-height: calc(100dvh - 24px);
+    padding: 0; border: 0; border-radius: var(--radius-l);
+    background: var(--paper); color: var(--ink); box-shadow: var(--shadow-lift);
+    overflow: hidden;
+  }
+  .enquiry[open] { display: grid; grid-template-columns: 1fr; animation: enq-in 400ms var(--ease); }
+  @media (min-width: 900px) { .enquiry[open] { grid-template-columns: 380px 1fr; } }
+  .enquiry::backdrop { background: rgba(14, 20, 16, 0.6); backdrop-filter: blur(4px); }
+  @keyframes enq-in { from { opacity: 0; transform: translateY(16px) scale(0.98); } }
+
+  .enq-media { display: none; position: relative; color: #fff; }
+  @media (min-width: 900px) { .enq-media { display: block; } }
+  .enq-media :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .enq-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 35%, rgba(12, 18, 14, 0.85)); }
+  .enq-media-copy { position: absolute; z-index: 1; left: 28px; right: 28px; bottom: 28px; }
+  .enq-media-copy .display { font-size: 1.9rem; font-style: italic; margin-bottom: 14px; }
+  .enq-media-copy ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; font-size: 0.92rem; }
+  .enq-media-copy li { display: flex; gap: 8px; align-items: center; }
+
+  .enq-form { position: relative; padding: clamp(24px, 4vw, 44px); overflow-y: auto; max-height: calc(100dvh - 24px); }
+  .enq-form h2 { font-size: clamp(1.9rem, 3.5vw, 2.6rem); margin-bottom: 8px; }
+  .enq-sub { color: var(--ink-soft); margin-bottom: 26px; }
+  .enq-close { position: absolute; top: 14px; right: 14px; width: 44px; height: 44px; display: grid; place-items: center; border: 0; border-radius: 50%; background: var(--mist); color: var(--ink); }
+  .enq-close:hover { background: var(--mist-2); }
+  .enq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .span-2 { grid-column: span 2; }
+  .opt { text-transform: none; letter-spacing: 0; font-weight: 500; }
+  .enq-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+  .enq-actions .ghost { color: var(--deodar); }
+  .enq-fine { display: flex; align-items: center; gap: 6px; margin: 16px 0 0; font-size: 0.82rem; color: var(--ink-soft); }
+  @media (max-width: 520px) {
+    .enq-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .enq-actions .btn { flex: 1 1 100%; }
+  }
+</style>

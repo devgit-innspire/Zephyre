@@ -1,0 +1,65 @@
+---
+import Icon from './Icon.astro';
+import { stays } from '../data/site';
+interface Props { stay?: string; compact?: boolean }
+const { stay, compact = false } = Astro.props;
+const uid = Math.random().toString(36).slice(2, 7);
+---
+<form class:list={['bbar', compact && 'compact']} data-booking-bar aria-label="Check availability">
+  <div class="bb-field">
+    <label for={`in-${uid}`}><Icon name="calendar" size={14} /> Check-in</label>
+    <input id={`in-${uid}`} type="date" name="checkin" />
+  </div>
+  <div class="bb-field">
+    <label for={`out-${uid}`}><Icon name="calendar" size={14} /> Check-out</label>
+    <input id={`out-${uid}`} type="date" name="checkout" />
+  </div>
+  <div class="bb-field">
+    <label for={`g-${uid}`}><Icon name="users" size={14} /> Guests</label>
+    <select id={`g-${uid}`} name="adults">
+      {Array.from({ length: 16 }, (_, i) => <option value={i + 1} selected={i === 1}>{i + 1} {i ? 'adults' : 'adult'}</option>)}
+    </select>
+  </div>
+  {stay ? (
+    <input type="hidden" name="stay" value={stay} />
+  ) : (
+    <div class="bb-field">
+      <label for={`s-${uid}`}><Icon name="home" size={14} /> Stay</label>
+      <select id={`s-${uid}`} name="stay">
+        <option value="Any – suggest the best">Any stay</option>
+        {stays.map((s) => <option value={s.name}>{s.name}</option>)}
+        <option value="Whole estate (all 6 rooms)">Whole estate</option>
+      </select>
+    </div>
+  )}
+  <button class="btn" type="submit">Check availability <Icon name="arrow" /></button>
+</form>
+
+<style>
+  .bbar {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
+    padding: 8px; border-radius: 22px;
+    background: rgba(255, 253, 248, 0.96); color: var(--ink);
+    box-shadow: var(--shadow-lift);
+  }
+  .bb-field { display: grid; gap: 2px; padding: 10px 14px; border-radius: 14px; transition: background-color 200ms; }
+  .bb-field:hover, .bb-field:focus-within { background: var(--mist); }
+  .bb-field label { display: flex; align-items: center; gap: 6px; font: 600 0.68rem/1 var(--font-body); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); }
+  .bb-field input, .bb-field select {
+    border: 0; background: transparent; padding: 4px 0; min-height: 30px; width: 100%;
+    font: 600 0.98rem/1.2 var(--font-body); color: var(--ink); appearance: none; -webkit-appearance: none;
+  }
+  .bb-field input:focus, .bb-field select:focus { outline: none; }
+  .bbar .btn { grid-column: 1 / -1; min-height: 54px; border-radius: 16px; }
+  @media (min-width: 900px) {
+    .bbar { grid-template-columns: repeat(4, 1fr) auto; align-items: center; border-radius: 999px; padding: 8px 8px 8px 18px; }
+    .bbar .btn { grid-column: auto; border-radius: 999px; padding: 0 28px; }
+    .bb-field { border-radius: 999px; padding: 10px 20px; }
+    .bb-field + .bb-field { position: relative; }
+    .bb-field + .bb-field::before { content: ''; position: absolute; left: 0; top: 22%; bottom: 22%; width: 1px; background: var(--line); }
+    .bbar.compact { grid-template-columns: 1fr; border-radius: var(--radius); padding: 8px; }
+    .bbar.compact .btn { border-radius: 14px; }
+    .bbar.compact .bb-field { border-radius: 12px; }
+    .bbar.compact .bb-field::before { display: none; }
+  }
+</style>

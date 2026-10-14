@@ -1,0 +1,60 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import StayCard from '../../components/StayCard.astro';
+import Img from '../../components/Img.astro';
+import Icon from '../../components/Icon.astro';
+import BookingBar from '../../components/BookingBar.astro';
+import { stays } from '../../data/site';
+---
+<Base title="Stays" description="Native Kumaon cottages, luxury villa tents and a two-bedroom French duplex at Zephyr Estate, Mussoorie. Every room has a king bed, ensuite, heater and Wi-Fi." image="room-wood-ceiling" overHero>
+  <PageHero img="cottage-dusk" alt="A stone cottage glowing at dusk" eyebrow="The stays" title="Six rooms. <em>Four moods.</em>" lede="Pick your corner of the ridge: a timber-ceilinged cottage, a romantic villa tent, or a duplex built for families.">
+    <div class="ph-bar"><BookingBar /></div>
+  </PageHero>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="every reveal">
+        <p class="eyebrow">In every room</p>
+        <ul>
+          <li><Icon name="bed" /> King-size bed</li>
+          <li><Icon name="bath" /> Ensuite with geyser</li>
+          <li><Icon name="thermo" /> Heater & AC</li>
+          <li><Icon name="wifi" /> Wi-Fi</li>
+          <li><Icon name="tv" /> TV</li>
+          <li><Icon name="lock" /> Locker & wardrobe</li>
+        </ul>
+      </div>
+      <div class="grid">
+        {stays.map((s, i) => <StayCard stay={s} index={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section estate-sec on-dark grain" id="estate">
+    <div class="wrap estate-grid">
+      <div class="frame reveal"><Img src="aerial-night-glow" alt="Zephyr Estate lit up at night, seen from above" sizes="(min-width: 900px) 50vw, 100vw" /></div>
+      <div class="reveal" data-delay="1">
+        <p class="eyebrow">The Family Retreat</p>
+        <h2>Book the <em class="wind">whole estate</em></h2>
+        <p class="lede">All six rooms (three cottages, two villa tents and the French duplex) reserved for your group alone. The pools, terraces, lawns and bonfire circle are all yours.</p>
+        <button class="btn" data-enquire data-stay="Whole estate (all 6 rooms)">Enquire for the whole estate</button>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ph-bar { margin-top: 36px; max-width: 1040px; }
+  .every { display: grid; gap: 18px; padding: 28px 32px; margin-bottom: 72px; border-radius: var(--radius-l); background: var(--paper); box-shadow: var(--shadow-soft); }
+  @media (min-width: 900px) { .every { grid-template-columns: auto 1fr; align-items: center; gap: 40px; } .every .eyebrow { margin: 0; } }
+  .every ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 14px 30px; }
+  .every li { display: inline-flex; gap: 8px; align-items: center; font-weight: 500; }
+  .every :global(svg) { color: var(--deodar); }
+  .grid { display: grid; gap: 72px 40px; }
+  @media (min-width: 700px) { .grid { grid-template-columns: 1fr 1fr; } }
+  .estate-grid { display: grid; gap: 48px; align-items: center; position: relative; z-index: 1; }
+  @media (min-width: 900px) { .estate-grid { grid-template-columns: 1.1fr 1fr; gap: 72px; } }
+  .estate-grid .frame { aspect-ratio: 16 / 10; border-radius: var(--radius-l); }
+  .estate-grid .lede { margin: 18px 0 30px; }
+</style>

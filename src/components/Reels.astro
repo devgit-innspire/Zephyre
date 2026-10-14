@@ -1,0 +1,88 @@
+---
+// Instagram-style vertical reels. Videos load lazily (data-src) and only play when on screen.
+import Icon from './Icon.astro';
+import WindLine from './WindLine.astro';
+import { reels, site } from '../data/site';
+interface Props { heading?: string; limit?: number }
+const { heading = 'Life on the ridge, in reels', limit = reels.length } = Astro.props;
+const list = reels.slice(0, limit);
+---
+<section class="reels section on-dark grain" aria-labelledby="reels-h" data-scroller>
+  <div class="wrap reels-head">
+    <div>
+      <p class="eyebrow">Reels from Zephyr</p>
+      <h2 id="reels-h">{heading}</h2>
+      <WindLine />
+    </div>
+    <div class="reels-nav">
+      <a class="link-arrow" href={site.instagram} target="_blank" rel="noopener"><Icon name="instagram" /> Follow on Instagram</a>
+      <div class="reels-arrows">
+        <button class="round" aria-label="Previous reels" data-prev><Icon name="arrow" size={20} class="flip-x" /></button>
+        <button class="round" aria-label="Next reels" data-next><Icon name="arrow" size={20} /></button>
+      </div>
+    </div>
+  </div>
+  <div class="reels-track" data-track tabindex="0" aria-label="Reels, scroll sideways">
+    {list.map((r) => (
+      <figure class="reel" data-reel>
+        <video
+          data-src={`/reels/${r.file}.mp4`} poster={`/reels/${r.file}.webp`}
+          muted loop playsinline preload="none" aria-label={r.title}
+        ></video>
+        <button class="reel-play" data-play aria-label={`Play or pause: ${r.title}`}><Icon name="play" size={22} /></button>
+        <button class="reel-sound" data-sound aria-pressed="false" aria-label={`Sound for ${r.title}`}>
+          <Icon name="mute" size={18} class="i-mute" /><Icon name="volume" size={18} class="i-vol" />
+        </button>
+        <figcaption>{r.title}</figcaption>
+      </figure>
+    ))}
+  </div>
+</section>
+
+<style>
+  .reels { overflow: hidden; }
+  .reels-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 40px; position: relative; z-index: 1; }
+  .reels-head h2 { max-width: 14ch; }
+  .reels-nav { display: flex; align-items: center; gap: 24px; }
+  .reels-arrows { display: none; gap: 10px; }
+  @media (min-width: 900px) { .reels-arrows { display: flex; } }
+  .round { width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); background: transparent; color: var(--on-dark); display: grid; place-items: center; transition: background-color 200ms, border-color 200ms; }
+  .round:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.6); }
+  :global(.flip-x) { transform: scaleX(-1); }
+
+  .reels-track {
+    position: relative; z-index: 1;
+    display: grid; grid-auto-flow: column; grid-auto-columns: min(72vw, 300px); gap: 18px;
+    overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+    padding: 4px max(var(--gutter), calc((100vw - var(--maxw)) / 2 + var(--gutter))) 12px;
+    scroll-padding-inline: max(var(--gutter), calc((100vw - var(--maxw)) / 2 + var(--gutter)));
+    scrollbar-width: none;
+  }
+  .reels-track::-webkit-scrollbar { display: none; }
+  .reel {
+    position: relative; margin: 0; aspect-ratio: 9 / 16; border-radius: 22px; overflow: hidden;
+    scroll-snap-align: start; background: var(--pine-night-2);
+    box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.6);
+    transition: transform 400ms var(--ease);
+  }
+  .reel:hover { transform: translateY(-4px); }
+  .reel video { width: 100%; height: 100%; object-fit: cover; }
+  .reel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 60%, rgba(0, 0, 0, 0.6)); pointer-events: none; }
+  .reel figcaption { position: absolute; z-index: 1; left: 18px; right: 60px; bottom: 18px; font: 500 1.35rem/1.1 var(--font-display); color: #fff; }
+  .reel-play {
+    position: absolute; z-index: 1; inset: 0; margin: auto; width: 64px; height: 64px; border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.5); background: rgba(0, 0, 0, 0.25); color: #fff;
+    display: grid; place-items: center; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    transition: opacity 300ms;
+  }
+  .reel.is-playing .reel-play { opacity: 0; }
+  .reel.is-playing .reel-play:focus-visible { opacity: 1; }
+  .reel-sound {
+    position: absolute; z-index: 2; right: 12px; bottom: 12px; width: 44px; height: 44px; border-radius: 50%;
+    border: 0; background: rgba(0, 0, 0, 0.45); color: #fff; display: grid; place-items: center;
+  }
+  .reel-sound :global(.i-vol) { display: none; }
+  .reel.has-sound .reel-sound :global(.i-vol) { display: block; }
+  .reel.has-sound .reel-sound :global(.i-mute) { display: none; }
+  .reel.has-sound .reel-sound { background: var(--brass); }
+</style>

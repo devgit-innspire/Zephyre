@@ -1,0 +1,5 @@
+node_modules/
+dist/
+.astro/
+media-src/
+.DS_Store

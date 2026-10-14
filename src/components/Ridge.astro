@@ -1,0 +1,10 @@
+---
+// Layered Garhwal ridgeline used as a section edge instead of a straight line.
+interface Props { variant?: 'light' | 'dark'; flip?: boolean }
+const { variant = 'light', flip = false } = Astro.props;
+---
+<svg class:list={['ridge', variant === 'dark' && 'to-dark', flip && 'flip']} viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+  <path fill="currentColor" opacity="0.35" d="M0 70 L80 52 L150 64 L240 30 L310 48 L390 22 L470 44 L560 18 L650 46 L720 34 L810 58 L900 26 L990 50 L1080 20 L1170 44 L1260 30 L1350 54 L1440 38 V120 H0 Z" />
+  <path fill="currentColor" opacity="0.6" d="M0 92 L110 70 L190 84 L280 58 L370 78 L460 52 L540 74 L640 60 L730 82 L830 56 L920 76 L1010 62 L1100 84 L1200 60 L1300 80 L1380 66 L1440 74 V120 H0 Z" />
+  <path fill="currentColor" d="M0 108 L120 96 L240 104 L360 92 L480 102 L600 94 L720 106 L840 96 L960 104 L1080 94 L1200 104 L1320 96 L1440 102 V120 H0 Z" />
+</svg>

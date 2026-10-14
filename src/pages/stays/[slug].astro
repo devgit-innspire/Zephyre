@@ -1,0 +1,108 @@
+---
+import Base from '../../layouts/Base.astro';
+import Img from '../../components/Img.astro';
+import Icon from '../../components/Icon.astro';
+import BookingBar from '../../components/BookingBar.astro';
+import StayCard from '../../components/StayCard.astro';
+import Lightbox from '../../components/Lightbox.astro';
+import { stays, site, type Stay } from '../../data/site';
+
+export function getStaticPaths() {
+  return stays.map((stay) => ({ params: { slug: stay.slug }, props: { stay } }));
+}
+const { stay } = Astro.props as { stay: Stay };
+const others = stays.filter((s) => s.slug !== stay.slug).slice(0, 2);
+const iconFor = (f: string) =>
+  /bed/i.test(f) ? 'bed' : /bath|ensuite/i.test(f) ? 'bath' : /heat|ac/i.test(f) ? 'thermo' : /wi-fi/i.test(f) ? 'wifi'
+  : /tv/i.test(f) ? 'tv' : /locker/i.test(f) ? 'lock' : /kids/i.test(f) ? 'baby' : /window|balcony|verandah/i.test(f) ? 'door' : /ceiling|wood/i.test(f) ? 'trees' : 'check';
+const [first, ...rest] = stay.gallery;
+---
+<Base title={stay.name} description={`${stay.name} at Zephyr Estate, Mussoorie: ${stay.short}`} image={stay.cover}>
+  <section class="room-top">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/stays">Stays</a> <span aria-hidden="true">/</span> <span aria-current="page">{stay.name}</span></nav>
+      <div class="room-gallery">
+        <a href={`/images/${first}-2000.webp`} class="frame g-main" data-lb data-alt={stay.name}>
+          <Img src={first} alt={`${stay.name} interior`} sizes="(min-width: 900px) 60vw, 100vw" eager />
+        </a>
+        {rest.slice(0, 4).map((g, i) => (
+          <a href={`/images/${g}-2000.webp`} class:list={['frame zoom', `g-${i}`]} data-lb data-alt={stay.name}>
+            <Img src={g} alt={`${stay.name}, photo ${i + 2}`} sizes="(min-width: 900px) 20vw, 50vw" />
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section room-body">
+    <div class="wrap room-grid">
+      <div>
+        <p class="eyebrow">{stay.kind}</p>
+        <h1>{stay.name}</h1>
+        <p class="lede">{stay.story}</p>
+        <h2 class="feat-h">What you’ll find</h2>
+        <ul class="feats">
+          {stay.features.map((f) => <li><Icon name={iconFor(f) as any} /> {f}</li>)}
+        </ul>
+        <div class="note">
+          <Icon name="sparkles" />
+          <p>Celebrating something? We can decorate the room, arrange a candlelit dinner or set up a bonfire just for you. Mention it when you enquire.</p>
+        </div>
+      </div>
+      <aside class="book-card" aria-label="Book this stay">
+        <p class="bc-title">Reserve the {stay.name}</p>
+        <p class="bc-sub">Best rate when you book direct. No payment needed to enquire.</p>
+        <BookingBar stay={stay.name} compact />
+        <div class="bc-alt">
+          <a href={`tel:${site.phone}`}><Icon name="phone" size={16} /> {site.phoneDisplay}</a>
+          <a href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent(`Hi! I'd like to know about the ${stay.name}.`)}`} target="_blank" rel="noopener"><Icon name="whatsapp" size={16} /> WhatsApp</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section more">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">You may also love</p>
+        <h2>Other stays on the ridge</h2>
+      </div>
+      <div class="more-grid">{others.map((s, i) => <StayCard stay={s} index={i} />)}</div>
+    </div>
+  </section>
+
+  <Lightbox />
+</Base>
+
+<style>
+  .room-top { padding-top: calc(var(--nav-h) + 24px); }
+  .crumbs { font-size: 0.86rem; color: var(--ink-soft); margin-bottom: 18px; }
+  .crumbs a { text-decoration: none; color: var(--deodar); font-weight: 600; }
+  .room-gallery { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; grid-auto-rows: 150px; }
+  .room-gallery .frame { display: block; border-radius: var(--radius); }
+  .g-main { grid-column: span 2; grid-row: span 2; }
+  @media (min-width: 900px) {
+    .room-gallery { grid-template-columns: 2fr 1fr 1fr; grid-auto-rows: 250px; gap: 12px; }
+    .g-main { grid-column: 1; grid-row: span 2; }
+  }
+  .room-grid { display: grid; gap: 56px; }
+  @media (min-width: 1000px) { .room-grid { grid-template-columns: 1.4fr 1fr; gap: 80px; align-items: start; } }
+  .room-grid h1 { font-size: clamp(2.6rem, 5vw, 4.2rem); margin-bottom: 20px; }
+  .feat-h { font-size: 1.8rem; margin: 40px 0 18px; }
+  .feats { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px 24px; }
+  @media (min-width: 600px) { .feats { grid-template-columns: 1fr 1fr; } }
+  .feats li { display: flex; gap: 12px; align-items: center; padding: 14px 16px; border-radius: var(--radius-s); background: var(--paper); }
+  .feats :global(svg) { color: var(--deodar); flex: none; }
+  .note { display: flex; gap: 14px; margin-top: 36px; padding: 22px; border-radius: var(--radius); background: var(--deodar-100); color: var(--deodar); }
+  .note :global(svg) { flex: none; margin-top: 3px; }
+  .note p { margin: 0; color: var(--ink); }
+  .book-card { position: sticky; top: calc(var(--nav-h) + 20px); padding: 28px; border-radius: var(--radius-l); background: var(--paper); box-shadow: var(--shadow-lift); }
+  .bc-title { font: 500 1.8rem/1.1 var(--font-display); margin-bottom: 8px; }
+  .bc-sub { color: var(--ink-soft); font-size: 0.92rem; }
+  .bc-alt { display: flex; justify-content: center; gap: 24px; margin-top: 18px; }
+  .bc-alt a { display: inline-flex; gap: 6px; align-items: center; text-decoration: none; font-weight: 600; font-size: 0.9rem; color: var(--deodar); min-height: 44px; }
+  .more { background: var(--paper); }
+  .more-grid { display: grid; gap: 56px 40px; }
+  @media (min-width: 700px) { .more-grid { grid-template-columns: 1fr 1fr; } }
+
+</style>

@@ -1,0 +1,234 @@
+---
+import '../styles/global.css';
+import Logo from '../components/Logo.astro';
+import Icon from '../components/Icon.astro';
+import EnquiryDialog from '../components/EnquiryDialog.astro';
+import { site, stays } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  /** Nav starts transparent over a full-bleed hero */
+  overHero?: boolean;
+}
+const { title, description, image = 'aerial-day', overHero = false } = Astro.props;
+const fullTitle = title === site.name ? `${site.name} @ Dimta Stay · Luxury hilltop stay near Kempty Falls, Mussoorie` : `${title} · ${site.name}, Mussoorie`;
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/stays', label: 'Stays' },
+  { href: '/experiences', label: 'Experiences' },
+  { href: '/gallery', label: 'Gallery' },
+  { href: '/getting-here', label: 'Getting here' },
+];
+const ogImage = new URL(`/images/${image}-1200.webp`, site.url).href;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Resort',
+  name: `${site.name} @ Dimta Stay`,
+  description,
+  url: site.url,
+  telephone: site.phone,
+  email: site.email,
+  image: ogImage,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Village Bhediyana, Kempty Fall Rd',
+    addressLocality: 'Mussoorie',
+    addressRegion: 'Uttarakhand',
+    postalCode: '248179',
+    addressCountry: 'IN',
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lon },
+  amenityFeature: ['Swimming pool', 'Kids play area', 'Bonfire', 'Free Wi-Fi', 'Parking'].map((name) => ({
+    '@type': 'LocationFeatureSpecification', name, value: true,
+  })),
+  containsPlace: stays.map((s) => ({ '@type': 'HotelRoom', name: s.name, bed: 'King-size bed' })),
+};
+---
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#17211c" />
+    <link rel="canonical" href={new URL(path, site.url).href} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap"
+    />
+    <script is:inline>document.documentElement.classList.replace('no-js', 'js');</script>
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+  <body class:list={[overHero && 'has-hero']}>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="nav" data-nav>
+      <div class="wrap nav-inner">
+        <a href="/" aria-label="Zephyr Estate home" class="nav-logo"><Logo /></a>
+        <nav aria-label="Primary" class="nav-links">
+          {nav.map((n) => (
+            <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>
+          ))}
+        </nav>
+        <div class="nav-cta">
+          <a class="nav-phone" href={`tel:${site.phone}`}><Icon name="phone" size={16} /> <span>{site.phoneDisplay}</span></a>
+          <button class="btn" data-enquire>Book your stay</button>
+          <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="drawer" data-menu>
+            <Icon name="menu" size={24} />
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="drawer" id="drawer" hidden data-drawer>
+      <nav aria-label="Mobile">
+        <a href="/">Home</a>
+        {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+      </nav>
+      <div class="drawer-foot">
+        <p>{site.address}</p>
+        <a href={`tel:${site.phone}`}>{site.phoneDisplay}</a>
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+      </div>
+    </div>
+
+    <main id="main"><slot /></main>
+
+    <footer class="footer on-dark grain">
+      <div class="wrap footer-grid">
+        <div class="footer-brand">
+          <Logo />
+          <p class="display footer-tag">{site.tagline}</p>
+          <p class="footer-addr"><Icon name="pin" size={16} /> {site.address}</p>
+        </div>
+        <div>
+          <h3 class="footer-h">Explore</h3>
+          <ul>
+            <li><a href="/stays">Stays</a></li>
+            <li><a href="/stays#estate">Book the whole estate</a></li>
+            <li><a href="/experiences">Experiences</a></li>
+            <li><a href="/gallery">Gallery & reels</a></li>
+            <li><a href="/getting-here">Getting here</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer-h">Talk to us</h3>
+          <ul>
+            <li><a href={`tel:${site.phone}`}>Bookings · {site.phoneDisplay}</a></li>
+            <li><a href={`tel:${site.salesPhone}`}>Delhi sales · {site.salesPhoneDisplay}</a></li>
+            <li><a href={`https://wa.me/${site.whatsapp}`} rel="noopener" target="_blank">WhatsApp us</a></li>
+            <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+            <li><a href={site.instagram} rel="noopener" target="_blank">Instagram</a></li>
+          </ul>
+        </div>
+        <div class="footer-cta">
+          <h3 class="footer-h">Your hilltop is waiting</h3>
+          <p>Six rooms. One ridge. Tell us your dates and we will hold the view for you.</p>
+          <button class="btn" data-enquire>Check availability</button>
+        </div>
+      </div>
+      <div class="wrap footer-base">
+        <span>© {new Date().getFullYear()} Zephyr Estate @ Dimta Stay. Kempty Fall Road, Mussoorie.</span>
+      </div>
+    </footer>
+
+    <div class="mobile-bar" aria-label="Quick booking">
+      <a href={`tel:${site.phone}`}><Icon name="phone" size={20} /><span>Call</span></a>
+      <a href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hi Zephyr Estate! I would like to check availability.')}`} target="_blank" rel="noopener"><Icon name="whatsapp" size={20} /><span>WhatsApp</span></a>
+      <button class="mobile-book" data-enquire><Icon name="calendar" size={20} /><span>Check dates</span></button>
+    </div>
+
+    <EnquiryDialog />
+
+    <script>
+      import '../scripts/main.ts';
+    </script>
+  </body>
+</html>
+
+<style>
+  .nav {
+    position: fixed; inset: 0 0 auto; z-index: 50; height: var(--nav-h);
+    display: flex; align-items: center;
+    color: var(--ink); background: rgba(246, 242, 233, 0.86);
+    backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border-bottom: 1px solid rgba(29, 38, 32, 0.08);
+    transition: background-color 300ms var(--ease), color 300ms var(--ease), border-color 300ms, transform 400ms var(--ease);
+  }
+  :global(body.has-hero) .nav:not(.is-solid) { background: transparent; color: #fff; border-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  :global(body.has-hero) .nav:not(.is-solid)::before {
+    content: ''; position: absolute; inset: 0 0 -40px; z-index: -1; pointer-events: none;
+    background: linear-gradient(rgba(10, 16, 12, 0.55), transparent);
+  }
+  .nav.is-hidden { transform: translateY(-100%); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .nav-logo { text-decoration: none; }
+  .nav-links { display: none; gap: 34px; }
+  .nav-links a { text-decoration: none; font-weight: 500; font-size: 0.95rem; position: relative; padding: 6px 0; }
+  .nav-links a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform 300ms var(--ease); }
+  .nav-links a:hover::after, .nav-links a[aria-current='page']::after { transform: scaleX(1); }
+  .nav-cta { display: flex; align-items: center; gap: 18px; }
+  .nav-cta .btn { display: none; min-height: 44px; padding: 0 22px; }
+  .nav-phone { display: none; align-items: center; gap: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+  .nav-toggle { display: grid; place-items: center; width: 44px; height: 44px; border: 0; background: none; color: inherit; border-radius: 50%; }
+  @media (min-width: 980px) {
+    .nav-links { display: flex; }
+    .nav-cta .btn { display: inline-flex; }
+    .nav-toggle { display: none; }
+  }
+  @media (min-width: 1180px) { .nav-phone { display: inline-flex; } }
+
+  .drawer {
+    position: fixed; inset: var(--nav-h) 0 0; z-index: 49; background: var(--pine-night); color: var(--on-dark);
+    padding: 32px var(--gutter) 120px; display: flex; flex-direction: column; justify-content: space-between;
+    animation: drawer-in 350ms var(--ease);
+  }
+  .drawer[hidden] { display: none; }
+  .drawer nav { display: grid; gap: 6px; }
+  .drawer nav a { font: 400 2.4rem/1.25 var(--font-display); text-decoration: none; }
+  .drawer-foot { display: grid; gap: 8px; color: var(--on-dark-soft); font-size: 0.95rem; }
+  .drawer-foot p { margin: 0 0 6px; }
+  @keyframes drawer-in { from { opacity: 0; transform: translateY(-10px); } }
+
+  .footer { position: relative; padding: clamp(64px, 9vw, 110px) 0 calc(28px + 76px); }
+  @media (min-width: 980px) { .footer { padding-bottom: 28px; } }
+  .footer-grid { display: grid; gap: 44px; grid-template-columns: 1fr; position: relative; z-index: 1; }
+  @media (min-width: 720px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1100px) { .footer-grid { grid-template-columns: 1.4fr 1fr 1.2fr 1.3fr; } }
+  .footer-tag { font-size: 2rem; margin: 22px 0 14px; font-style: italic; color: var(--ember); }
+  .footer-addr { display: flex; gap: 8px; color: var(--on-dark-soft); font-size: 0.92rem; max-width: 32ch; }
+  .footer-addr :global(svg) { flex: none; margin-top: 4px; }
+  .footer-h { font: 600 0.75rem/1 var(--font-body); letter-spacing: 0.2em; text-transform: uppercase; color: var(--ember); margin-bottom: 20px; }
+  .footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .footer ul a { text-decoration: none; color: var(--on-dark-soft); transition: color 200ms; }
+  .footer ul a:hover { color: #fff; }
+  .footer-cta p { color: var(--on-dark-soft); }
+  .footer-base { position: relative; z-index: 1; margin-top: 64px; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.82rem; color: var(--on-dark-soft); }
+
+  .mobile-bar {
+    position: fixed; z-index: 45; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom));
+    display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 6px; padding: 6px;
+    background: rgba(23, 33, 28, 0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-radius: 20px; box-shadow: var(--shadow-lift);
+  }
+  .mobile-bar a, .mobile-bar button {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    min-height: 52px; border-radius: 14px; border: 0; background: transparent;
+    color: var(--on-dark); text-decoration: none; font: 600 0.72rem/1 var(--font-body); letter-spacing: 0.03em;
+  }
+  .mobile-bar .mobile-book { background: var(--brass); color: #fff; flex-direction: row; gap: 8px; font-size: 0.88rem; }
+  .mobile-bar { transition: transform 400ms var(--ease), opacity 400ms; }
+  :global(body.has-hero:not(.past-hero)) .mobile-bar { transform: translateY(140%); opacity: 0; pointer-events: none; }
+  @media (min-width: 980px) { .mobile-bar { display: none; } }
+</style>
