@@ -7,10 +7,10 @@ import Lightbox from '../components/Lightbox.astro';
 import dims from '../data/images.json';
 
 const groups = [
-  { key: 'estate', label: 'The estate', imgs: ['aerial-day', 'aerial-tents', 'stone-stairs', 'terrace-sculpture', 'buddha-garden', 'vine-tunnel', 'vine-path', 'teepee-garden', 'stone-patio', 'cafe-yellow', 'cottage-blue-stone', 'resident-dog'] },
-  { key: 'rooms', label: 'Rooms', imgs: ['room-wood-ceiling', 'room-canopy', 'room-carved-bed', 'room-kantha', 'tent-interior', 'room-reading-nook', 'duplex-lounge', 'room-canopy-kantha', 'room-stone-chairs', 'room-garden-door', 'bath-stone', 'hammock-porch'] },
+  { key: 'estate', label: 'The estate', imgs: ['aerial-day', 'aerial-tents', 'stone-stairs', 'terrace-sculpture', 'buddha-garden', 'vine-tunnel', 'vine-path', 'teepee-garden', 'stone-patio', 'cafe-yellow', 'cottage-blue-stone', 'chef-cooking', 'resident-dog'] },
+  { key: 'rooms', label: 'Rooms', imgs: ['sierra-lounge', 'room-stone-arch', 'room-wood-ceiling', 'hut-swing', 'tent-interior', 'room-modern', 'sierra-dining', 'room-canopy', 'tent-night', 'room-sunburst', 'room-carved-bed', 'cottage-hammock-dusk', 'room-kantha', 'hammock-porch', 'bath-stone'] },
   { key: 'pools', label: 'Pools & views', imgs: ['pool-pines', 'pools-above', 'pool-loungers', 'aerial-pools-close', 'valley-clouds', 'valley-wide', 'canna-valley', 'monsoon-mist', 'pool-winter'] },
-  { key: 'nights', label: 'Nights', imgs: ['aerial-night-glow', 'bonfire-overhead', 'courtyard-fairy', 'stars-valley', 'stars-valley-2', 'pool-night-drinks', 'swing-lights', 'teepee-bonfire', 'movie-night', 'cafe-yellow-dusk', 'candlelight-dinner', 'aerial-night-pool'] },
+  { key: 'nights', label: 'Nights', imgs: ['aerial-night-glow', 'bonfire-overhead', 'courtyard-fairy', 'stars-valley', 'stars-valley-2', 'pool-night-drinks', 'swing-lights', 'teepee-bonfire', 'movie-night', 'cafe-yellow-dusk', 'candlelight-dinner', 'pool-dinner', 'cottage-night'] },
 ];
 const alt = (s: string) => s.replace(/-\d$/, '').replace(/-/g, ' ');
 const tall = (s: string) => { const [w, h] = (dims as Record<string, number[]>)[s]; return h > w; };

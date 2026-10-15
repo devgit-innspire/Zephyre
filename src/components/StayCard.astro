@@ -8,15 +8,14 @@ const { stay, index = 0 } = Astro.props;
 <article class="stay reveal" data-delay={String(index % 3)}>
   <a href={`/stays/${stay.slug}`} class="stay-media frame zoom" aria-label={`View ${stay.name}`}>
     <Img src={stay.cover} alt={`${stay.name} at Zephyr Estate`} sizes="(min-width: 1100px) 560px, (min-width: 700px) 50vw, 100vw" />
-    <span class="stay-kind chip">{stay.kind}{stay.rooms > 1 ? ` · ${stay.rooms} ${stay.slug === 'french-duplex' ? 'bedrooms' : 'cottages'}` : ''}</span>
+    <span class="stay-kind chip">{stay.kind}{stay.units > 1 ? ` · ${stay.unitLabel}` : ''}</span>
   </a>
   <div class="stay-body">
     <h3><a href={`/stays/${stay.slug}`}>{stay.name}</a></h3>
     <p>{stay.short}</p>
     <ul class="stay-icons" aria-label="Highlights">
-      <li><Icon name="bed" size={16} /> King bed</li>
+      {stay.features.filter((f) => !/ensuite|wi-fi|heater|housekeeping/i.test(f)).slice(0, 2).map((f) => <li><Icon name="check" size={16} /> {f}</li>)}
       <li><Icon name="bath" size={16} /> Ensuite</li>
-      <li><Icon name="thermo" size={16} /> Heater & AC</li>
       <li><Icon name="wifi" size={16} /> Wi-Fi</li>
     </ul>
     <div class="stay-actions">

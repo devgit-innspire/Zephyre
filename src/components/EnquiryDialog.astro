@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import Img from './Img.astro';
-import { stays } from '../data/site';
+import { stays, categories, totalRooms, catalogueUrl } from '../data/site';
 ---
 <dialog class="enquiry" aria-labelledby="enq-title" data-enquiry>
   <div class="enq-media" aria-hidden="true">
@@ -10,7 +10,7 @@ import { stays } from '../data/site';
       <p class="display">“Stay. Breathe. Belong.”</p>
       <ul>
         <li><Icon name="check" size={16} /> Direct booking, best rate</li>
-        <li><Icon name="check" size={16} /> Only six rooms on the ridge</li>
+        <li><Icon name="check" size={16} /> Just {totalRooms} rooms on the ridge</li>
         <li><Icon name="check" size={16} /> Celebrations arranged for you</li>
       </ul>
     </div>
@@ -49,8 +49,12 @@ import { stays } from '../data/site';
         <label for="enq-stay">Stay</label>
         <select id="enq-stay" name="stay">
           <option value="Any – suggest the best">Any – suggest the best for us</option>
-          {stays.map((s) => <option value={s.name}>{s.name}</option>)}
-          <option value="Whole estate (all 6 rooms)">Whole estate · all 6 rooms</option>
+          {categories.map((c) => (
+          <optgroup label={c.label}>
+            {stays.filter((s) => s.category === c.key).map((s) => <option value={s.name}>{s.name}{s.units > 1 ? ` (${s.unitLabel})` : ''}</option>)}
+          </optgroup>
+        ))}
+          <option value={`Whole estate (all ${totalRooms} rooms)`}>Whole estate · all {totalRooms} rooms</option>
         </select>
       </div>
       <div class="field">
@@ -74,6 +78,7 @@ import { stays } from '../data/site';
       <button type="submit" class="btn ghost" value="email"><Icon name="mail" /> Email instead</button>
     </div>
     <p class="enq-fine"><Icon name="lock" size={14} /> No payment now. Your details are only used to reply to you.</p>
+    <p class="enq-fine">Want to browse first? <a href={catalogueUrl} target="_blank" rel="noopener">See all rooms in our WhatsApp catalogue</a></p>
   </form>
 </dialog>
 
