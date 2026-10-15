@@ -8,11 +8,12 @@ import BookingBar from '../components/BookingBar.astro';
 import StayCard from '../components/StayCard.astro';
 import Seasons from '../components/Seasons.astro';
 import Reels from '../components/Reels.astro';
-import { site, stays, experiences, dayTimeline, distances, faqs, gallery } from '../data/site';
+import { site, stays, experiences, dayTimeline, distances, faqs, gallery, categories, totalRooms, catalogueUrl } from '../data/site';
+const featured = stays.filter((s) => s.featured);
 ---
 <Base
   title={site.name}
-  description="A private hilltop estate of cottages, villa tents and a French duplex on Kempty Fall Road, Mussoorie. Two pools, bonfire nights, stargazing and only six rooms. Book direct."
+  description="A private hilltop estate on Kempty Fall Road, Mussoorie: a villa, French rooms, cottages, stone huts and luxury tents. Two pools, bonfire nights, stargazing and just 13 rooms. Book direct."
   overHero
 >
   <!-- ───────── HERO ───────── -->
@@ -30,7 +31,7 @@ import { site, stays, experiences, dayTimeline, distances, faqs, gallery } from 
         <span class="chip" hidden><Icon name="thermo" size={15} /><span data-temp></span></span>
       </p>
       <h1>Stay. Breathe.<br /><em>Belong.</em></h1>
-      <p class="hero-lede">A private hilltop estate of stone cottages, villa tents and a French duplex. Six rooms only, wrapped in forest, with the Garhwal hills at your feet.</p>
+      <p class="hero-lede">A private hilltop estate of cottages, stone huts, luxury tents and a family villa. Just {totalRooms} rooms, wrapped in forest, with the Garhwal hills at your feet.</p>
       <div class="hero-bar"><BookingBar /></div>
     </div>
     <a href="#story" class="scroll-cue" aria-label="Scroll to discover"><span></span></a>
@@ -47,7 +48,7 @@ import { site, stays, experiences, dayTimeline, distances, faqs, gallery } from 
           Golden mornings, green valleys, dusky evenings. The landscape at Zephyr changes by the hour, and so will you. Swing on a carved verandah, walk the vine tunnel to breakfast, swim among the pines, and end every day around the fire under a sky full of stars.
         </p>
         <dl class="facts reveal" data-delay="2">
-          <div><dt>6</dt><dd>rooms only<br />never crowded</dd></div>
+          <div><dt>{totalRooms}</dt><dd>rooms only<br />never crowded</dd></div>
           <div><dt>11<small>km</small></dt><dd>to Kempty<br />Falls</dd></div>
           <div><dt>2</dt><dd>pools in<br />the pines</dd></div>
         </dl>
@@ -66,12 +67,22 @@ import { site, stays, experiences, dayTimeline, distances, faqs, gallery } from 
       <div class="section-head split">
         <div>
           <p class="eyebrow">The stays</p>
-          <h2 id="stays-h">Four ways to <em class="wind">sleep on the ridge</em></h2>
+          <h2 id="stays-h">{totalRooms} rooms, <em class="wind">five ways to stay</em></h2>
         </div>
-        <p class="lede">Cottages with timber ceilings, tents with real beds, and a duplex for families. Every room has a king bed, an ensuite, heating for crisp hill nights, and the forest right outside.</p>
+        <p class="lede">A family villa, French rooms in stone and timber, signature cottages, cosy stone huts and canvas tents under the trees. Each has its own ensuite, warmth for crisp hill nights, and the forest right outside.</p>
       </div>
+      <ul class="cat-chips" aria-label="Room categories">
+        {categories.map((c) => {
+          const n = stays.filter((s) => s.category === c.key).reduce((a, s) => a + s.units, 0);
+          return <li><a href={`/stays#${c.key}`}>{c.label} <span>{n}</span></a></li>;
+        })}
+      </ul>
       <div class="stays-grid">
-        {stays.map((s, i) => <StayCard stay={s} index={i} />)}
+        {featured.map((s, i) => <StayCard stay={s} index={i} />)}
+      </div>
+      <div class="stays-more">
+        <a class="btn forest" href="/stays">See all {totalRooms} rooms</a>
+        <a class="link-arrow" href={catalogueUrl} target="_blank" rel="noopener"><Icon name="whatsapp" /> Browse our WhatsApp catalogue</a>
       </div>
     </div>
   </section>
@@ -82,14 +93,14 @@ import { site, stays, experiences, dayTimeline, distances, faqs, gallery } from 
     <div class="wrap estate-inner">
       <div class="estate-card reveal">
         <p class="eyebrow">The Family Retreat</p>
-        <h2 id="estate-h">All six rooms. One hilltop. <em class="wind">Just yours.</em></h2>
-        <p>Take the entire estate for your family, friends or a small celebration: three cottages, two villa tents and the duplex, plus the pools, lawns and bonfire circle to yourselves.</p>
+        <h2 id="estate-h">All {totalRooms} rooms. One hilltop. <em class="wind">Just yours.</em></h2>
+        <p>Take the entire estate for a big family, a group of friends or a celebration: the villa, French rooms, cottages, huts and tents, plus the pools, lawns and bonfire circle to yourselves.</p>
         <ul class="ticks">
           <li><Icon name="check" size={18} /> Sleeps a big family or friend group</li>
           <li><Icon name="check" size={18} /> Private pools, terraces & fire circle</li>
           <li><Icon name="check" size={18} /> Birthdays, anniversaries & reunions arranged</li>
         </ul>
-        <button class="btn" data-enquire data-stay="Whole estate (all 6 rooms)">Enquire for the whole estate</button>
+        <button class="btn" data-enquire data-stay={`Whole estate (all ${totalRooms} rooms)`}>Enquire for the whole estate</button>
       </div>
     </div>
   </section>
@@ -283,6 +294,11 @@ import { site, stays, experiences, dayTimeline, distances, faqs, gallery } from 
   .stays-grid { display: grid; gap: clamp(48px, 6vw, 72px) 40px; }
   @media (min-width: 700px) { .stays-grid { grid-template-columns: 1fr 1fr; } }
   @media (min-width: 1100px) { .stays-grid > :global(:nth-child(even)) { margin-top: 90px; } }
+  .cat-chips { list-style: none; margin: -12px 0 48px; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .cat-chips a { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: background-color 200ms, color 200ms, border-color 200ms; }
+  .cat-chips a:hover { background: var(--deodar); border-color: var(--deodar); color: #fff; }
+  .cat-chips span { display: inline-grid; place-items: center; min-width: 24px; height: 24px; border-radius: 999px; background: var(--deodar-100); color: var(--deodar); font-size: 0.78rem; }
+  .stays-more { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 18px 32px; margin-top: 72px; }
 
   /* ESTATE */
   .estate { position: relative; min-height: 640px; display: flex; align-items: center; overflow: hidden; }

@@ -5,31 +5,36 @@ import StayCard from '../../components/StayCard.astro';
 import Img from '../../components/Img.astro';
 import Icon from '../../components/Icon.astro';
 import BookingBar from '../../components/BookingBar.astro';
-import { stays } from '../../data/site';
+import { stays, categories, totalRooms, catalogueUrl } from '../../data/site';
+const groups = categories.map((c) => ({ ...c, items: stays.filter((s) => s.category === c.key) }));
+const count = (items: typeof stays) => items.reduce((n, s) => n + s.units, 0);
 ---
-<Base title="Stays" description="Native Kumaon cottages, luxury villa tents and a two-bedroom French duplex at Zephyr Estate, Mussoorie. Every room has a king bed, ensuite, heater and Wi-Fi." image="room-wood-ceiling" overHero>
-  <PageHero img="cottage-dusk" alt="A stone cottage glowing at dusk" eyebrow="The stays" title="Six rooms. <em>Four moods.</em>" lede="Pick your corner of the ridge: a timber-ceilinged cottage, a romantic villa tent, or a duplex built for families.">
+<Base title="Stays" description={`All ${totalRooms} rooms at Zephyr Estate, Mussoorie: The Sierra villa, French Stoneva & Timberhill, Kumaon Cottage, Heaven, Bliss, Utopia, Classic Huts, Classic Tents and the Grand Imperial Luxury Tent.`} image="sierra-lounge" overHero>
+  <PageHero img="cottage-dusk" alt="A stone cottage glowing at dusk" eyebrow="The stays" title={`${totalRooms} rooms. <em>Five ways to stay.</em>`} lede="A family villa, French rooms, signature cottages, stone huts and canvas tents, each its own corner of the ridge.">
     <div class="ph-bar"><BookingBar /></div>
   </PageHero>
 
-  <section class="section">
-    <div class="wrap">
-      <div class="every reveal">
-        <p class="eyebrow">In every room</p>
-        <ul>
-          <li><Icon name="bed" /> King-size bed</li>
-          <li><Icon name="bath" /> Ensuite with geyser</li>
-          <li><Icon name="thermo" /> Heater & AC</li>
-          <li><Icon name="wifi" /> Wi-Fi</li>
-          <li><Icon name="tv" /> TV</li>
-          <li><Icon name="lock" /> Locker & wardrobe</li>
-        </ul>
+  <nav class="wrap jump" aria-label="Room categories">
+    {groups.map((g) => <a href={`#${g.key}`}>{g.label} <span>{count(g.items)}</span></a>)}
+    <a class="cat-wa" href={catalogueUrl} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /> WhatsApp catalogue</a>
+  </nav>
+
+  {groups.map((g, gi) => (
+    <section class:list={['section group', gi % 2 && 'alt']} id={g.key} aria-labelledby={`${g.key}-h`}>
+      <div class="wrap">
+        <div class="section-head split">
+          <div>
+            <p class="eyebrow">{count(g.items)} {count(g.items) === 1 ? 'room' : 'rooms'}</p>
+            <h2 id={`${g.key}-h`}>{g.label}</h2>
+          </div>
+          <p class="lede">{g.blurb}</p>
+        </div>
+        <div class:list={['grid', g.items.length === 1 && 'single', g.items.length === 3 && 'three']}>
+          {g.items.map((s, i) => <StayCard stay={s} index={i} />)}
+        </div>
       </div>
-      <div class="grid">
-        {stays.map((s, i) => <StayCard stay={s} index={i} />)}
-      </div>
-    </div>
-  </section>
+    </section>
+  ))}
 
   <section class="section estate-sec on-dark grain" id="estate">
     <div class="wrap estate-grid">
@@ -37,8 +42,11 @@ import { stays } from '../../data/site';
       <div class="reveal" data-delay="1">
         <p class="eyebrow">The Family Retreat</p>
         <h2>Book the <em class="wind">whole estate</em></h2>
-        <p class="lede">All six rooms (three cottages, two villa tents and the French duplex) reserved for your group alone. The pools, terraces, lawns and bonfire circle are all yours.</p>
-        <button class="btn" data-enquire data-stay="Whole estate (all 6 rooms)">Enquire for the whole estate</button>
+        <p class="lede">All {totalRooms} rooms reserved for your group alone: the villa, French rooms, cottages, huts and tents, plus the pools, terraces, lawns and bonfire circle.</p>
+        <div class="estate-actions">
+          <button class="btn" data-enquire data-stay={`Whole estate (all ${totalRooms} rooms)`}>Enquire for the whole estate</button>
+          <a class="link-arrow" href={catalogueUrl} target="_blank" rel="noopener"><Icon name="whatsapp" /> View catalogue</a>
+        </div>
       </div>
     </div>
   </section>
@@ -46,15 +54,19 @@ import { stays } from '../../data/site';
 
 <style>
   .ph-bar { margin-top: 36px; max-width: 1040px; }
-  .every { display: grid; gap: 18px; padding: 28px 32px; margin-bottom: 72px; border-radius: var(--radius-l); background: var(--paper); box-shadow: var(--shadow-soft); }
-  @media (min-width: 900px) { .every { grid-template-columns: auto 1fr; align-items: center; gap: 40px; } .every .eyebrow { margin: 0; } }
-  .every ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 14px 30px; }
-  .every li { display: inline-flex; gap: 8px; align-items: center; font-weight: 500; }
-  .every :global(svg) { color: var(--deodar); }
-  .grid { display: grid; gap: 72px 40px; }
+  .jump { display: flex; gap: 10px; overflow-x: auto; padding-top: 32px; padding-bottom: 4px; scrollbar-width: none; }
+  .jump a { flex: none; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: background-color 200ms, color 200ms, border-color 200ms; }
+  .jump a:hover { background: var(--deodar); color: #fff; border-color: var(--deodar); }
+  .jump span { display: inline-grid; place-items: center; min-width: 24px; height: 24px; border-radius: 999px; background: var(--deodar-100); color: var(--deodar); font-size: 0.78rem; }
+  .jump .cat-wa { border-color: var(--brass); color: var(--brass); }
+  .group { padding-block: clamp(56px, 8vw, 110px); }
+  .group.alt { background: var(--paper); }
+  .grid { display: grid; gap: 64px 40px; }
   @media (min-width: 700px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1100px) { .grid.three { grid-template-columns: repeat(3, 1fr); } .grid.single { grid-template-columns: minmax(0, 560px); } }
   .estate-grid { display: grid; gap: 48px; align-items: center; position: relative; z-index: 1; }
   @media (min-width: 900px) { .estate-grid { grid-template-columns: 1.1fr 1fr; gap: 72px; } }
   .estate-grid .frame { aspect-ratio: 16 / 10; border-radius: var(--radius-l); }
   .estate-grid .lede { margin: 18px 0 30px; }
+  .estate-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 28px; }
 </style>

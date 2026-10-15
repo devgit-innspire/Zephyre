@@ -3,7 +3,7 @@ import '../styles/global.css';
 import Logo from '../components/Logo.astro';
 import Icon from '../components/Icon.astro';
 import EnquiryDialog from '../components/EnquiryDialog.astro';
-import { site, stays } from '../data/site';
+import { site, stays, totalRooms, catalogueUrl } from '../data/site';
 
 interface Props {
   title: string;
@@ -40,10 +40,11 @@ const schema = {
     addressCountry: 'IN',
   },
   geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lon },
-  amenityFeature: ['Swimming pool', 'Kids play area', 'Bonfire', 'Free Wi-Fi', 'Parking'].map((name) => ({
+  amenityFeature: ['Swimming pool', 'Kids play area', 'Bonfire', 'Free Wi-Fi'].map((name) => ({
     '@type': 'LocationFeatureSpecification', name, value: true,
   })),
-  containsPlace: stays.map((s) => ({ '@type': 'HotelRoom', name: s.name, bed: 'King-size bed' })),
+  containsPlace: stays.map((s) => ({ '@type': 'HotelRoom', name: s.name })),
+  numberOfRooms: totalRooms,
 };
 ---
 <!doctype html>
@@ -128,13 +129,14 @@ const schema = {
             <li><a href={`tel:${site.phone}`}>Bookings · {site.phoneDisplay}</a></li>
             <li><a href={`tel:${site.salesPhone}`}>Delhi sales · {site.salesPhoneDisplay}</a></li>
             <li><a href={`https://wa.me/${site.whatsapp}`} rel="noopener" target="_blank">WhatsApp us</a></li>
+            <li><a href={catalogueUrl} rel="noopener" target="_blank">Room catalogue (WhatsApp)</a></li>
             <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
             <li><a href={site.instagram} rel="noopener" target="_blank">Instagram</a></li>
           </ul>
         </div>
         <div class="footer-cta">
           <h3 class="footer-h">Your hilltop is waiting</h3>
-          <p>Six rooms. One ridge. Tell us your dates and we will hold the view for you.</p>
+          <p>{totalRooms} rooms. One ridge. Tell us your dates and we will hold the view for you.</p>
           <button class="btn" data-enquire>Check availability</button>
         </div>
       </div>

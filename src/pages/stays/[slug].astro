@@ -5,13 +5,13 @@ import Icon from '../../components/Icon.astro';
 import BookingBar from '../../components/BookingBar.astro';
 import StayCard from '../../components/StayCard.astro';
 import Lightbox from '../../components/Lightbox.astro';
-import { stays, site, type Stay } from '../../data/site';
+import { stays, site, catalogueUrl, type Stay } from '../../data/site';
 
 export function getStaticPaths() {
   return stays.map((stay) => ({ params: { slug: stay.slug }, props: { stay } }));
 }
 const { stay } = Astro.props as { stay: Stay };
-const others = stays.filter((s) => s.slug !== stay.slug).slice(0, 2);
+const others = [...stays.filter((s) => s.slug !== stay.slug && s.category === stay.category), ...stays.filter((s) => s.category !== stay.category && s.featured)].slice(0, 2);
 const iconFor = (f: string) =>
   /bed/i.test(f) ? 'bed' : /bath|ensuite/i.test(f) ? 'bath' : /heat|ac/i.test(f) ? 'thermo' : /wi-fi/i.test(f) ? 'wifi'
   : /tv/i.test(f) ? 'tv' : /locker/i.test(f) ? 'lock' : /kids/i.test(f) ? 'baby' : /window|balcony|verandah/i.test(f) ? 'door' : /ceiling|wood/i.test(f) ? 'trees' : 'check';
@@ -37,7 +37,7 @@ const [first, ...rest] = stay.gallery;
   <section class="section room-body">
     <div class="wrap room-grid">
       <div>
-        <p class="eyebrow">{stay.kind}</p>
+        <p class="eyebrow">{stay.kind}{stay.units > 1 ? ` · ${stay.unitLabel}` : ''}</p>
         <h1>{stay.name}</h1>
         <p class="lede">{stay.story}</p>
         <h2 class="feat-h">What you’ll find</h2>
@@ -55,7 +55,10 @@ const [first, ...rest] = stay.gallery;
         <BookingBar stay={stay.name} compact />
         <div class="bc-alt">
           <a href={`tel:${site.phone}`}><Icon name="phone" size={16} /> {site.phoneDisplay}</a>
-          <a href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent(`Hi! I'd like to know about the ${stay.name}.`)}`} target="_blank" rel="noopener"><Icon name="whatsapp" size={16} /> WhatsApp</a>
+          <a href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent(`Hi! I'd like to know about ${stay.name}.`)}`} target="_blank" rel="noopener"><Icon name="whatsapp" size={16} /> WhatsApp</a>
+        </div>
+        <div class="bc-alt">
+          <a href={catalogueUrl} target="_blank" rel="noopener">View all rooms in our WhatsApp catalogue</a>
         </div>
       </aside>
     </div>
