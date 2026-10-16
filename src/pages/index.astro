@@ -54,8 +54,8 @@ const featured = stays.filter((s) => s.featured);
         </dl>
       </div>
       <div class="story-media">
-        <div class="frame arch story-main reveal"><Img src="hammock-porch" alt="Hammock swing on the carved-pillar verandah of a stone cottage" sizes="(min-width: 900px) 440px, 80vw" /></div>
-        <div class="frame story-float reveal" data-delay="2"><Img src="canna-valley" alt="Red canna lilies with the valley beyond" sizes="(min-width: 900px) 240px, 40vw" /></div>
+        <div class="frame arch story-main reveal"><Img src="evening-fire-courtyard" alt="Bonfire in a stone fire pit in the courtyard at night, with fairy lights, candles and an outdoor screen" sizes="(min-width: 900px) 440px, 80vw" /></div>
+        <div class="frame story-float reveal" data-delay="2"><Img src="firepit-garden-dusk" alt="Fire pit at dusk in the gravel garden, ringed by daybeds, a lit swing hut and a barbecue" sizes="(min-width: 900px) 240px, 40vw" /></div>
         <p class="story-note reveal" data-delay="3"><Icon name="sparkles" size={16} /> Every evening: bonfire, fairy lights & stars</p>
       </div>
     </div>
@@ -287,6 +287,7 @@ const featured = stays.filter((s) => s.featured);
   .story-main { aspect-ratio: 4 / 5.2; box-shadow: var(--shadow-lift); }
   .story-float { position: absolute; right: 0; bottom: 0; width: 46%; aspect-ratio: 3 / 4; border: 8px solid var(--mist); border-radius: var(--radius-l); box-shadow: var(--shadow-soft); }
   .story-note { position: absolute; left: -10px; bottom: 14px; display: inline-flex; gap: 8px; align-items: center; margin: 0; padding: 12px 18px; border-radius: 999px; background: var(--paper); box-shadow: var(--shadow-soft); font-size: 0.86rem; font-weight: 600; max-width: 60%; }
+  .story-main :global(img) { object-position: 60% 50%; }
   .story-note :global(svg) { color: var(--brass); flex: none; }
 
   /* STAYS */
