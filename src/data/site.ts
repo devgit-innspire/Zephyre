@@ -138,7 +138,7 @@ export const stays: Stay[] = [
 export const totalRooms = stays.reduce((n, s) => n + s.units, 0); // 13
 
 export const experiences = [
-  { title: 'Bonfire under the stars', text: 'The fire circle is lit every evening. Bring stories; we bring the warmth.', img: 'teepee-bonfire', tag: 'Evenings' },
+  { title: 'Bonfire under the stars', text: 'The fire circle is lit every evening. Bring stories; we bring the warmth.', img: 'bonfire-under-stars', tag: 'Evenings' },
   { title: 'Open-air movie nights', text: 'A big screen on the terrace, blankets, bolsters and the valley going blue behind it.', img: 'movie-night', tag: 'Nights' },
   { title: 'Stargazing from the ridge', text: 'Far from city light, the Milky Way rises over the Garhwal hills on clear nights.', img: 'stars-valley', tag: 'Late night' },
   { title: 'High tea in the sun', text: 'Fresh bakes, pots of chai and a stone terrace that catches the afternoon light.', img: 'high-tea-sunrays', tag: 'Afternoons' },
@@ -150,8 +150,8 @@ export const dayTimeline = [
   { time: '6:30 am', title: 'Clouds below you', text: 'Tea on the terrace as mist pours through the valley.', img: 'valley-clouds' },
   { time: '9:00 am', title: 'Breakfast with a view', text: 'A slow breakfast with the hills laid out in front of you.', img: 'breakfast-mountains' },
   { time: '12:00 pm', title: 'Kempty Falls, 11 km away', text: 'Chase the waterfall, or stay back for the pool.', img: 'kempty-falls' },
-  { time: '4:30 pm', title: 'Golden hour, high tea', text: 'Bakes and chai on the stone terrace.', img: 'tea-pour' },
-  { time: '7:30 pm', title: 'Fire, lights, stars', text: 'The estate glows; the bonfire crackles; the sky opens up.', img: 'aerial-night-glow' },
+  { time: '4:30 pm', title: 'Golden hour, high tea', text: 'Bakes and chai on the stone terrace.', img: 'golden-hour-tea' },
+  { time: '7:30 pm', title: 'Fire, lights, stars', text: 'The estate glows; the bonfire crackles; the sky opens up.', img: 'fire-lights-stars' },
 ];
 
 export const seasons = [
