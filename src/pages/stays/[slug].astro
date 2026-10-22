@@ -14,7 +14,7 @@ const { stay } = Astro.props as { stay: Stay };
 const others = [...stays.filter((s) => s.slug !== stay.slug && s.category === stay.category), ...stays.filter((s) => s.category !== stay.category && s.featured)].slice(0, 2);
 const iconFor = (f: string) =>
   /bed/i.test(f) ? 'bed' : /bath|ensuite/i.test(f) ? 'bath' : /heat|ac/i.test(f) ? 'thermo' : /wi-fi/i.test(f) ? 'wifi'
-  : /tv/i.test(f) ? 'tv' : /locker/i.test(f) ? 'lock' : /kids/i.test(f) ? 'baby' : /window|balcony|verandah/i.test(f) ? 'door' : /ceiling|wood/i.test(f) ? 'trees' : 'check';
+  : /tv/i.test(f) ? 'tv' : /locker/i.test(f) ? 'lock' : /kids/i.test(f) ? 'baby' : /balcony|passage|verandah/i.test(f) ? 'door' : /bay window/i.test(f) ? 'door' : /ceiling|wood/i.test(f) ? 'trees' : /luxury/i.test(f) ? 'sparkles' : 'check';
 const [first, ...rest] = stay.gallery;
 ---
 <Base title={stay.name} description={`${stay.name} at Zephyr Estate, Mussoorie: ${stay.short}`} image={stay.cover}>
