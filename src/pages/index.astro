@@ -287,7 +287,7 @@ const featured = stays.filter((s) => s.featured);
   .facts dt small { font-size: 0.4em; margin-left: 4px; font-family: var(--font-body); font-weight: 600; }
   .facts dd { margin: 8px 0 0; font-size: 0.86rem; color: var(--ink-soft); line-height: 1.4; }
   .story-media { position: relative; padding: 0 8% 60px 0; }
-  .story-main { aspect-ratio: 4 / 5.2; box-shadow: var(--shadow-lift); }
+  .story-main { aspect-ratio: 4 / 5.2; max-height: calc(100vh - var(--nav-h, 72px) - 64px); width: 100%; box-shadow: var(--shadow-lift); }
   .story-float { position: absolute; right: 0; bottom: 0; width: 46%; aspect-ratio: 3 / 4; border: 8px solid var(--mist); border-radius: var(--radius-l); box-shadow: var(--shadow-soft); }
   .story-note { position: absolute; left: -10px; bottom: 14px; display: inline-flex; gap: 8px; align-items: center; margin: 0; padding: 12px 18px; border-radius: 999px; background: var(--paper); box-shadow: var(--shadow-soft); font-size: 0.86rem; font-weight: 600; max-width: 60%; }
   .story-main :global(img) { object-position: 60% 50%; }

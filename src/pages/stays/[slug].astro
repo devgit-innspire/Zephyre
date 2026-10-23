@@ -11,7 +11,11 @@ export function getStaticPaths() {
   return stays.map((stay) => ({ params: { slug: stay.slug }, props: { stay } }));
 }
 const { stay } = Astro.props as { stay: Stay };
-const others = [...stays.filter((s) => s.slug !== stay.slug && s.category === stay.category), ...stays.filter((s) => s.category !== stay.category && s.featured)].slice(0, 2);
+// One sibling from the same category, then featured rooms from other categories: three distinct looks
+const others = [
+  ...stays.filter((s) => s.slug !== stay.slug && s.category === stay.category).slice(0, 1),
+  ...stays.filter((s) => s.category !== stay.category && s.featured),
+].slice(0, 3);
 const iconFor = (f: string) =>
   /bed/i.test(f) ? 'bed' : /bath|ensuite/i.test(f) ? 'bath' : /heat|ac/i.test(f) ? 'thermo' : /wi-fi/i.test(f) ? 'wifi'
   : /tv/i.test(f) ? 'tv' : /locker/i.test(f) ? 'lock' : /kids/i.test(f) ? 'baby' : /balcony|passage|verandah/i.test(f) ? 'door' : /bay window/i.test(f) ? 'door' : /ceiling|wood/i.test(f) ? 'trees' : /luxury/i.test(f) ? 'sparkles' : 'check';
@@ -107,6 +111,10 @@ const [first, ...rest] = stay.gallery;
   .bc-alt a { display: inline-flex; gap: 6px; align-items: center; text-decoration: none; font-weight: 600; font-size: 0.9rem; color: var(--deodar); min-height: 44px; }
   .more { background: var(--paper); }
   .more-grid { display: grid; gap: 56px 40px; }
-  @media (min-width: 700px) { .more-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 700px) { .more-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1000px) { .more-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px 28px; } }
+  /* Suggestions stay compact: name, one line and actions */
+  .more-grid :global(.stay-icons) { display: none; }
+  .more-grid :global(.stay-actions) { margin-top: 18px; }
 
 </style>
