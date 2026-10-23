@@ -70,9 +70,9 @@ const featured = stays.filter((s) => s.featured);
       <div class="section-head split">
         <div>
           <p class="eyebrow">The stays</p>
-          <h2 id="stays-h">{totalRooms} rooms, <em class="wind">five ways to stay</em></h2>
+          <h2 id="stays-h">{totalRooms} rooms, <em class="wind">six ways to stay</em></h2>
         </div>
-        <p class="lede">A family villa, French rooms in stone and timber, signature cottages, cosy stone huts and canvas tents under the trees. Each has its own ensuite, warmth for crisp hill nights, and the forest right outside.</p>
+        <p class="lede">A family villa, twin French rooms, three luxury rooms, a Kumaon cottage, cosy stone huts and canvas tents under the trees. Each has its own ensuite, warmth for crisp hill nights, and the forest right outside.</p>
       </div>
       <ul class="cat-chips" aria-label="Room categories">
         {categories.map((c) => {
@@ -287,7 +287,7 @@ const featured = stays.filter((s) => s.featured);
   .facts dt small { font-size: 0.4em; margin-left: 4px; font-family: var(--font-body); font-weight: 600; }
   .facts dd { margin: 8px 0 0; font-size: 0.86rem; color: var(--ink-soft); line-height: 1.4; }
   .story-media { position: relative; padding: 0 8% 60px 0; }
-  .story-main { aspect-ratio: 4 / 5.2; box-shadow: var(--shadow-lift); }
+  .story-main { aspect-ratio: 4 / 5.2; max-height: calc(100vh - var(--nav-h, 72px) - 64px); width: 100%; box-shadow: var(--shadow-lift); }
   .story-float { position: absolute; right: 0; bottom: 0; width: 46%; aspect-ratio: 3 / 4; border: 8px solid var(--mist); border-radius: var(--radius-l); box-shadow: var(--shadow-soft); }
   .story-note { position: absolute; left: -10px; bottom: 14px; display: inline-flex; gap: 8px; align-items: center; margin: 0; padding: 12px 18px; border-radius: 999px; background: var(--paper); box-shadow: var(--shadow-soft); font-size: 0.86rem; font-weight: 600; max-width: 60%; }
   .story-main :global(img) { object-position: 60% 50%; }
@@ -297,7 +297,10 @@ const featured = stays.filter((s) => s.featured);
   .stays-sec { background: var(--paper); }
   .stays-grid { display: grid; gap: clamp(48px, 6vw, 72px) 40px; }
   @media (min-width: 700px) { .stays-grid { grid-template-columns: 1fr 1fr; } }
-  @media (min-width: 1100px) { .stays-grid > :global(:nth-child(even)) { margin-top: 90px; } }
+  @media (min-width: 1100px) {
+    .stays-grid { grid-template-columns: repeat(4, 1fr); gap: 56px 28px; }
+    .stays-grid > :global(:nth-child(even)) { margin-top: 56px; }
+  }
   .cat-chips { list-style: none; margin: -12px 0 48px; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
   .cat-chips a { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: background-color 200ms, color 200ms, border-color 200ms; }
   .cat-chips a:hover { background: var(--deodar); border-color: var(--deodar); color: #fff; }

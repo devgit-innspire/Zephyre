@@ -11,7 +11,11 @@ export function getStaticPaths() {
   return stays.map((stay) => ({ params: { slug: stay.slug }, props: { stay } }));
 }
 const { stay } = Astro.props as { stay: Stay };
-const others = [...stays.filter((s) => s.slug !== stay.slug && s.category === stay.category), ...stays.filter((s) => s.category !== stay.category && s.featured)].slice(0, 2);
+// One sibling from the same category, then featured rooms from other categories: three distinct looks
+const others = [
+  ...stays.filter((s) => s.slug !== stay.slug && s.category === stay.category).slice(0, 1),
+  ...stays.filter((s) => s.category !== stay.category && s.featured),
+].slice(0, 3);
 const iconFor = (f: string) =>
   /bed/i.test(f) ? 'bed' : /bath|ensuite/i.test(f) ? 'bath' : /heat|ac/i.test(f) ? 'thermo' : /wi-fi/i.test(f) ? 'wifi'
   : /tv/i.test(f) ? 'tv' : /locker/i.test(f) ? 'lock' : /kids/i.test(f) ? 'baby' : /balcony|passage|verandah/i.test(f) ? 'door' : /bay window/i.test(f) ? 'door' : /ceiling|wood/i.test(f) ? 'trees' : /luxury/i.test(f) ? 'sparkles' : 'check';
@@ -21,7 +25,7 @@ const [first, ...rest] = stay.gallery;
   <section class="room-top">
     <div class="wrap">
       <nav class="crumbs" aria-label="Breadcrumb"><a href="/stays">Stays</a> <span aria-hidden="true">/</span> <span aria-current="page">{stay.name}</span></nav>
-      <div class="room-gallery">
+      <div class:list={['room-gallery', rest.length === 0 && 'solo']}>
         <a href={`/images/${first}-2000.webp`} class="frame g-main" data-lb data-alt={stay.name}>
           <Img src={first} alt={`${stay.name} interior`} sizes="(min-width: 900px) 60vw, 100vw" eager />
         </a>
@@ -50,7 +54,7 @@ const [first, ...rest] = stay.gallery;
         </div>
       </div>
       <aside class="book-card" aria-label="Book this stay">
-        <p class="bc-title">Reserve the {stay.name}</p>
+        <p class="bc-title">Reserve {stay.name}</p>
         <p class="bc-sub">Best rate when you book direct. No payment needed to enquire.</p>
         <BookingBar stay={stay.name} compact />
         <div class="bc-alt">
@@ -87,9 +91,10 @@ const [first, ...rest] = stay.gallery;
   @media (min-width: 900px) {
     .room-gallery { grid-template-columns: 2fr 1fr 1fr; grid-auto-rows: 250px; gap: 12px; }
     .g-main { grid-column: 1; grid-row: span 2; }
+    .room-gallery.solo { grid-template-columns: 1fr; grid-auto-rows: 260px; }
   }
-  .room-grid { display: grid; gap: 56px; }
-  @media (min-width: 1000px) { .room-grid { grid-template-columns: 1.4fr 1fr; gap: 80px; align-items: start; } }
+  .room-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px; }
+  @media (min-width: 1000px) { .room-grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 80px; align-items: start; } }
   .room-grid h1 { font-size: clamp(2.6rem, 5vw, 4.2rem); margin-bottom: 20px; }
   .feat-h { font-size: 1.8rem; margin: 40px 0 18px; }
   .feats { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px 24px; }
@@ -99,13 +104,17 @@ const [first, ...rest] = stay.gallery;
   .note { display: flex; gap: 14px; margin-top: 36px; padding: 22px; border-radius: var(--radius); background: var(--deodar-100); color: var(--deodar); }
   .note :global(svg) { flex: none; margin-top: 3px; }
   .note p { margin: 0; color: var(--ink); }
-  .book-card { position: sticky; top: calc(var(--nav-h) + 20px); padding: 28px; border-radius: var(--radius-l); background: var(--paper); box-shadow: var(--shadow-lift); }
+  .book-card { position: sticky; top: calc(var(--nav-h) + 20px); padding: clamp(18px, 4vw, 28px); border-radius: var(--radius-l); background: var(--paper); box-shadow: var(--shadow-lift); }
   .bc-title { font: 500 1.8rem/1.1 var(--font-display); margin-bottom: 8px; }
   .bc-sub { color: var(--ink-soft); font-size: 0.92rem; }
   .bc-alt { display: flex; justify-content: center; gap: 24px; margin-top: 18px; }
   .bc-alt a { display: inline-flex; gap: 6px; align-items: center; text-decoration: none; font-weight: 600; font-size: 0.9rem; color: var(--deodar); min-height: 44px; }
   .more { background: var(--paper); }
   .more-grid { display: grid; gap: 56px 40px; }
-  @media (min-width: 700px) { .more-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 700px) { .more-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1000px) { .more-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px 28px; } }
+  /* Suggestions stay compact: name, one line and actions */
+  .more-grid :global(.stay-icons) { display: none; }
+  .more-grid :global(.stay-actions) { margin-top: 18px; }
 
 </style>

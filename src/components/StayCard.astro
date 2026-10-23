@@ -27,7 +27,8 @@ const { stay, index = 0 } = Astro.props;
 
 <style>
   .stay { display: grid; gap: 22px; }
-  .stay-media { display: block; aspect-ratio: 4 / 5; border-radius: var(--radius-l); box-shadow: var(--shadow-soft); }
+  /* Height is capped so image + details always fit on one screen; the photo crops instead */
+  .stay-media { display: block; width: 100%; aspect-ratio: 5 / 4; max-height: min(52vh, 420px); border-radius: var(--radius-l); box-shadow: var(--shadow-soft); }
   .stay-kind { position: absolute; left: 16px; top: 16px; background: rgba(23, 33, 28, 0.45); }
   .stay-body h3 { margin-bottom: 8px; }
   .stay-body h3 a { text-decoration: none; }
