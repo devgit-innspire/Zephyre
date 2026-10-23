@@ -21,7 +21,7 @@ const [first, ...rest] = stay.gallery;
   <section class="room-top">
     <div class="wrap">
       <nav class="crumbs" aria-label="Breadcrumb"><a href="/stays">Stays</a> <span aria-hidden="true">/</span> <span aria-current="page">{stay.name}</span></nav>
-      <div class="room-gallery">
+      <div class:list={['room-gallery', rest.length === 0 && 'solo']}>
         <a href={`/images/${first}-2000.webp`} class="frame g-main" data-lb data-alt={stay.name}>
           <Img src={first} alt={`${stay.name} interior`} sizes="(min-width: 900px) 60vw, 100vw" eager />
         </a>
@@ -87,6 +87,7 @@ const [first, ...rest] = stay.gallery;
   @media (min-width: 900px) {
     .room-gallery { grid-template-columns: 2fr 1fr 1fr; grid-auto-rows: 250px; gap: 12px; }
     .g-main { grid-column: 1; grid-row: span 2; }
+    .room-gallery.solo { grid-template-columns: 1fr; grid-auto-rows: 260px; }
   }
   .room-grid { display: grid; gap: 56px; }
   @media (min-width: 1000px) { .room-grid { grid-template-columns: 1.4fr 1fr; gap: 80px; align-items: start; } }

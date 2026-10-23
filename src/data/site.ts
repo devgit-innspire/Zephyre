@@ -36,8 +36,9 @@ export const catalogueUrl = 'https://wa.me/c/919810010818';
 export type Category = { key: string; label: string; blurb: string };
 export const categories: Category[] = [
   { key: 'villa', label: 'Villa', blurb: 'Space for the whole family, with a lounge and dining of your own.' },
-  { key: 'french', label: 'French Rooms', blurb: 'Two characterful rooms, one in stone, one in timber.' },
-  { key: 'signature', label: 'Cottages & Signature Rooms', blurb: 'Stone, timber and quiet corners of the estate.' },
+  { key: 'french', label: 'French Rooms', blurb: 'Two French rooms with identical interiors and a French bay window: one on the ground floor, one upstairs with a balcony.' },
+  { key: 'luxury', label: 'Luxury Rooms', blurb: 'Three identical luxury rooms opening onto a shared balcony passage with valley views.' },
+  { key: 'signature', label: 'Cottage', blurb: 'A Kumaoni-style cottage of your own, with a private verandah.' },
   { key: 'hut', label: 'Classic Huts', blurb: 'Cosy stone huts tucked into the forest, steps from the bonfire and pool.' },
   { key: 'tent', label: 'Tents', blurb: 'Canvas under the trees, with proper beds and ensuites.' },
 ];
@@ -61,77 +62,87 @@ export type Stay = {
 // Common comforts; TODO(owner): confirm per room type
 const comforts = ['Ensuite bathroom', 'Heater for cool nights', 'Wi-Fi', 'Daily housekeeping'];
 
-// Room list from the owner (13 rooms). Photo choices are best matches from the shoots. TODO(owner): confirm.
+// Heaven, Bliss and Utopia share identical interiors, so they share one photo set
+const luxuryStory = (name: string, unit: string) =>
+  `${name} is the ${unit} of our three luxury rooms, all with exactly the same interiors: a carved four-poster bed under a timber ceiling, river-stone walls, a candle-style chandelier and a black-marble ensuite. Step out to the stand-alone balcony passage that runs along the rooms, a beautiful spot to take in the valley. It is a shared passage, not a private balcony, and has no seating.`;
+const luxuryFeatures = ['Four-poster bed', 'Timber ceiling & stone walls', 'Shared balcony passage with valley views', ...comforts];
+
+// French Stoneva and French Timber Hill share identical interiors; only Timber Hill has a balcony.
+// TODO(owner): neither is in the WhatsApp catalogue; confirm catalogue-french-room shows these rooms.
+const frenchFeatures = ['French Bay Window'];
+
+// Room list from the owner (13 rooms). Photos come from the WhatsApp catalogue unless noted.
 export const stays: Stay[] = [
   {
     slug: 'the-sierra', name: 'The Sierra', category: 'villa', kind: '2-bedroom villa', units: 2, unitLabel: '2 bedrooms',
     short: 'Two bedrooms with a lounge and a dining area. A private home on the ridge.',
-    story: 'The Sierra is made for families and friends who want to be together without being on top of each other. Two bedrooms, a glass-walled lounge with deep sofas under a timber ceiling, and a dining area of your own for long breakfasts and late card games.',
-    cover: 'sierra-lounge', gallery: ['sierra-lounge', 'catalogue-sierra-lounge', 'sierra-dining', 'room-stone-arch', 'bath-stone'],
-    features: ['2 bedrooms', 'Private lounge area', 'Private dining area', ...comforts], featured: true,
+    story: 'The Sierra is made for families and friends who want to be together without being on top of each other. Two bedrooms with poster beds, wooden ceilings and stone-clad walls, a glass-walled living room with antique wall art and striking chandeliers, and a dining area of your own for long breakfasts and late card games.',
+    cover: 'cat-sierra-living', gallery: ['cat-sierra-living', 'cat-sierra-bedroom-1', 'cat-sierra-dining', 'cat-sierra-bedroom-2', 'sierra-lounge'],
+    features: ['2 bedrooms', 'Private living room', 'Private dining area', ...comforts], featured: true,
   },
   {
-    slug: 'french-stoneva', name: 'The French Stoneva', category: 'french', kind: 'French room', units: 1, unitLabel: '1 room',
-    short: 'River-stone walls, a French bay window and old-world French charm on the ground floor.',
-    story: 'Stoneva wears its stone proudly: textured walls, warm lamplight, and a signature French bay window that frames the view like a painting. Located on the ground floor, this romantic sanctuary captures rustic soul and quiet serenity without a balcony.',
-    cover: 'catalogue-french-room', gallery: ['catalogue-french-room', 'room-reading-nook', 'room-sunburst', 'room-stone-chairs', 'catalogue-niche'],
-    features: ['Stone-wall interiors', 'French Bay Window', 'Ground floor', ...comforts], featured: true,
+    slug: 'french-stoneva', name: 'The French Stoneva', category: 'french', kind: 'French room', units: 1, unitLabel: '1 room · ground floor',
+    short: 'A French room with a signature French bay window, on the ground floor.',
+    story: 'Stoneva is one of our two French rooms, with exactly the same interior design as its twin, French Timber Hill. Its centrepiece is the French bay window, a deep, cushioned corner to curl up in with the view. Stoneva is on the ground floor and does not have a balcony.',
+    cover: 'catalogue-french-room', gallery: ['catalogue-french-room'],
+    features: [...frenchFeatures, 'Ground floor', 'No balcony', ...comforts],
   },
   {
-    slug: 'french-timberhill', name: 'The French Timberhill', category: 'french', kind: 'French room', units: 1, unitLabel: '1 room',
-    short: 'A warm timber ceiling, French bay window and a private balcony on the first floor.',
-    story: 'Timberhill shares the exact same curated French interior design as Stoneva — pitched wooden ceilings, a signature French bay window and warm lamplight — elevated on the first floor with the added luxury of a private balcony to take in the mountain breeze.',
-    cover: 'catalogue-french-room', gallery: ['catalogue-french-room', 'room-reading-nook', 'room-sunburst', 'room-stone-chairs', 'catalogue-niche'],
-    features: ['Timber ceiling', 'French Bay Window', 'Private balcony', 'First floor', ...comforts],
+    slug: 'french-timberhill', name: 'The French Timber Hill', category: 'french', kind: 'French room', units: 1, unitLabel: '1 room · first floor',
+    short: 'A French room with a French bay window and a balcony, on the first floor.',
+    story: 'Timber Hill is the twin of French Stoneva, with exactly the same interior design and the same signature French bay window. It sits on the first floor and is the only one of the two with a balcony, for fresh mountain air whenever you want it.',
+    cover: 'catalogue-french-room', gallery: ['catalogue-french-room'],
+    features: [...frenchFeatures, 'Balcony', 'First floor', ...comforts],
   },
   {
     slug: 'kumaon-cottage', name: 'The Kumaon Cottage', category: 'signature', kind: 'Individual cottage', units: 1, unitLabel: '1 cottage',
-    short: 'Stone walls, a timber ceiling and a private verandah that faces the valley.',
-    story: 'Built in the spirit of old Kumaoni homes: river-stone walls, a wooden ceiling running end to end, and a carved-pillar verandah for slow mornings. A cottage of your own, with the garden at your door.',
-    cover: 'catalogue-kumaon-cottage', gallery: ['catalogue-kumaon-cottage', 'room-wood-ceiling', 'room-wood-ceiling-2', 'catalogue-bedroom', 'cottage-porch'],
-    features: ['Wooden ceiling throughout', 'Private verandah with valley view', 'Ground floor', ...comforts], featured: true,
+    short: 'Traditional wooden interiors and a private verandah of your own.',
+    story: 'Built in the spirit of old Kumaoni homes: a wooden ceiling running end to end, hand-cut timber headboards and warm brass lamps, with an ensuite in river stone lit by a skylight. Step out to your private verandah, a cosy corner for a cup of tea with the hills in front of you.',
+    cover: 'cat-kumaon-bedroom-1', gallery: ['cat-kumaon-bedroom-1', 'cat-kumaon-exterior', 'cat-kumaon-bedroom-2', 'cat-kumaon-patio', 'cat-kumaon-bath'],
+    features: ['Wooden ceiling throughout', 'Private verandah with seating', 'Ensuite with skylight', ...comforts], featured: true,
   },
   {
-    slug: 'the-heaven', name: 'The Heaven', category: 'signature', kind: 'Luxury signature room', units: 1, unitLabel: '1 room',
-    short: 'Unit 1 of three luxury suites with identical interiors and a stand-alone viewing passage.',
-    story: 'The Heaven is the first of three luxury signature rooms sharing the exact same beautifully appointed interiors: plush bedding, rich carved-wood accents and warm lamplight. Step out to the shared stand-alone balcony passage — an unobstructed vantage point with sweeping valley views (no private sitting).',
-    cover: 'catalogue-luxury-suite', gallery: ['catalogue-luxury-suite', 'catalogue-luxury-bedroom', 'room-canopy-kantha', 'room-canopy', 'room-garden-door'],
-    features: ['Luxury signature interiors', 'Stand-alone balcony passage (valley views)', ...comforts],
+    slug: 'the-heaven', name: 'The Heaven', category: 'luxury', kind: 'Luxury room', units: 1, unitLabel: 'Unit 1',
+    short: 'The first of three identical luxury rooms, on the balcony passage with valley views.',
+    story: luxuryStory('The Heaven', 'first'),
+    cover: 'cat-heaven-bedroom', gallery: ['cat-heaven-bedroom', 'cat-heaven-balcony', 'cat-bliss-passage', 'cat-heaven-bath', 'cat-heaven-exterior'],
+    features: luxuryFeatures, featured: true,
   },
   {
-    slug: 'the-bliss', name: 'The Bliss', category: 'signature', kind: 'Luxury signature room', units: 1, unitLabel: '1 room',
-    short: 'Unit 2 of three luxury suites with identical interiors and a stand-alone viewing passage.',
-    story: 'The Bliss is the second of three luxury signature rooms, all sharing the exact same beautifully curated interiors: plush bedding, rich carved-wood accents and warm wall lights. The shared stand-alone balcony passage just outside offers sweeping views with nothing between you and the hills (no private sitting).',
-    cover: 'catalogue-luxury-suite', gallery: ['catalogue-luxury-suite', 'catalogue-luxury-bedroom', 'room-canopy-kantha', 'room-canopy', 'room-garden-door'],
-    features: ['Luxury signature interiors', 'Stand-alone balcony passage (valley views)', ...comforts],
+    slug: 'the-bliss', name: 'The Bliss', category: 'luxury', kind: 'Luxury room', units: 1, unitLabel: 'Unit 2',
+    short: 'The second of three identical luxury rooms, on the balcony passage with valley views.',
+    story: luxuryStory('The Bliss', 'second'),
+    cover: 'cat-bliss-bedroom-2', gallery: ['cat-bliss-bedroom-2', 'cat-bliss-bedroom-1', 'cat-bliss-passage', 'cat-heaven-bath', 'cat-heaven-balcony'],
+    features: luxuryFeatures,
   },
   {
-    slug: 'the-utopia', name: 'The Utopia', category: 'signature', kind: 'Luxury signature room', units: 1, unitLabel: '1 room',
-    short: 'Unit 3 of three luxury suites with identical interiors and a stand-alone viewing passage.',
-    story: 'The Utopia completes the trio of luxury signature rooms, sharing the exact same exquisite interiors: plush bedding, rich carved-wood accents and warm light that turns golden at dusk. Step outside to the shared stand-alone balcony passage to take in the endless mountain vistas (no private sitting).',
-    cover: 'catalogue-luxury-suite', gallery: ['catalogue-luxury-suite', 'catalogue-luxury-bedroom', 'room-canopy-kantha', 'room-canopy', 'room-garden-door'],
-    features: ['Luxury signature interiors', 'Stand-alone balcony passage (valley views)', ...comforts],
+    slug: 'the-utopia', name: 'The Utopia', category: 'luxury', kind: 'Luxury room', units: 1, unitLabel: 'Unit 3',
+    short: 'The third of three identical luxury rooms, on the balcony passage with valley views.',
+    story: luxuryStory('The Utopia', 'third'),
+    cover: 'cat-bliss-bedroom-1', gallery: ['cat-bliss-bedroom-1', 'cat-heaven-bedroom', 'cat-bliss-passage', 'cat-heaven-bath', 'cat-heaven-exterior'],
+    features: luxuryFeatures,
   },
   {
     slug: 'classic-hut', name: 'The Classic Hut', category: 'hut', kind: 'Stone hut', units: 2, unitLabel: '2 huts',
     short: 'Cosy stone huts tucked into the forest, steps from the pool and bonfire circle.',
-    story: 'Our two Classic Huts are snug stone hideaways with the forest right outside. Simple, characterful and a few steps from the pool and bonfire — the closest stay to nature on the estate.',
-    cover: 'catalogue-classic-hut', gallery: ['catalogue-classic-hut', 'cottage-blue-stone', 'monsoon-cottage', 'stone-stairs', 'cottage-dusk'],
-    features: ['Forest setting', 'Stone-wall construction', ...comforts],
+    story: 'Our two Classic Huts are snug stone hideaways with the forest right outside: a wrought-iron bed, a sit-by-the-window corner with two chairs, and a warm, tiled ensuite. Simple, characterful and a few steps from the pool and bonfire.',
+    cover: 'cat-hut-exterior', gallery: ['cat-hut-exterior', 'cat-hut-bedroom-1', 'cat-hut-seating', 'cat-hut-bedroom-2', 'cat-hut-bath'],
+    features: ['Forest setting', 'Sit-out porch', ...comforts],
   },
   {
     slug: 'classic-tent', name: 'The Classic Tent', category: 'tent', kind: 'Glamping tent', units: 2, unitLabel: '2 tents',
-    short: 'Canvas under the trees, with a real bed and fairy-lit decks.',
-    story: 'Sleep under canvas without roughing it. Our two Classic Tents sit among the trees with lantern-lit decks, a comfortable bed and an attached bathroom. Fall asleep to crickets and wake to birdsong.',
-    cover: 'catalogue-classic-tent', gallery: ['catalogue-classic-tent', 'tent-night', 'tent-interior', 'tents-overhead', 'aerial-tents'],
-    features: ['Private deck', ...comforts],
+    short: 'Canvas under the trees, with a real bed and a deck of your own.',
+    story: 'Sleep under canvas without roughing it. Our two Classic Tents sit among the fruit trees with a sit-out deck, a carved wooden bed under a block-printed canopy, a chandelier and an attached bathroom. Fall asleep to crickets and wake to birdsong.',
+    cover: 'cat-tent-row', gallery: ['cat-tent-row', 'cat-tent-bedroom-1', 'cat-tent-exterior', 'cat-tent-bedroom-3', 'cat-tent-bedroom-2'],
+    features: ['Private deck', ...comforts], featured: true,
   },
   {
     slug: 'grand-imperial-tent', name: 'The Grand Imperial Luxury Tent', category: 'tent', kind: 'Luxury tent', units: 1, unitLabel: '1 tent',
     short: 'Our most romantic stay: a tall, draped canvas suite with a king bed.',
     story: 'All the magic of sleeping under canvas, made grand. A tall, draped tent suite with a king bed and soft lamplight, and an ensuite with a wooden ceiling. Step out to fairy-lit paths and the bonfire circle. Ask us about proposal and anniversary set-ups.',
-    cover: 'catalogue-grand-imperial', gallery: ['catalogue-grand-imperial', 'tent-interior', 'tent-bed-petals', 'courtyard-fairy', 'teepee-bonfire'],
-    features: ['King-size bed', 'Wooden-ceiling ensuite', 'Celebration set-ups on request', ...comforts.slice(1)], featured: true,
+    // TODO(owner): not in the WhatsApp catalogue; confirm this photo
+    cover: 'catalogue-grand-imperial', gallery: ['catalogue-grand-imperial'],
+    features: ['King-size bed', 'Wooden-ceiling ensuite', 'Celebration set-ups on request', ...comforts.slice(1)],
   },
 ];
 
@@ -174,9 +185,9 @@ export const reels = [
 ];
 
 export const gallery = [
-  'aerial-day', 'cottage-porch', 'pool-pines', 'cafe-yellow-dusk', 'vine-tunnel', 'bonfire-overhead',
-  'room-canopy-kantha', 'terrace-sculpture', 'canna-valley', 'courtyard-fairy', 'stone-stairs', 'teepee-garden',
-  'high-tea-sunrays', 'pool-night-drinks', 'buddha-garden', 'cottage-blue-stone', 'kids-play', 'stars-valley-2',
+  'aerial-day', 'cat-kumaon-exterior', 'pool-pines', 'cafe-yellow-dusk', 'vine-tunnel', 'bonfire-overhead',
+  'cat-sierra-bedroom-2', 'terrace-sculpture', 'canna-valley', 'courtyard-fairy', 'stone-stairs', 'teepee-garden',
+  'high-tea-sunrays', 'pool-night-drinks', 'buddha-garden', 'cat-hut-exterior', 'kids-play', 'stars-valley-2',
   'evening-fire-courtyard', 'pools-above', 'resident-dog', 'monsoon-cottage', 'blue-hour', 'aerial-forest',
 ];
 
