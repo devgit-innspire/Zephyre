@@ -4,7 +4,7 @@ import PageHero from '../components/PageHero.astro';
 import Img from '../components/Img.astro';
 import Icon from '../components/Icon.astro';
 import Seasons from '../components/Seasons.astro';
-import { experiences } from '../data/site';
+import { experiences, nearby } from '../data/site';
 
 const retreat = [
   {
@@ -36,11 +36,6 @@ const retreat = [
       ['Late morning', 'Closing circle, group photo & a small farewell gift'],
     ],
   },
-];
-const nearby = [
-  { name: 'Kempty Falls', km: '11 km', text: 'The famous cascade, best early morning before the crowds.', img: 'kempty-falls' },
-  { name: 'Mussoorie Mall Road', km: '27 km', text: 'Colonial-era promenade, cafés, Gun Hill and Camel’s Back Road.', img: 'blue-hour' },
-  { name: 'Yamuna valley drives', km: 'From the gate', text: 'Winding forest roads, river bends and roadside chai stops.', img: 'valley-wide' },
 ];
 ---
 <Base title="Experiences" description="Bonfires, stargazing, open-air movies, high tea, pools and a 2N/3D forest wellness retreat at Zephyr Estate, Mussoorie." image="teepee-bonfire" overHero>
@@ -99,15 +94,16 @@ const nearby = [
         <p class="eyebrow">Around Zephyr</p>
         <h2>Worth the short drive</h2>
       </div>
-      <div class="nearby">
-        {nearby.map((n, i) => (
-          <article class="reveal" data-delay={String(i)}>
-            <div class="frame zoom"><Img src={n.img} alt={n.name} sizes="(min-width: 900px) 33vw, 100vw" /></div>
-            <p class="km">{n.km}</p>
-            <h3>{n.name}</h3>
-            <p>{n.text}</p>
-          </article>
+      <ol class="nearby">
+        {nearby.map((t, i) => (
+          <li class="reveal" data-delay={String(i % 3)}>
+            <p class="km">{t.time}</p>
+            <h3>{t.label}</h3>
+            <p>{t.places.map((p) => p.name).join(' · ')}</p>
+          </li>
         ))}
+      </ol>
+      <a class="btn forest" href="/explore">Explore everything nearby <Icon name="arrow" /></a>
       </div>
     </div>
   </section>
@@ -140,9 +136,10 @@ const nearby = [
   .day-body li span { font-weight: 700; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--on-dark); }
   .addons { position: relative; z-index: 1; text-align: center; color: var(--on-dark-soft); margin: 40px auto 28px; max-width: 70ch; }
   .center { text-align: center; position: relative; z-index: 1; }
-  .nearby { display: grid; gap: 36px; }
-  @media (min-width: 900px) { .nearby { grid-template-columns: repeat(3, 1fr); } }
-  .nearby .frame { aspect-ratio: 4 / 3; margin-bottom: 18px; }
+  .nearby { list-style: none; margin: 0 0 36px; padding: 0; display: grid; gap: 14px; }
+  @media (min-width: 640px) { .nearby { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1000px) { .nearby { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+  .nearby li { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
   .km { font-weight: 700; font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brass); margin-bottom: 6px; }
   .nearby h3 { margin-bottom: 8px; }
   .nearby p:last-child { color: var(--ink-soft); }

@@ -18,6 +18,7 @@ const path = Astro.url.pathname;
 const nav = [
   { href: '/stays', label: 'Stays' },
   { href: '/experiences', label: 'Experiences' },
+  { href: '/explore', label: 'Explore nearby' },
   { href: '/gallery', label: 'Gallery' },
   { href: '/getting-here', label: 'Getting here' },
 ];
@@ -119,6 +120,7 @@ const schema = {
             <li><a href="/stays">Stays</a></li>
             <li><a href="/stays#estate">Book the whole estate</a></li>
             <li><a href="/experiences">Experiences</a></li>
+            <li><a href="/explore">Things to do nearby</a></li>
             <li><a href="/gallery">Gallery & reels</a></li>
             <li><a href="/getting-here">Getting here</a></li>
           </ul>
@@ -176,7 +178,7 @@ const schema = {
   .nav.is-hidden { transform: translateY(-100%); }
   .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
   .nav-logo { text-decoration: none; }
-  .nav-links { display: none; gap: 34px; }
+  .nav-links { display: none; gap: clamp(22px, 2.2vw, 34px); }
   .nav-links a { text-decoration: none; font-weight: 500; font-size: 0.95rem; position: relative; padding: 6px 0; }
   .nav-links a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform 300ms var(--ease); }
   .nav-links a:hover::after, .nav-links a[aria-current='page']::after { transform: scaleX(1); }
@@ -184,12 +186,13 @@ const schema = {
   .nav-cta .btn { display: none; min-height: 44px; padding: 0 22px; }
   .nav-phone { display: none; align-items: center; gap: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
   .nav-toggle { display: grid; place-items: center; width: 44px; height: 44px; border: 0; background: none; color: inherit; border-radius: 50%; }
-  @media (min-width: 980px) {
+  /* Five links plus the logo need room; below this the drawer takes over */
+  @media (min-width: 1080px) {
     .nav-links { display: flex; }
     .nav-cta .btn { display: inline-flex; }
     .nav-toggle { display: none; }
   }
-  @media (min-width: 1180px) { .nav-phone { display: inline-flex; } }
+  @media (min-width: 1320px) { .nav-phone { display: inline-flex; } }
 
   .drawer {
     position: fixed; inset: var(--nav-h) 0 0; z-index: 49; background: var(--pine-night); color: var(--on-dark);
