@@ -1,0 +1,95 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { nearby, site } from '../data/site';
+const placeCount = nearby.reduce((n, t) => n + t.places.length, 0);
+---
+<Base title="Explore nearby" description="Things to do around Zephyr Estate, Mussoorie: Lakhwar's Mahasu Devta Temple, Sainji village, Dimta waterfall, Landour cafés, Bairat Khai, Chakrata and the Dhanaulti loop, by drive time." image="valley-wide" overHero>
+  <PageHero img="valley-clouds" alt="Clouds pouring through the valley below Zephyr Estate" eyebrow="Explore nearby" title="Step out, <em>wander a little</em>" lede="Temples, waterfalls, bakeries and big views, from a five-minute stroll to a full day out. Everything is flexible: pick whatever suits the mood.">
+    <nav class="jump" aria-label="Jump to drive time">
+      {nearby.map((t, i) => <a href={`#t${i}`}><Icon name="clock" size={15} /> {t.time}</a>)}
+    </nav>
+  </PageHero>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head split">
+        <div>
+          <p class="eyebrow">By drive time</p>
+          <h2>{placeCount} places, <em class="wind">no fixed plan</em></h2>
+        </div>
+        <p class="lede">Ordered from closest to furthest. Mix and match any of these, and ask us for directions, timings or a cab.</p>
+      </div>
+
+      <ol class="tiers">
+        {nearby.map((t, i) => (
+          <li class="tier reveal" id={`t${i}`}>
+            <div class="tier-head">
+              <span class="tier-dot" aria-hidden="true"></span>
+              <p class="tier-time">{t.time}</p>
+              <p class="tier-label">{t.label}</p>
+            </div>
+            <ul class="places">
+              {t.places.map((p) => (
+                <li class="place">
+                  <h3>{p.name}</h3>
+                  <p>{p.text}</p>
+                  {p.when && <span class="when"><Icon name="sun" size={14} /> {p.when}</span>}
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section plan on-dark grain">
+    <div class="wrap plan-inner">
+      <Icon name="compass" size={34} />
+      <h2>Not sure where to start?</h2>
+      <p class="lede">Tell us how much time you have and what you enjoy. We'll suggest a route and arrange a cab if you need one.</p>
+      <a class="btn" href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hi Zephyr Estate! Could you suggest what to see nearby during our stay?')}`} target="_blank" rel="noopener"><Icon name="whatsapp" /> Ask us on WhatsApp</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .jump { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .jump a {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 16px; border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.3); color: #fff; text-decoration: none;
+    font-size: 0.88rem; font-weight: 600; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: background 200ms var(--ease);
+  }
+  .jump a:hover { background: rgba(255, 255, 255, 0.26); }
+
+  .tiers { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(28px, 4vw, 44px); position: relative; }
+  /* The dotted "road" joining each drive-time stop */
+  .tiers::before { content: ''; position: absolute; left: 7px; top: 10px; bottom: 10px; border-left: 2px dashed var(--line); }
+  .tier { display: grid; gap: 16px; padding-left: 36px; position: relative; scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .tier-dot { position: absolute; left: 0; top: 6px; width: 16px; height: 16px; border-radius: 50%; background: var(--paper); border: 3px solid var(--brass); }
+  .tier-time { font: 500 clamp(2rem, 3.4vw, 2.8rem)/1 var(--font-display); color: var(--ink); }
+  .tier-label { font-weight: 700; font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brass); margin-top: 8px; }
+  .places { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  @media (min-width: 640px) { .places { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1000px) {
+    .tier { grid-template-columns: 240px minmax(0, 1fr); gap: 40px; }
+    .places { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  .place {
+    background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 22px 20px;
+    display: flex; flex-direction: column; gap: 8px; transition: transform 300ms var(--ease), box-shadow 300ms var(--ease);
+  }
+  .place:hover { transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+  .place h3 { font-size: 1.35rem; line-height: 1.2; }
+  .place p { color: var(--ink-soft); font-size: 0.95rem; }
+  .when {
+    align-self: flex-start; margin-top: auto; display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px;
+    background: var(--deodar-100); color: var(--deodar); font-size: 0.78rem; font-weight: 600;
+  }
+
+  .plan-inner { text-align: center; display: grid; justify-items: center; gap: 16px; position: relative; z-index: 1; }
+  .plan-inner > :global(svg) { color: var(--ember); }
+  .plan-inner h2 { font-size: clamp(2rem, 4vw, 3rem); }
+</style>

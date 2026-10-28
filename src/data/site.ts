@@ -31,7 +31,48 @@ export const distances = [
   { place: 'Delhi', km: 309 },
 ];
 
-export const catalogueUrl = 'https://wa.me/c/919810010818';
+// Things to do around the estate, grouped by drive time (owner's list)
+export const nearby = [
+  {
+    time: '5–10 min', label: 'Next door',
+    places: [
+      { name: 'Lakhwar village & Mahasu Devta Temple', text: 'An ancient temple in a quiet hill village. Peaceful and cultural.', when: 'Morning or evening' },
+    ],
+  },
+  {
+    time: '5–25 min', label: 'Close by',
+    places: [
+      { name: 'Sainji, the corn village', text: 'A peaceful village walk, with a stop at the Canadian bakery.', when: 'Morning or evening' },
+      { name: 'Dimta waterfall', text: 'A walking trail through the forest to the falls.', when: 'Afternoon' },
+    ],
+  },
+  {
+    time: '30–40 min', label: 'Mussoorie & Landour',
+    places: [
+      { name: 'Chaar Dukaan & Landour Bakehouse', text: 'The famous waffle and coffee stops.' },
+      { name: 'Camel’s Back Road', text: 'The classic Mussoorie walk.' },
+      { name: 'Lal Tibba or Gun Hill', text: 'Two of the best spots for sunset views.', when: 'Sunset' },
+      { name: 'Sisters Bazaar & cafés', text: 'Quaint lanes, Café Ivy and Clock Tower Café.' },
+    ],
+  },
+  {
+    time: '1.5–2 hrs', label: 'Day trip',
+    places: [
+      { name: 'Bairat Khai', text: 'A stunning 360° mountain viewpoint, perfect for photos and chilling.' },
+      { name: 'Chakrata & Tiger Falls', text: 'Go further to a quiet cantonment town, waterfalls and pine forests.' },
+    ],
+  },
+  {
+    time: '2–2.5 hrs', label: 'Dhanaulti loop, via Landour',
+    places: [
+      { name: 'Eco Park & Adventure Park', text: 'Zipline and sky bridge.' },
+      { name: 'Surkanda Devi Temple', text: 'A short trek to panoramic views.' },
+      { name: 'Potato farms & apple orchards', text: 'Farm and orchard country.', when: 'Seasonal' },
+    ],
+  },
+];
+
+export const catalogueUrl ='https://wa.me/c/919810010818';
 
 export type Category = { key: string; label: string; blurb: string };
 export const categories: Category[] = [
@@ -51,6 +92,8 @@ export type Stay = {
   /** How many rooms/keys this type accounts for (13 in total) */
   units: number;
   unitLabel: string;
+  /** Room size in sq. ft., from the owner's room size plan (one unit) */
+  size?: number;
   short: string;
   story: string;
   cover: string;
@@ -84,63 +127,63 @@ export const stays: Stay[] = [
     features: ['2 rooms', 'Private living room', 'Private dining area', bonfire, ...comforts], featured: true,
   },
   {
-    slug: 'french-stoneva', name: 'The French Stoneva', category: 'french', kind: 'French room', units: 1, unitLabel: '1 room · ground floor',
+    slug: 'french-stoneva', name: 'The French Stoneva', category: 'french', kind: 'French room', units: 1, unitLabel: '1 room · ground floor', size: 200,
     short: 'A French room with a signature French bay window, on the ground floor.',
     story: 'Stoneva is one of our two French rooms, with exactly the same interior design as its twin, French Timber Hill: a hand-cut timber headboard set against an arch of river stone, whitewashed brick, a sunburst mirror and soft wall lights. Its centrepiece is the French bay window, a deep, cushioned seat to curl up in with the green view. Stoneva is on the ground floor and does not have a balcony.',
     cover: 'cat-stoneva-baywindow', gallery: ['cat-stoneva-baywindow', 'cat-stoneva-bedroom-1', 'cat-stoneva-seating', 'cat-stoneva-bath', 'cat-french-exterior'],
     features: [...frenchFeatures, 'Ground floor', 'No balcony', bonfire, ...comforts],
   },
   {
-    slug: 'french-timberhill', name: 'The French Timber Hill', category: 'french', kind: 'French room', units: 1, unitLabel: '1 room · first floor',
+    slug: 'french-timberhill', name: 'The French Timber Hill', category: 'french', kind: 'French room', units: 1, unitLabel: '1 room · first floor', size: 200,
     short: 'A French room with a French bay window and a balcony, on the first floor.',
     story: 'Timber Hill is the twin of French Stoneva, with exactly the same interior design and the same signature French bay window, here looking straight out at the hills. It sits on the first floor and is the only one of the two with a balcony, set with two armchairs for tea with the mountains in front of you.',
     cover: 'cat-timberhill-baywindow', gallery: ['cat-timberhill-baywindow', 'cat-timberhill-bedroom', 'cat-timberhill-balcony', 'cat-timberhill-stonewall', 'cat-timberhill-seating'],
     features: [...frenchFeatures, 'Balcony', 'First floor', bonfire, ...comforts],
   },
   {
-    slug: 'kumaon-cottage', name: 'The Kumaon Cottage', category: 'signature', kind: 'Individual cottage', units: 1, unitLabel: '1 cottage',
+    slug: 'kumaon-cottage', name: 'The Kumaon Cottage', category: 'signature', kind: 'Individual cottage', units: 1, unitLabel: '1 cottage', size: 300,
     short: 'Traditional wooden interiors and a private verandah of your own.',
     story: 'Built in the spirit of old Kumaoni homes: a wooden ceiling running end to end, hand-cut timber headboards and warm brass lamps, with an ensuite in river stone lit by a skylight. Step out to your private verandah, a cosy corner for a cup of tea with the hills in front of you.',
     cover: 'cat-kumaon-bedroom-1', gallery: ['cat-kumaon-bedroom-1', 'cat-kumaon-exterior', 'cat-kumaon-bedroom-2', 'cat-kumaon-patio', 'cat-kumaon-bath'],
     features: ['Wooden ceiling throughout', 'Private verandah with seating', 'Ensuite with skylight', bonfire, ...comforts], featured: true,
   },
   {
-    slug: 'the-heaven', name: 'The Heaven', category: 'luxury', kind: 'Luxury room', units: 1, unitLabel: 'Unit 1',
+    slug: 'the-heaven', name: 'The Heaven', category: 'luxury', kind: 'Luxury room', units: 1, unitLabel: 'Unit 1', size: 320,
     short: 'The first of three identical luxury rooms, on the balcony passage with valley views.',
     story: luxuryStory('The Heaven', 'first'),
     cover: 'cat-heaven-bedroom', gallery: ['cat-heaven-bedroom', 'cat-heaven-balcony', 'cat-bliss-passage', 'cat-heaven-bath', 'cat-heaven-exterior'],
     features: luxuryFeatures, featured: true,
   },
   {
-    slug: 'the-bliss', name: 'The Bliss', category: 'luxury', kind: 'Luxury room', units: 1, unitLabel: 'Unit 2',
+    slug: 'the-bliss', name: 'The Bliss', category: 'luxury', kind: 'Luxury room', units: 1, unitLabel: 'Unit 2', size: 320,
     short: 'The second of three identical luxury rooms, on the balcony passage with valley views.',
     story: luxuryStory('The Bliss', 'second'),
     cover: 'cat-bliss-bedroom-2', gallery: ['cat-bliss-bedroom-2', 'cat-bliss-bedroom-1', 'cat-bliss-passage', 'cat-heaven-bath', 'cat-heaven-balcony'],
     features: luxuryFeatures,
   },
   {
-    slug: 'the-utopia', name: 'The Utopia', category: 'luxury', kind: 'Luxury room', units: 1, unitLabel: 'Unit 3',
+    slug: 'the-utopia', name: 'The Utopia', category: 'luxury', kind: 'Luxury room', units: 1, unitLabel: 'Unit 3', size: 320,
     short: 'The third of three identical luxury rooms, on the balcony passage with valley views.',
     story: luxuryStory('The Utopia', 'third'),
     cover: 'cat-bliss-bedroom-1', gallery: ['cat-bliss-bedroom-1', 'cat-heaven-bedroom', 'cat-bliss-passage', 'cat-heaven-bath', 'cat-heaven-exterior'],
     features: luxuryFeatures,
   },
   {
-    slug: 'classic-hut', name: 'The Classic Hut', category: 'hut', kind: 'Stone hut', units: 2, unitLabel: '2 huts',
+    slug: 'classic-hut', name: 'The Classic Hut', category: 'hut', kind: 'Stone hut', units: 2, unitLabel: '2 huts', size: 120,
     short: 'Cosy stone huts tucked into the forest, steps from the pool and bonfire circle.',
     story: 'Our two Classic Huts are snug stone hideaways with the forest right outside: a wrought-iron bed, a sit-by-the-window corner with two chairs, and a warm, tiled ensuite. Simple, characterful and a few steps from the pool and bonfire.',
     cover: 'cat-hut-exterior', gallery: ['cat-hut-exterior', 'cat-hut-bedroom-1', 'cat-hut-seating', 'cat-hut-bedroom-2', 'cat-hut-bath'],
     features: ['Forest setting', 'Sit-out porch', bonfire, ...comforts],
   },
   {
-    slug: 'classic-tent', name: 'The Classic Tent', category: 'tent', kind: 'Luxury tent', units: 2, unitLabel: '2 tents',
+    slug: 'classic-tent', name: 'The Classic Tent', category: 'tent', kind: 'Luxury tent', units: 2, unitLabel: '2 tents', size: 130,
     short: 'Luxury tents under the fruit trees, with a solid, fully built washroom and a deck of your own.',
     story: 'Tent living without roughing it. Our two Classic Tents are luxury tents set among the fruit trees, with a sit-out deck, a carved wooden bed under a block-printed canopy and a chandelier. The washroom is solid and fully built, with proper tiled walls and fittings, not a temporary or portable unit. Your own bonfire spot is right outside. Fall asleep to crickets and wake to birdsong.',
     cover: 'cat-tent-row', gallery: ['cat-tent-row', 'cat-tent-bedroom-1', 'cat-tent-exterior', 'cat-tent-bedroom-3', 'cat-tent-bedroom-2'],
     features: [solidWashroom, 'Private deck', bonfire, ...comforts.slice(1)], featured: true,
   },
   {
-    slug: 'grand-imperial-tent', name: 'The Grand Imperial Luxury Tent', category: 'tent', kind: 'Luxury tent', units: 1, unitLabel: '1 tent',
+    slug: 'grand-imperial-tent', name: 'The Grand Imperial Luxury Tent', category: 'tent', kind: 'Luxury tent', units: 1, unitLabel: '1 tent', size: 150,
     short: 'Our most romantic stay: a grand luxury tent with a four-poster bed and a solid, fully built washroom.',
     story: 'Our grandest luxury tent: tall, block-printed walls, a wrought-iron four-poster bed, a river-stone feature wall and a crystal chandelier. The washroom is solid and fully built, with a wooden ceiling and a walk-in shower, not a temporary or portable unit. Outside, a covered deck with a lounger looks out over the estate, with your own bonfire spot right outside. Ask us about proposal and anniversary set-ups.',
     cover: 'cat-imperial-bedroom-1', gallery: ['cat-imperial-bedroom-1', 'cat-imperial-bedroom-2', 'cat-imperial-deck', 'cat-imperial-bedroom-3', 'cat-imperial-bath'],
