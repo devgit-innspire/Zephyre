@@ -17,7 +17,7 @@ const others = [
   ...stays.filter((s) => s.category !== stay.category && s.featured),
 ].slice(0, 3);
 const iconFor = (f: string) =>
-  /bed/i.test(f) ? 'bed' : /bath|ensuite/i.test(f) ? 'bath' : /heat|ac/i.test(f) ? 'thermo' : /wi-fi/i.test(f) ? 'wifi'
+  /bonfire/i.test(f) ? 'flame' : /bed/i.test(f) ? 'bed' : /bath|ensuite|washroom/i.test(f) ? 'bath' : /heat|ac/i.test(f) ? 'thermo' : /wi-fi/i.test(f) ? 'wifi'
   : /tv/i.test(f) ? 'tv' : /locker/i.test(f) ? 'lock' : /kids/i.test(f) ? 'baby' : /balcony|passage|verandah/i.test(f) ? 'door' : /bay window/i.test(f) ? 'door' : /ceiling|wood/i.test(f) ? 'trees' : /luxury/i.test(f) ? 'sparkles' : 'check';
 const [first, ...rest] = stay.gallery;
 ---

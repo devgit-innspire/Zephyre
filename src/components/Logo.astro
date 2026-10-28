@@ -15,9 +15,9 @@ const { class: cls } = Astro.props;
 </span>
 
 <style>
-  .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
-  .logo-mark { width: 34px; height: 34px; flex: none; }
+  .logo { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+  .logo-mark { width: clamp(38px, 3.4vw, 46px); height: clamp(38px, 3.4vw, 46px); flex: none; }
   .logo-text { display: grid; line-height: 1; }
-  .logo-name { font: 500 1.7rem/0.9 var(--font-display); letter-spacing: 0.01em; }
-  .logo-sub { font: 600 0.58rem/1 var(--font-body); letter-spacing: 0.24em; text-transform: uppercase; opacity: 0.8; margin-top: 4px; }
+  .logo-name { font: 500 clamp(1.95rem, 2.6vw, 2.35rem)/0.9 var(--font-display); letter-spacing: 0.01em; }
+  .logo-sub { font: 600 clamp(0.62rem, 0.75vw, 0.7rem)/1 var(--font-body); letter-spacing: 0.24em; text-transform: uppercase; opacity: 0.85; margin-top: 5px; }
 </style>
