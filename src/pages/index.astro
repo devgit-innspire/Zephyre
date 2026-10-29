@@ -48,7 +48,7 @@ const featured = stays.filter((s) => s.featured);
           Travel used to be about fitting it all in. Now, we travel with a different intention: to feel better, not just go somewhere new. This isn't about escape — it's about restoration.
         </p>
         <p class="reveal" data-delay="1" style="color: var(--ink-soft); font-size: 1.05rem; line-height: 1.7; margin-top: -0.2em;">
-          Unwind on the garden patio overlooking misty hills, dip into twin blue-mosaic plunge pools nestled in the pine forest, and end every day around the crackling fire under a sky of stars.
+          Unwind on the garden patio overlooking misty hills, dip into twin blue-mosaic plunge pools nestled in the pine forest, and end the day around a crackling fire under a sky of stars.
         </p>
         <dl class="facts reveal" data-delay="2">
           <div><dt>{totalRooms}</dt><dd>rooms only<br />never crowded</dd></div>
@@ -57,9 +57,9 @@ const featured = stays.filter((s) => s.featured);
         </dl>
       </div>
       <div class="story-media">
-        <div class="frame arch story-main reveal"><Img src="evening-fire-courtyard" alt="Bonfire in a stone fire pit in the courtyard at night, with fairy lights, candles and an outdoor screen" sizes="(min-width: 900px) 440px, 80vw" /></div>
-        <div class="frame story-float reveal" data-delay="2"><Img src="firepit-garden-dusk" alt="Fire pit at dusk in the gravel garden, ringed by daybeds, warm lanterns and a barbecue" sizes="(min-width: 900px) 240px, 40vw" /></div>
-        <p class="story-note reveal" data-delay="3"><Icon name="sparkles" size={16} /> Every evening: bonfire, fairy lights & stars</p>
+        <div class="frame arch story-main reveal"><Img src="firepit-garden-dusk" alt="Fire pit at dusk in the gravel garden, ringed by daybeds, warm lanterns and a barbecue" sizes="(min-width: 900px) 440px, 80vw" /></div>
+        <div class="frame story-float reveal" data-delay="2"><Img src="evening-fire-courtyard" alt="Bonfire in a stone fire pit in the courtyard at night, with fairy lights, candles and an outdoor screen" sizes="(min-width: 900px) 240px, 40vw" /></div>
+        <p class="story-note reveal" data-delay="3"><Icon name="sparkles" size={16} /> Evenings of bonfires, fairy lights & stars</p>
       </div>
     </div>
   </section>
@@ -162,7 +162,7 @@ const featured = stays.filter((s) => s.featured);
           </article>
         ))}
       </div>
-      <p class="exp-more"><a class="link-arrow" href="/experiences">See all experiences & the 2N/3D itinerary <Icon name="arrow" /></a></p>
+      <p class="exp-more"><a class="link-arrow" href="/experiences">See all experiences & things to do nearby <Icon name="arrow" /></a></p>
     </div>
   </section>
 
@@ -289,9 +289,9 @@ const featured = stays.filter((s) => s.featured);
   .facts dd { margin: 8px 0 0; font-size: 0.86rem; color: var(--ink-soft); line-height: 1.4; }
   .story-media { position: relative; padding: 0 8% 60px 0; }
   .story-main { aspect-ratio: 4 / 5.2; max-height: calc(100vh - var(--nav-h, 72px) - 64px); width: 100%; box-shadow: var(--shadow-lift); }
-  .story-float { position: absolute; right: 0; bottom: 0; width: 46%; aspect-ratio: 3 / 4; border: 8px solid var(--mist); border-radius: var(--radius-l); box-shadow: var(--shadow-soft); }
+  .story-float { position: absolute; right: 0; bottom: 0; width: 46%; aspect-ratio: 4 / 3; border: 8px solid var(--mist); border-radius: var(--radius-l); box-shadow: var(--shadow-soft); }
   .story-note { position: absolute; left: -10px; bottom: 14px; display: inline-flex; gap: 8px; align-items: center; margin: 0; padding: 12px 18px; border-radius: 999px; background: var(--paper); box-shadow: var(--shadow-soft); font-size: 0.86rem; font-weight: 600; max-width: 60%; }
-  .story-main :global(img) { object-position: 60% 50%; }
+  .story-main :global(img) { object-position: 50% 50%; }
   .story-note :global(svg) { color: var(--brass); flex: none; }
 
   /* STAYS */

@@ -114,7 +114,7 @@ const luxuryStory = (name: string, unit: string) =>
   `${name} is the ${unit} of our three luxury rooms, all with exactly the same interiors: a carved four-poster bed under a timber ceiling, river-stone walls, a candle-style chandelier and a black-marble ensuite. Step out to the stand-alone balcony passage that runs along the rooms, a beautiful spot to take in the valley. It is a shared passage, not a private balcony, and has no seating.`;
 const luxuryFeatures = ['Four-poster bed', 'Timber ceiling & stone walls', 'Shared balcony passage with valley views', ...comforts];
 
-// French Stoneva and French Timber Hill share identical interiors; only Timber Hill has a balcony
+// French Stoneva and French Timber Hill share identical interiors; only Timber Hill has a balcony (never list 'no balcony' as a feature)
 const frenchFeatures = ['French Bay Window'];
 
 // Room list from the owner (13 rooms). Every photo comes from the WhatsApp catalogue (Utopia shares Heaven/Bliss photos).
@@ -129,14 +129,14 @@ export const stays: Stay[] = [
   {
     slug: 'french-stoneva', name: 'The French Stoneva', category: 'french', kind: 'French room', units: 1, unitLabel: '1 room · ground floor', size: 200,
     short: 'A French room with a signature French bay window, on the ground floor.',
-    story: 'Stoneva is one of our two French rooms, with exactly the same interior design as its twin, French Timber Hill: a hand-cut timber headboard set against an arch of river stone, whitewashed brick, a sunburst mirror and soft wall lights. Its centrepiece is the French bay window, a deep, cushioned seat to curl up in with the green view. Stoneva is on the ground floor and does not have a balcony.',
+    story: 'Stoneva is one of our two French rooms, with exactly the same interior design as its twin, French Timber Hill: a hand-cut timber headboard set against an arch of river stone, whitewashed brick, a sunburst mirror and soft wall lights. Its centrepiece is the French bay window, a deep, cushioned seat to curl up in with the green view. Stoneva is on the ground floor.',
     cover: 'cat-stoneva-baywindow', gallery: ['cat-stoneva-baywindow', 'cat-stoneva-bedroom-1', 'cat-stoneva-seating', 'cat-stoneva-bath', 'cat-french-exterior'],
-    features: [...frenchFeatures, 'Ground floor', 'No balcony', bonfire, ...comforts],
+    features: [...frenchFeatures, 'Ground floor', bonfire, ...comforts],
   },
   {
     slug: 'french-timberhill', name: 'The French Timber Hill', category: 'french', kind: 'French room', units: 1, unitLabel: '1 room · first floor', size: 200,
     short: 'A French room with a French bay window and a balcony, on the first floor.',
-    story: 'Timber Hill is the twin of French Stoneva, with exactly the same interior design and the same signature French bay window, here looking straight out at the hills. It sits on the first floor and is the only one of the two with a balcony, set with two armchairs for tea with the mountains in front of you.',
+    story: 'Timber Hill is the twin of French Stoneva, with exactly the same interior design and the same signature French bay window, here looking straight out at the hills. It sits on the first floor and has its own balcony, set with two armchairs for tea with the mountains in front of you.',
     cover: 'cat-timberhill-baywindow', gallery: ['cat-timberhill-baywindow', 'cat-timberhill-bedroom', 'cat-timberhill-balcony', 'cat-timberhill-stonewall', 'cat-timberhill-seating'],
     features: [...frenchFeatures, 'Balcony', 'First floor', bonfire, ...comforts],
   },
@@ -144,7 +144,7 @@ export const stays: Stay[] = [
     slug: 'kumaon-cottage', name: 'The Kumaon Cottage', category: 'signature', kind: 'Individual cottage', units: 1, unitLabel: '1 cottage', size: 300,
     short: 'Traditional wooden interiors and a private verandah of your own.',
     story: 'Built in the spirit of old Kumaoni homes: a wooden ceiling running end to end, hand-cut timber headboards and warm brass lamps, with an ensuite in river stone lit by a skylight. Step out to your private verandah, a cosy corner for a cup of tea with the hills in front of you.',
-    cover: 'cat-kumaon-bedroom-1', gallery: ['cat-kumaon-bedroom-1', 'cat-kumaon-exterior', 'cat-kumaon-bedroom-2', 'cat-kumaon-patio', 'cat-kumaon-bath'],
+    cover: 'room-carved-wide', gallery: ['room-carved-wide', 'cat-kumaon-bedroom-1', 'cat-kumaon-exterior', 'cat-kumaon-bedroom-2', 'cat-kumaon-bath'],
     features: ['Wooden ceiling throughout', 'Private verandah with seating', 'Ensuite with skylight', bonfire, ...comforts], featured: true,
   },
   {
@@ -194,7 +194,7 @@ export const stays: Stay[] = [
 export const totalRooms = stays.reduce((n, s) => n + s.units, 0); // 13
 
 export const experiences = [
-  { title: 'Bonfire under the stars', text: 'The fire circle is lit every evening. Bring stories; we bring the warmth.', img: 'bonfire-under-stars', tag: 'Evenings' },
+  { title: 'Bonfire under the stars', text: 'Gather round the fire circle as the night cools. Bring stories; we bring the warmth.', img: 'bonfire-under-stars', tag: 'Evenings' },
   { title: 'Open-air movie nights', text: 'A big screen on the terrace, blankets, bolsters and the valley going blue behind it.', img: 'movie-night', tag: 'Nights' },
   { title: 'Stargazing from the ridge', text: 'Far from city light, the Milky Way rises over the Garhwal hills on clear nights.', img: 'stars-valley', tag: 'Late night' },
   { title: 'High tea in the sun', text: 'Fresh bakes, pots of chai and a stone terrace that catches the afternoon light.', img: 'high-tea-sunrays', tag: 'Afternoons' },
