@@ -6,39 +6,8 @@ import Icon from '../components/Icon.astro';
 import Seasons from '../components/Seasons.astro';
 import { experiences, nearby } from '../data/site';
 
-const retreat = [
-  {
-    day: 'Day 1', theme: 'Arrival · Grounding · Soft opening', img: 'vine-tunnel',
-    items: [
-      ['Afternoon', 'Welcome drink of herbal tea or pahadi kahwa, check-in, settle in & explore the estate'],
-      ['Early evening', 'Opening circle: introductions & intention setting'],
-      ['Evening', 'Gentle yoga & breathwork, then a candle-lit bhajan session'],
-      ['Dinner', 'Sattvic, pahadi-inspired dinner'],
-      ['Night', 'Sound-healing session & a journaling prompt'],
-    ],
-  },
-  {
-    day: 'Day 2', theme: 'Nature · Creativity · Deep healing', img: 'valley-clouds',
-    items: [
-      ['Sunrise', 'Sunrise tea, yoga flow & pranayama'],
-      ['Morning', 'Guided mindful forest walk, then a breakfast of fruits, millets & pahadi flavours'],
-      ['Late morning', 'Pottery workshop: make your own cup or bowl'],
-      ['Afternoon', 'Cooking session: pahadi cuisine, wood-fire cooking or baking'],
-      ['Evening', 'Short trek to a viewpoint for sunset chai'],
-      ['Night', 'Bonfire, storytelling, kirtan & gratitude ritual. Optional stargazing walk'],
-    ],
-  },
-  {
-    day: 'Day 3', theme: 'Closure · Takeaways · Departure', img: 'tea-pour',
-    items: [
-      ['Sunrise', 'Sunrise tea, meditation & yoga nidra'],
-      ['Morning', 'Final sound bath and a slow breakfast'],
-      ['Late morning', 'Closing circle, group photo & a small farewell gift'],
-    ],
-  },
-];
 ---
-<Base title="Experiences" description="Bonfires, stargazing, open-air movies, high tea, pools and a 2N/3D forest wellness retreat at Zephyr Estate, Mussoorie." image="teepee-bonfire" overHero>
+<Base title="Experiences" description="Bonfires, stargazing, open-air movies, high tea, pools and things to do nearby at Zephyr Estate, Mussoorie." image="teepee-bonfire" overHero>
   <PageHero img="bonfire-terrace-dusk" alt="Bonfire on the stone terrace at dusk with the mountains behind" eyebrow="Experiences" title="Slow days, <em>glowing nights</em>" lede="The best things at Zephyr aren't on a schedule. Here's what a stay can hold." />
 
   <section class="section">
@@ -54,37 +23,6 @@ const retreat = [
           </div>
         </article>
       ))}
-    </div>
-  </section>
-
-  <section class="section retreat on-dark grain" id="retreat" aria-labelledby="retreat-h">
-    <div class="wrap">
-      <div class="section-head split">
-        <div>
-          <p class="eyebrow">2 nights · 3 days</p>
-          <h2 id="retreat-h">The Forest <em class="wind">Wellness Retreat</em></h2>
-        </div>
-        <div>
-          <p class="lede">A curated plan for deep rest, nature connection and creativity, set inside the forest at Zephyr. Ideal for groups, couples and anyone who needs a real reset.</p>
-          <a class="btn light" href="/docs/zephyr-2n3d-itinerary.pdf" download><Icon name="arrow" class="rot" /> Download the itinerary (PDF)</a>
-        </div>
-      </div>
-      <div class="days">
-        {retreat.map((d, i) => (
-          <article class="day-card reveal" data-delay={String(i)}>
-            <div class="frame"><Img src={d.img} alt="" sizes="(min-width: 1000px) 33vw, 100vw" /></div>
-            <div class="day-body">
-              <p class="day-n">{d.day}</p>
-              <h3>{d.theme}</h3>
-              <ol>
-                {d.items.map(([t, a]) => <li><span>{t}</span>{a}</li>)}
-              </ol>
-            </div>
-          </article>
-        ))}
-      </div>
-      <p class="addons">Optional add-ons: reiki, forest bathing, bird watching, nature art, open-mic night, DIY skincare, mantra chanting & more.</p>
-      <p class="center"><button class="btn" data-enquire>Plan a retreat for my group</button></p>
     </div>
   </section>
 
@@ -122,20 +60,6 @@ const retreat = [
   .exp-copy h2 { font-size: clamp(2.2rem, 4vw, 3.4rem); margin: 16px 0 14px; }
   .exp-copy .lede { margin-bottom: 22px; }
   .as-btn { background: none; border: 0; border-bottom: 1px solid currentColor; padding: 0 0 2px; min-height: 44px; }
-  .retreat .lede { margin-bottom: 26px; }
-  :global(.rot) { transform: rotate(90deg); }
-  .days { display: grid; gap: 22px; position: relative; z-index: 1; }
-  @media (min-width: 1000px) { .days { grid-template-columns: repeat(3, 1fr); } }
-  .day-card { border-radius: var(--radius-l); overflow: hidden; background: var(--pine-night-2); border: 1px solid rgba(255, 255, 255, 0.08); }
-  .day-card .frame { aspect-ratio: 16 / 9; border-radius: 0; }
-  .day-body { padding: 26px; }
-  .day-n { font: 600 0.75rem/1 var(--font-body); letter-spacing: 0.2em; text-transform: uppercase; color: var(--ember); margin-bottom: 8px; }
-  .day-body h3 { font-size: 1.6rem; margin-bottom: 18px; }
-  .day-body ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
-  .day-body li { display: grid; gap: 2px; font-size: 0.95rem; color: var(--on-dark-soft); }
-  .day-body li span { font-weight: 700; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--on-dark); }
-  .addons { position: relative; z-index: 1; text-align: center; color: var(--on-dark-soft); margin: 40px auto 28px; max-width: 70ch; }
-  .center { text-align: center; position: relative; z-index: 1; }
   .nearby { list-style: none; margin: 0 0 36px; padding: 0; display: grid; gap: 14px; }
   @media (min-width: 640px) { .nearby { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (min-width: 1000px) { .nearby { grid-template-columns: repeat(5, minmax(0, 1fr)); } }

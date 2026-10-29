@@ -56,7 +56,7 @@ Nothing flashy, nothing that blocks scrolling.
   /stays/grand-imperial-tent
   /stays/kumaon-cottage
   /stays/french-duplex
-/experiences          Day at Zephyr, nearby (Kempty, Mussoorie, Dhanaulti), 2N/3D itinerary
+/experiences          Day at Zephyr, nearby (Kempty, Mussoorie, Dhanaulti)
 /gallery              Photos + reels, filter by season/space
 /getting-here         Route from Delhi/Dehradun, map, road tips, FAQs
 /book                 Enquiry / availability (see §6)
@@ -74,7 +74,7 @@ Nothing flashy, nothing that blocks scrolling.
 4. **Book the whole estate.** A wide banner aimed at families, friend groups and small celebrations: *"All 6 rooms. One hilltop. Just yours."*
 5. **A day at Zephyr.** A scroll timeline: 6 am sunrise over the valley → breakfast on the lawn → Kempty Falls → golden hour → bonfire and stars. It uses the night OSMO footage.
 6. **Seasons switcher** (described in §2).
-7. **Experiences.** Bonfire, stargazing, kids' play area, local Garhwali food, day trips. Download the **2N/3D itinerary** (the PDF already exists in Drive).
+7. **Experiences.** Bonfire, stargazing, kids' play area, local Garhwali food, day trips.
 8. **Moments.** A masonry grid of the best photos plus 3 vertical reels from the influencer content.
 9. **Guest love.** **Real** Google, Booking.com and Airbnb reviews with star rating and source. Nothing invented.
 10. **Getting here.** A stylised route line, Delhi → Dehradun → Mussoorie → Zephyr, with distances, an embedded map and a "Get directions" link.
