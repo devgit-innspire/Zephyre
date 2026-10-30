@@ -12,7 +12,7 @@ interface Props {
   /** Nav starts transparent over a full-bleed hero */
   overHero?: boolean;
 }
-const { title, description, image = 'aerial-day', overHero = false } = Astro.props;
+const { title, description, image = 'pool-pines', overHero = false } = Astro.props;
 const fullTitle = title === site.name ? `${site.name} @ Dimta Stay · Luxury hilltop stay near Kempty Falls, Mussoorie` : `${title} · ${site.name}, Mussoorie`;
 const path = Astro.url.pathname;
 const nav = [
