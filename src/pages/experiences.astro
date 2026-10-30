@@ -4,6 +4,7 @@ import PageHero from '../components/PageHero.astro';
 import Img from '../components/Img.astro';
 import Icon from '../components/Icon.astro';
 import Seasons from '../components/Seasons.astro';
+import Lightbox from '../components/Lightbox.astro';
 import { experiences, nearby } from '../data/site';
 
 ---
@@ -19,6 +20,13 @@ import { experiences, nearby } from '../data/site';
             <span class="tag">{e.tag}</span>
             <h2>{e.title}</h2>
             <p class="lede">{e.text}</p>
+            {e.gallery && (
+              <div class="exp-thumbs">
+                {e.gallery.map((g) => (
+                  <a href={`/images/${g}-2000.webp`} class="frame zoom" data-lb data-alt={e.title}><Img src={g} alt={e.title} sizes="160px" /></a>
+                ))}
+              </div>
+            )}
             <button class="link-arrow as-btn" data-enquire>Add to my stay <Icon name="arrow" /></button>
           </div>
         </article>
@@ -47,6 +55,7 @@ import { experiences, nearby } from '../data/site';
   </section>
 
   <Seasons />
+  <Lightbox />
 </Base>
 
 <style>
@@ -59,6 +68,8 @@ import { experiences, nearby } from '../data/site';
   .exp-row .frame { aspect-ratio: 4 / 3; border-radius: var(--radius-l); box-shadow: var(--shadow-soft); }
   .exp-copy h2 { font-size: clamp(2.2rem, 4vw, 3.4rem); margin: 16px 0 14px; }
   .exp-copy .lede { margin-bottom: 22px; }
+  .exp-thumbs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0 0 22px; max-width: 420px; }
+  .exp-thumbs .frame { display: block; aspect-ratio: 3 / 4; border-radius: var(--radius-s); }
   .as-btn { background: none; border: 0; border-bottom: 1px solid currentColor; padding: 0 0 2px; min-height: 44px; }
   .nearby { list-style: none; margin: 0 0 36px; padding: 0; display: grid; gap: 14px; }
   @media (min-width: 640px) { .nearby { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

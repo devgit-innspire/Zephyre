@@ -58,7 +58,7 @@ const featured = stays.filter((s) => s.featured);
       </div>
       <div class="story-media">
         <div class="frame arch story-main reveal"><Img src="firepit-garden-dusk" alt="Fire pit at dusk in the gravel garden, ringed by daybeds, warm lanterns and a barbecue" sizes="(min-width: 900px) 440px, 80vw" /></div>
-        <div class="frame story-float reveal" data-delay="2"><Img src="evening-fire-courtyard" alt="Bonfire in a stone fire pit in the courtyard at night, with fairy lights, candles and an outdoor screen" sizes="(min-width: 900px) 240px, 40vw" /></div>
+        <div class="frame story-float reveal" data-delay="2"><Img src="courtyard-fairy" alt="The courtyard strung with fairy lights at night" sizes="(min-width: 900px) 240px, 40vw" /></div>
         <p class="story-note reveal" data-delay="3"><Icon name="sparkles" size={16} /> Evenings of bonfires, fairy lights & stars</p>
       </div>
     </div>
@@ -92,7 +92,7 @@ const featured = stays.filter((s) => s.featured);
 
   <!-- ───────── WHOLE ESTATE ───────── -->
   <section class="estate" id="estate" aria-labelledby="estate-h">
-    <div class="estate-bg"><Img src="courtyard-fairy" alt="Zephyr Estate's courtyard glowing with fairy lights at dusk" sizes="100vw" /></div>
+    <div class="estate-bg"><Img src="pools-above" alt="Zephyr Estate's two pools among the pines, seen from the terrace" sizes="100vw" /></div>
     <div class="wrap estate-inner">
       <div class="estate-card reveal">
         <p class="eyebrow">The Family Retreat</p>
@@ -151,7 +151,7 @@ const featured = stays.filter((s) => s.featured);
         <p class="lede">Nothing is scheduled and everything is possible. Ask, and the estate arranges it, from a sunlit high tea to a candlelit proposal.</p>
       </div>
       <div class="exp-grid">
-        {experiences.map((e, i) => (
+        {experiences.slice(0, 6).map((e, i) => (
           <article class:list={['exp-card reveal', `exp-${i}`]} data-delay={String(i % 3)}>
             <div class="frame zoom"><Img src={e.img} alt={e.title} sizes="(min-width: 1100px) 400px, (min-width: 700px) 50vw, 100vw" /></div>
             <div class="exp-copy">
