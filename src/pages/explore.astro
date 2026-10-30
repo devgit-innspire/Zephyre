@@ -2,8 +2,11 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
+import Img from '../components/Img.astro';
 import { nearby, site } from '../data/site';
 const placeCount = nearby.reduce((n, t) => n + t.places.length, 0);
+// Places without a verified photo get an illustrated header so every card lines up
+const artIcon = (name: string) => /fall/i.test(name) ? 'waves' : /temple/i.test(name) ? 'sparkles' : /khai|view/i.test(name) ? 'mountain' : 'trees';
 ---
 <Base title="Explore nearby" description="Things to do around Zephyr Estate, Mussoorie: Lakhwar's Mahasu Devta Temple, Sainji village, Dimta waterfall, Landour cafés, Bairat Khai, Chakrata and the Dhanaulti loop, by drive time." image="valley-wide" overHero>
   <PageHero img="valley-clouds" alt="Clouds pouring through the valley below Zephyr Estate" eyebrow="Explore nearby" title="Step out, <em>wander a little</em>" lede="Temples, waterfalls, bakeries and big views, from a five-minute stroll to a full day out. Everything is flexible: pick whatever suits the mood.">
@@ -33,9 +36,22 @@ const placeCount = nearby.reduce((n, t) => n + t.places.length, 0);
             <ul class="places">
               {t.places.map((p) => (
                 <li class="place">
+                  {p.img ? (
+                    <figure class="place-photo">
+                      <Img src={p.img} alt={p.name} sizes="(min-width: 1000px) 30vw, (min-width: 640px) 50vw, 100vw" />
+                      {p.credit && (() => {
+                        const label = [p.credit.note ?? 'Photo', p.credit.by, p.credit.license].filter(Boolean).join(' · ');
+                        return <figcaption>{p.credit.url ? <a href={p.credit.url} target="_blank" rel="noopener" title={label}>{label}</a> : <span title={label}>{label}</span>}</figcaption>;
+                      })()}
+                    </figure>
+                  ) : (
+                    <div class="place-art" aria-hidden="true"><Icon name={artIcon(p.name) as any} size={34} /></div>
+                  )}
+                  <div class="place-body">
                   <h3>{p.name}</h3>
                   <p>{p.text}</p>
                   {p.when && <span class="when"><Icon name="sun" size={14} /> {p.when}</span>}
+                  </div>
                 </li>
               ))}
             </ul>
@@ -78,10 +94,17 @@ const placeCount = nearby.reduce((n, t) => n + t.places.length, 0);
     .places { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
   .place {
-    background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 22px 20px;
-    display: flex; flex-direction: column; gap: 8px; transition: transform 300ms var(--ease), box-shadow 300ms var(--ease);
+    background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+    display: flex; flex-direction: column; transition: transform 300ms var(--ease), box-shadow 300ms var(--ease);
   }
   .place:hover { transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+  .place-photo, .place-art { margin: 0; aspect-ratio: 16 / 10; position: relative; overflow: hidden; }
+  .place-photo :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 600ms var(--ease); }
+  .place:hover .place-photo :global(img) { transform: scale(1.04); }
+  .place-photo figcaption { position: absolute; right: 8px; bottom: 8px; max-width: calc(100% - 16px); font-size: 0.68rem; line-height: 1.3; }
+  .place-photo figcaption a, .place-photo figcaption span { display: block; padding: 3px 8px; border-radius: 999px; background: rgba(23, 33, 28, 0.55); color: #fff; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .place-art { display: grid; place-items: center; color: var(--deodar); background: radial-gradient(circle at 30% 20%, var(--mist), var(--deodar-100)); }
+  .place-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
   .place h3 { font-size: 1.35rem; line-height: 1.2; }
   .place p { color: var(--ink-soft); font-size: 0.95rem; }
   .when {
