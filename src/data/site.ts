@@ -31,6 +31,22 @@ export const distances = [
   { place: 'Delhi', km: 309 },
 ];
 
+// Owner's recommended drive from Delhi (from the owner's route graphic): skips central Dehradun and Mussoorie
+export const driveRoute = {
+  hours: '5.5',
+  note: 'Approachable from Delhi in about 5.5 hours, without entering central Dehradun or Mussoorie. The drive itself becomes part of the stay.',
+  stops: [
+    { place: 'Delhi', note: 'Start' },
+    { place: 'Dehradun', note: 'New Delhi–Dehradun Expressway' },
+    { place: 'Selaqui', note: 'New Dehradun–Paonta Sahib highway' },
+    { place: 'Langha Road', note: 'Turn-off' },
+    { place: 'Kata Patthar', note: 'Foothills' },
+    { place: 'Juddo Dam', note: 'Reservoir' },
+    { place: 'Yamuna Pul', note: 'Bridge' },
+    { place: 'Zephyr Estate', note: 'Arrive' },
+  ],
+};
+
 type NearbyPlace = { name: string; text: string; when?: string; img?: string; credit?: { by?: string; license?: string; url?: string; note?: string } };
 
 // Things to do around the estate, grouped by drive time (owner's list).
@@ -201,22 +217,24 @@ export const stays: Stay[] = [
 
 export const totalRooms = stays.reduce((n, s) => n + s.units, 0); // 13
 
-// The home page shows the first six; the Experiences page shows them all.
-// `gallery` adds extra photos to an experience's row on the Experiences page.
-export const experiences: { title: string; text: string; img: string; tag: string; gallery?: string[] }[] = [
+// The Experiences page shows them all. The home page has its own pool section, so it skips `signature`
+// and shows the next six. `gallery` adds extra photos to an experience's row on the Experiences page.
+export const experiences: { title: string; text: string; img: string; tag: string; gallery?: string[]; signature?: boolean; focus?: string }[] = [
+  { title: 'Our pools, a rarity in these hills', text: 'You won’t find pools like ours anywhere else around here. A blue-mosaic main pool and a kids’ pool sit in the pines, ringed by loungers, umbrellas and canna lilies. Swim by day, then come back after dark when the water glows for drinks, pizza and dinner at the poolside.', img: 'pool-pines', tag: 'Our signature', gallery: ['pools-above', 'pool-night-drinks', 'pool-winter'], signature: true },
+  { title: 'Wood-fired pizza & lavish spreads', text: 'Pizzas fresh from our wood-fired oven, smoky and blistered, served by the pool or round the fire. And when it’s time to feast: lavish breakfasts, high teas and dinner spreads cooked fresh at the estate.', img: 'pool-night-pizza', tag: 'Food', gallery: ['pool-dinner', 'breakfast-mountains', 'golden-hour-tea'] },
   { title: 'Bonfire under the stars', text: 'Gather round the fire circle as the night cools. Bring stories; we bring the warmth.', img: 'bonfire-under-stars', tag: 'Evenings' },
   { title: 'Open-air movie nights', text: 'A screen by the crackling fire pit, fairy lights overhead, blankets, bolsters and your favourite film.', img: 'movie-night-firepit', tag: 'Nights' },
-  { title: 'Stargazing from the ridge', text: 'Far from city light, the Milky Way rises over the Garhwal hills on clear nights.', img: 'stars-valley', tag: 'Late night' },
+  { title: 'Pickleball in the forest', text: 'Rally on our own pickleball court, tucked against a stone wall with the forest all around. A favourite for families and friend groups between pool sessions.', img: 'pickleball-court', tag: 'Play', focus: '50% 62%' },
   { title: 'Birthday & party decor', text: 'Balloons, a glowing Happy Birthday sign, fairy-lit canopies, candlelit lounges and a dinner table set just for you. Tell us the occasion and we will dress up the garden.', img: 'bday-full-setup', tag: 'Celebrations', gallery: ['bday-neon-balloons', 'bday-canopy-dinner', 'bday-lounge-candles'] },
+  { title: 'Stargazing from the ridge', text: 'Far from city light, the Milky Way rises over the Garhwal hills on clear nights.', img: 'stars-valley', tag: 'Late night' },
   { title: 'High tea in the sun', text: 'Fresh bakes, pots of chai and a stone terrace that catches the afternoon light.', img: 'high-tea-sunrays', tag: 'Afternoons' },
-  { title: 'Two pools in the pines', text: 'A main pool and a kids’ pool, ringed by loungers and canna lilies.', img: 'pool-loungers', tag: 'Days' },
   { title: 'Candlelit dinners & surprises', text: 'Anniversaries, proposals and surprises: tell us, and we will set the scene.', img: 'candlelight-dinner', tag: 'Romance' },
 ];
 
 export const dayTimeline = [
   { time: '6:30 am', title: 'Clouds below you', text: 'Tea on the terrace as mist pours through the valley.', img: 'valley-clouds' },
   { time: '9:00 am', title: 'Breakfast with a view', text: 'A slow breakfast with the hills laid out in front of you.', img: 'breakfast-mountains' },
-  { time: '12:00 pm', title: 'Kempty Falls, 11 km away', text: 'Chase the waterfall, or stay back for the pool.', img: 'kempty-falls' },
+  { time: '12:00 pm', title: 'A swim in the pines', text: 'The pool is the one thing you won’t find anywhere else around here. Or chase Kempty Falls, 11 km away.', img: 'pool-loungers' },
   { time: '4:30 pm', title: 'Golden hour, high tea', text: 'Bakes and chai on the stone terrace.', img: 'golden-hour-tea' },
   { time: '7:30 pm', title: 'Fire, lights, stars', text: 'The estate glows; the bonfire crackles; the sky opens up.', img: 'fire-lights-stars' },
 ];
@@ -243,15 +261,15 @@ export const reels = [
 export const gallery = [
   'bonfire-pine-dusk', 'cat-kumaon-exterior', 'pool-pines', 'cafe-yellow-dusk', 'vine-tunnel', 'bonfire-overhead',
   'cat-sierra-bedroom-2', 'terrace-sculpture', 'canna-valley', 'courtyard-fairy', 'stone-stairs', 'teepee-garden',
-  'high-tea-sunrays', 'pool-night-drinks', 'buddha-garden', 'cat-hut-exterior', 'kids-play', 'stars-valley-2',
+  'high-tea-sunrays', 'pool-night-pizza', 'buddha-garden', 'cat-hut-exterior', 'kids-play', 'stars-valley-2',
   'evening-fire-courtyard', 'pools-above', 'tea-pour', 'monsoon-cottage', 'blue-hour', 'aerial-forest',
 ];
 
 export const faqs = [
   { q: 'What are the check-in and check-out times?', a: 'Standard check-in is in the afternoon and check-out is late morning. Share your arrival time when you enquire and we will do our best to accommodate early arrivals.' },
   { q: 'Can we book the entire estate?', a: 'Yes. The Family Retreat option gives your group all 13 rooms (villa, French rooms, cottages, huts and tents) with the estate to yourselves. Ideal for families, friend getaways and small celebrations.' },
-  { q: 'Are meals available?', a: 'Yes. Breakfast, high tea and dinners can be arranged at the estate, including candlelit and bonfire-side setups. Tell us about any dietary needs when you book.' },
-  { q: 'How do we reach Zephyr Estate?', a: 'We are on Kempty Fall Road, 27 km from Mussoorie and 11 km from Kempty Falls. Most guests drive from Delhi (about 309 km). The nearest airport is Jolly Grant, Dehradun (84 km). We will share a pin and route on confirmation.' },
-  { q: 'Is it suitable for children?', a: 'Very. There is a kids’ play area and a separate kids’ pool, and The Sierra villa gives families 1 villa with 2 rooms and their own lounge and dining.' },
+  { q: 'Are meals available?', a: 'Yes. Breakfast, high tea and lavish dinner spreads are cooked fresh at the estate, and pizzas come out of our wood-fired oven. We also set up poolside, candlelit and bonfire-side dinners. Tell us about any dietary needs when you book.' },
+  { q: 'How do we reach Zephyr Estate?', a: 'We are on Kempty Fall Road, 27 km from Mussoorie and 11 km from Kempty Falls. From Delhi it is about 5.5 hours by road (around 309 km): take the Delhi–Dehradun Expressway, then the Dehradun–Paonta Sahib highway via Selaqui, Langha Road, Kata Patthar, Juddo Dam and Yamuna Pul, without entering central Dehradun or Mussoorie. The nearest airport is Jolly Grant, Dehradun (84 km). We will share a pin on confirmation.' },
+  { q: 'Is it suitable for children?', a: 'Very. There is a kids’ play area, a separate kids’ pool and a pickleball court, and The Sierra villa gives families 1 villa with 2 rooms and their own lounge and dining.' },
   { q: 'Is the road accessible in monsoon and winter?', a: 'The estate is reachable year-round. In heavy rain or snow, we share road updates before you set out.' },
 ];

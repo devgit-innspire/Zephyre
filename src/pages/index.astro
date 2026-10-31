@@ -8,12 +8,13 @@ import BookingBar from '../components/BookingBar.astro';
 import StayCard from '../components/StayCard.astro';
 import Seasons from '../components/Seasons.astro';
 import Reels from '../components/Reels.astro';
-import { site, stays, experiences, dayTimeline, distances, faqs, gallery, categories, totalRooms, catalogueUrl } from '../data/site';
+import { site, stays, experiences, dayTimeline, driveRoute, faqs, gallery, categories, totalRooms, catalogueUrl } from '../data/site';
 const featured = stays.filter((s) => s.featured);
+const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
 ---
 <Base
   title={site.name}
-  description="A private hilltop estate on Kempty Fall Road, Mussoorie: a villa (2 rooms), French rooms, luxury rooms, a cottage, stone huts and luxury tents. Two pools, bonfire nights, stargazing and just 13 rooms. Book direct."
+  description="A private hilltop estate on Kempty Fall Road, Mussoorie: a villa (2 rooms), French rooms, luxury rooms, a cottage, stone huts and luxury tents. Pools you won't find anywhere else nearby, wood-fired pizza, a pickleball court, bonfire nights and just 13 rooms. Book direct."
   overHero
 >
   <!-- ───────── HERO ───────── -->
@@ -31,7 +32,7 @@ const featured = stays.filter((s) => s.featured);
         <span class="chip" hidden><Icon name="thermo" size={15} /><span data-temp></span></span>
       </p>
       <h1>Stay. Breathe.<br /><em>Belong.</em></h1>
-      <p class="hero-lede">A private hilltop estate of cottages, stone huts, luxury tents and a family villa. Just {totalRooms} rooms, wrapped in forest, with the Garhwal hills at your feet.</p>
+      <p class="hero-lede">A private hilltop estate of cottages, stone huts, luxury tents and a family villa. Two pools in the pines, a rarity in these hills, and just {totalRooms} rooms wrapped in forest, with the Garhwal hills at your feet.</p>
       <div class="hero-bar"><BookingBar /></div>
     </div>
     <a href="#story" class="scroll-cue" aria-label="Scroll to discover"><span></span></a>
@@ -53,13 +54,39 @@ const featured = stays.filter((s) => s.featured);
         <dl class="facts reveal" data-delay="2">
           <div><dt>{totalRooms}</dt><dd>rooms only<br />never crowded</dd></div>
           <div><dt>1,780<small>m</small></dt><dd>ridge<br />altitude</dd></div>
-          <div><dt>2</dt><dd>jungle plunge<br />pools in pines</dd></div>
+          <div><dt>2</dt><dd>pools in the pines,<br />rare in these hills</dd></div>
         </dl>
       </div>
       <div class="story-media">
         <div class="frame arch story-main reveal"><Img src="firepit-garden-dusk" alt="Fire pit at dusk in the gravel garden, ringed by daybeds, warm lanterns and a barbecue" sizes="(min-width: 900px) 440px, 80vw" /></div>
         <div class="frame story-float reveal" data-delay="2"><Img src="courtyard-fairy" alt="The courtyard strung with fairy lights at night" sizes="(min-width: 900px) 240px, 40vw" /></div>
         <p class="story-note reveal" data-delay="3"><Icon name="sparkles" size={16} /> Evenings of bonfires, fairy lights & stars</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── POOLS (our USP) ───────── -->
+  <section class="section pools" id="pools" aria-labelledby="pools-h">
+    <div class="wrap pools-grid">
+      <div class="pools-media">
+        <a href="/gallery#pools" class="frame zoom p-main reveal" aria-label="See all pool photos"><Img src="catalogue-pool" alt="The main pool and kids’ pool among tall trees, with stone paving and lounge chairs" sizes="(min-width: 900px) 46vw, 100vw" /></a>
+        <a href="/gallery#pools" class="frame zoom p-night reveal" data-delay="1" aria-label="See all pool photos"><Img src="pool-night-drinks" alt="The pool lit up at night, with drinks on a poolside table" sizes="(min-width: 900px) 18vw, 45vw" /></a>
+        <a href="/gallery#pools" class="frame zoom p-day reveal" data-delay="2" aria-label="See all pool photos"><Img src="pool-winter" alt="The blue-mosaic pool on a bright winter day, with the hills behind" sizes="(min-width: 900px) 18vw, 45vw" /></a>
+      </div>
+      <div class="pools-copy">
+        <p class="pools-badge reveal"><Icon name="waves" size={16} /> Only at Zephyr</p>
+        <h2 id="pools-h" class="reveal">A pool in the pines, <em class="wind">rare in these hills</em></h2>
+        <WindLine />
+        <p class="lede reveal" data-delay="1">You won’t find pools like ours anywhere else around here. Along Kempty Fall Road, Zephyr is the place to swim with the forest all around you.</p>
+        <ul class="ticks reveal" data-delay="1">
+          <li><Icon name="check" size={18} /> A blue-mosaic main pool and a separate kids’ pool</li>
+          <li><Icon name="check" size={18} /> Loungers, umbrellas and stone decks in the shade of the pines</li>
+          <li><Icon name="check" size={18} /> Lit up after dark for poolside drinks, wood-fired pizza and dinner</li>
+        </ul>
+        <div class="pools-actions reveal" data-delay="2">
+          <button class="btn" data-enquire>Book a stay by the pool <Icon name="arrow" /></button>
+          <a class="link-arrow" href="/gallery#pools">See the pools <Icon name="arrow" /></a>
+        </div>
       </div>
     </div>
   </section>
@@ -151,9 +178,9 @@ const featured = stays.filter((s) => s.featured);
         <p class="lede">Nothing is scheduled and everything is possible. Ask, and the estate arranges it, from a sunlit high tea to a candlelit proposal.</p>
       </div>
       <div class="exp-grid">
-        {experiences.slice(0, 6).map((e, i) => (
+        {homeExperiences.map((e, i) => (
           <article class:list={['exp-card reveal', `exp-${i}`]} data-delay={String(i % 3)}>
-            <div class="frame zoom"><Img src={e.img} alt={e.title} sizes="(min-width: 1100px) 400px, (min-width: 700px) 50vw, 100vw" /></div>
+            <div class="frame zoom" style={e.focus && `--focus: ${e.focus}`}><Img src={e.img} alt={e.title} sizes="(min-width: 1100px) 400px, (min-width: 700px) 50vw, 100vw" /></div>
             <div class="exp-copy">
               <span class="tag">{e.tag}</span>
               <h3>{e.title}</h3>
@@ -192,18 +219,17 @@ const featured = stays.filter((s) => s.featured);
   </section>
 
   <!-- ───────── GETTING HERE ───────── -->
-  <section class="section route on-dark grain" aria-labelledby="route-h">
+  <section class="section route on-dark grain" id="route" aria-labelledby="route-h">
     <Ridge variant="light" flip />
     <div class="wrap route-grid">
       <div>
         <p class="eyebrow">Getting here</p>
         <h2 id="route-h">Closer than <em class="wind">you think</em></h2>
-        <p class="lede">An easy drive from Delhi, past Dehradun and up through Mussoorie, then a quiet road towards Kempty Falls and the ridge.</p>
-        <ol class="route-line" aria-label="Distances from Zephyr Estate">
-          {[...distances].reverse().map((d) => (
-            <li><span class="rl-dot"></span><span class="rl-place">{d.place}</span><span class="rl-km">{d.km} km</span></li>
+        <p class="lede">About {driveRoute.hours} hours from Delhi, without entering central Dehradun or Mussoorie. The drive itself becomes part of the stay.</p>
+        <ol class="route-line" aria-label="Driving route from Delhi to Zephyr Estate">
+          {driveRoute.stops.map((d, i) => (
+            <li class:list={[i === driveRoute.stops.length - 1 && 'rl-here']}><span class="rl-dot"></span><span class="rl-place">{d.place}</span><span class="rl-km">{d.note}</span></li>
           ))}
-          <li class="rl-here"><span class="rl-dot"></span><span class="rl-place">Zephyr Estate</span><span class="rl-km">You’re home</span></li>
         </ol>
         <div class="route-actions">
           <a class="btn light" href={site.mapsUrl} target="_blank" rel="noopener"><Icon name="pin" /> Get directions</a>
@@ -294,6 +320,20 @@ const featured = stays.filter((s) => s.featured);
   .story-main :global(img) { object-position: 50% 50%; }
   .story-note :global(svg) { color: var(--brass); flex: none; }
 
+  /* POOLS */
+  .pools { background: linear-gradient(180deg, var(--mist) 0%, #e4eef0 100%); }
+  .pools-grid { display: grid; gap: 56px; align-items: center; }
+  @media (min-width: 900px) { .pools-grid { grid-template-columns: 1.15fr 1fr; gap: 80px; } }
+  .pools-media { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 899px) { .pools-media { order: 2; } }
+  .pools-media .frame { display: block; border-radius: var(--radius-l); box-shadow: var(--shadow-soft); }
+  .p-main { grid-column: span 2; aspect-ratio: 4 / 3; }
+  .p-night, .p-day { aspect-ratio: 1; }
+  .pools-badge { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 18px; padding: 8px 16px; border-radius: 999px; background: #1d6f8c; color: #fff; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; }
+  .pools-copy h2 { margin-bottom: 14px; }
+  .pools-copy .lede { margin: 22px 0 24px; }
+  .pools-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; }
+
   /* STAYS */
   .stays-sec { background: var(--paper); }
   .stays-grid { display: grid; gap: clamp(48px, 6vw, 72px) 40px; }
@@ -356,6 +396,7 @@ const featured = stays.filter((s) => s.featured);
   @media (min-width: 1100px) { .exp-grid { grid-template-columns: repeat(3, 1fr); gap: 48px 28px; } }
   .exp-card { display: grid; gap: 16px; align-content: start; }
   .exp-card .frame { aspect-ratio: 4 / 3; }
+  .exp-card .frame :global(img) { object-position: var(--focus, 50% 50%); }
   @media (min-width: 1100px) { .exp-card .frame { aspect-ratio: 4 / 4.6; } }
   .exp-copy h3 { margin: 12px 0 6px; font-size: 1.6rem; }
   .exp-copy p { color: var(--ink-soft); margin: 0; }
@@ -382,11 +423,11 @@ const featured = stays.filter((s) => s.featured);
   .route-grid { display: grid; gap: 56px; align-items: center; position: relative; z-index: 1; }
   @media (min-width: 900px) { .route-grid { grid-template-columns: 1fr 1.1fr; gap: 80px; } }
   .route-line { list-style: none; margin: 32px 0; padding: 0; display: grid; }
-  .route-line li { display: grid; grid-template-columns: 18px 1fr auto; gap: 16px; align-items: center; padding: 12px 0; position: relative; }
+  .route-line li { display: grid; grid-template-columns: 18px 1fr auto; gap: 16px; align-items: center; padding: 9px 0; position: relative; }
   .route-line li:not(:last-child)::after { content: ''; position: absolute; left: 8px; top: 30px; bottom: -10px; border-left: 1.5px dashed rgba(255, 255, 255, 0.3); }
   .rl-dot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--on-dark-soft); background: var(--pine-night); }
   .rl-place { font: 500 1.35rem/1.1 var(--font-display); }
-  .rl-km { font-size: 0.85rem; color: var(--on-dark-soft); font-weight: 600; letter-spacing: 0.04em; }
+  .rl-km { font-size: 0.85rem; color: var(--on-dark-soft); font-weight: 600; letter-spacing: 0.04em; text-align: right; max-width: 22ch; }
   .rl-here .rl-dot { background: var(--ember); border-color: var(--ember); box-shadow: 0 0 0 6px rgba(224, 154, 82, 0.2); }
   .rl-here .rl-place { color: var(--ember); }
   .route-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; }
