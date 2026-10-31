@@ -7,15 +7,17 @@ import Lightbox from '../components/Lightbox.astro';
 import dims from '../data/images.json';
 
 const groups = [
-  { key: 'estate', label: 'The estate', imgs: ['bonfire-pine-dusk', 'aerial-tents', 'stone-stairs', 'terrace-sculpture', 'buddha-garden', 'vine-tunnel', 'vine-path', 'teepee-garden', 'stone-patio', 'cafe-yellow', 'cat-kumaon-exterior', 'tea-pour', 'high-tea-sunrays'] },
+  { key: 'pools', label: 'The pools', imgs: ['pool-pines', 'pools-above', 'catalogue-pool', 'pool-night-drinks', 'pool-loungers', 'pool-winter', 'aerial-pools-close', 'pool-night-pizza'] },
+  { key: 'estate', label: 'Estate & views', imgs: ['bonfire-pine-dusk', 'aerial-tents', 'valley-clouds', 'stone-stairs', 'pickleball-court', 'terrace-sculpture', 'buddha-garden', 'vine-tunnel', 'valley-wide', 'vine-path', 'teepee-garden', 'canna-valley', 'stone-patio', 'cafe-yellow', 'cat-kumaon-exterior', 'monsoon-mist'] },
   { key: 'rooms', label: 'Rooms', imgs: ['cat-sierra-living', 'cat-heaven-bedroom', 'cat-stoneva-baywindow', 'cat-imperial-bedroom-1', 'cat-kumaon-bedroom-1', 'cat-timberhill-balcony', 'cat-tent-bedroom-1', 'cat-hut-bedroom-1', 'cat-sierra-dining', 'cat-bliss-bedroom-2', 'cat-stoneva-bedroom-1', 'cat-imperial-deck', 'cat-heaven-balcony', 'cat-kumaon-bedroom-2', 'cat-timberhill-baywindow', 'cat-tent-bedroom-3', 'cat-hut-seating', 'cat-bliss-passage'] },
-  { key: 'pools', label: 'Pools & views', imgs: ['pool-pines', 'catalogue-pool', 'pools-above', 'pool-loungers', 'aerial-pools-close', 'valley-clouds', 'valley-wide', 'canna-valley', 'monsoon-mist', 'pool-winter'] },
-  { key: 'nights', label: 'Nights', imgs: ['aerial-night-glow', 'bonfire-overhead', 'courtyard-fairy', 'stars-valley', 'stars-valley-2', 'pool-night-drinks', 'evening-fire-courtyard', 'teepee-bonfire', 'movie-night', 'cafe-yellow-dusk', 'candlelight-dinner', 'pool-dinner', 'cottage-night'] },
+  { key: 'food', label: 'Food & dining', imgs: ['pool-night-pizza', 'pool-dinner', 'breakfast-mountains', 'high-tea-sunrays', 'candlelight-dinner', 'golden-hour-tea', 'tea-pour', 'bday-canopy-dinner'] },
+  { key: 'nights', label: 'Nights', imgs: ['aerial-night-glow', 'bonfire-overhead', 'courtyard-fairy', 'stars-valley', 'stars-valley-2', 'evening-fire-courtyard', 'teepee-bonfire', 'movie-night', 'cafe-yellow-dusk', 'cottage-night'] },
 ];
-const alt = (s: string) => s.replace(/-\d$/, '').replace(/-/g, ' ');
+const alts: Record<string, string> = { 'pool-night-pizza': 'wood-fired pizza by the pool at night', 'pool-dinner': 'dinner spread by the pool', 'pickleball-court': 'pickleball court' };
+const alt = (s: string) => alts[s] ?? s.replace(/-\d$/, '').replace(/-/g, ' ');
 const tall = (s: string) => { const [w, h] = (dims as Record<string, number[]>)[s]; return h > w; };
 ---
-<Base title="Gallery & reels" description="Photos and reels of Zephyr Estate, Mussoorie: cottages, luxury tents, pools, bonfires and starry nights." image="pool-pines" overHero>
+<Base title="Gallery & reels" description="Photos and reels of Zephyr Estate, Mussoorie: our pools in the pines, wood-fired pizza and food, cottages, luxury tents, bonfires and starry nights." image="pool-pines" overHero>
   <PageHero img="aerial-forest" alt="Zephyr Estate seen from a drone above the forest" eyebrow="Gallery" title="See it before <em>you feel it</em>" />
 
   <nav class="wrap tabs" aria-label="Gallery sections">

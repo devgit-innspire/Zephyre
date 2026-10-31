@@ -2,11 +2,11 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
-import { site, distances, faqs } from '../data/site';
+import { site, distances, driveRoute, faqs } from '../data/site';
 const ways = [
-  { icon: 'car', title: 'By road', text: 'From Delhi, take the Delhi–Dehradun Expressway to Dehradun, climb to Mussoorie, then follow Kempty Fall Road towards Bhediyana. About 309 km, with an easy, scenic final stretch.' },
+  { icon: 'car', title: 'By road', text: 'From Delhi, take the new Delhi–Dehradun Expressway, then the Dehradun–Paonta Sahib highway via Selaqui, turning off at Langha Road for Kata Patthar, Juddo Dam and Yamuna Pul. About 5.5 hours, without entering central Dehradun or Mussoorie.' },
   { icon: 'plane', title: 'By air', text: 'Jolly Grant Airport, Dehradun, is 84 km away. We can help arrange a cab from the airport on request.' },
-  { icon: 'mountain', title: 'By train', text: 'Dehradun railway station is the nearest railhead. Take a cab up via Mussoorie, or ask us to arrange one.' },
+  { icon: 'mountain', title: 'By train', text: 'Dehradun railway station is the nearest railhead. Take a cab via Selaqui and Yamuna Pul, or ask us to arrange one.' },
 ] as const;
 ---
 <Base title="Getting here" description="How to reach Zephyr Estate on Kempty Fall Road, Mussoorie: by road from Delhi, by air via Jolly Grant, or by train to Dehradun." image="aerial-forest" overHero>
@@ -23,6 +23,23 @@ const ways = [
           <p>{w.text}</p>
         </article>
       ))}
+    </div>
+  </section>
+
+  <section class="section drive" aria-labelledby="drive-h">
+    <div class="wrap">
+      <p class="eyebrow">The drive from Delhi</p>
+      <h2 id="drive-h">About {driveRoute.hours} hours, <em class="wind">the scenic way</em></h2>
+      <ol class="stops">
+        {driveRoute.stops.map((d, i) => (
+          <li class="reveal" data-delay={String(i % 4)}>
+            <span class:list={['stop-n', (i === 0 || i === driveRoute.stops.length - 1) && 'solid']}>{i + 1}</span>
+            <b>{d.place}</b>
+            <span class="stop-note">{d.note}</span>
+          </li>
+        ))}
+      </ol>
+      <p class="drive-note"><Icon name="car" /> {driveRoute.note}</p>
     </div>
   </section>
 
@@ -58,6 +75,22 @@ const ways = [
   .way-icon { display: inline-grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: var(--deodar-100); color: var(--deodar); margin-bottom: 20px; }
   .way h2 { font-size: 2rem; margin-bottom: 10px; }
   .way p { color: var(--ink-soft); margin: 0; }
+  .drive h2 { margin-bottom: 40px; }
+  .stops { list-style: none; margin: 0 0 32px; padding: 0; display: grid; gap: 0; }
+  .stops li { position: relative; display: grid; grid-template-columns: 48px 1fr; column-gap: 18px; align-items: center; padding: 10px 0; }
+  .stops li:not(:last-child)::after { content: ''; position: absolute; left: 23px; top: 58px; bottom: -10px; border-left: 3px solid var(--brass); opacity: 0.55; }
+  .stop-n { grid-row: span 2; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 2.5px solid var(--pine-night); background: var(--paper); font: 700 1.05rem/1 var(--font-body); position: relative; z-index: 1; }
+  .stop-n.solid { background: var(--pine-night); color: var(--ember); }
+  .stops b { font-weight: 700; font-size: 1.05rem; }
+  .stop-note { font: italic 400 1.05rem/1.3 var(--font-display); color: var(--brass); }
+  @media (min-width: 1000px) {
+    .stops { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+    .stops li { grid-template-columns: 1fr; justify-items: center; text-align: center; align-content: start; row-gap: 8px; padding: 0 4px; }
+    .stop-n { grid-row: auto; margin-bottom: 8px; }
+    .stops li:not(:last-child)::after { left: calc(50% + 30px); right: calc(-50% + 30px); top: 23px; bottom: auto; border-left: 0; border-top: 3px solid var(--brass); }
+  }
+  .drive-note { display: flex; gap: 12px; align-items: flex-start; margin: 0; padding: 20px 24px; border-radius: var(--radius); background: var(--pine-night); color: var(--on-dark); font-size: 1.05rem; }
+  .drive-note :global(svg) { color: var(--ember); flex: none; margin-top: 3px; }
   .map-sec { background: var(--paper); }
   .map-grid { display: grid; gap: 48px; align-items: center; }
   @media (min-width: 900px) { .map-grid { grid-template-columns: 1.3fr 1fr; gap: 72px; } }

@@ -8,14 +8,14 @@ import Lightbox from '../components/Lightbox.astro';
 import { experiences, nearby } from '../data/site';
 
 ---
-<Base title="Experiences" description="Bonfires, stargazing, open-air movies, high tea, pools and things to do nearby at Zephyr Estate, Mussoorie." image="teepee-bonfire" overHero>
+<Base title="Experiences" description="Our pools in the pines, wood-fired pizza, pickleball, bonfires, stargazing, open-air movies and things to do nearby at Zephyr Estate, Mussoorie." image="teepee-bonfire" overHero>
   <PageHero img="bonfire-terrace-dusk" alt="Bonfire on the stone terrace at dusk with the mountains behind" eyebrow="Experiences" title="Slow days, <em>glowing nights</em>" lede="The best things at Zephyr aren't on a schedule. Here's what a stay can hold." />
 
   <section class="section">
     <div class="wrap exp-list">
       {experiences.map((e, i) => (
         <article class:list={['exp-row reveal', i % 2 && 'alt']}>
-          <div class="frame zoom"><Img src={e.img} alt={e.title} sizes="(min-width: 900px) 50vw, 100vw" /></div>
+          <div class="frame zoom" style={e.focus && `--focus: ${e.focus}`}><Img src={e.img} alt={e.title} sizes="(min-width: 900px) 50vw, 100vw" /></div>
           <div class="exp-copy">
             <span class="tag">{e.tag}</span>
             <h2>{e.title}</h2>
@@ -66,6 +66,7 @@ import { experiences, nearby } from '../data/site';
     .exp-row.alt .frame { order: 2; }
   }
   .exp-row .frame { aspect-ratio: 4 / 3; border-radius: var(--radius-l); box-shadow: var(--shadow-soft); }
+  .exp-row .frame :global(img) { object-position: var(--focus, 50% 50%); }
   .exp-copy h2 { font-size: clamp(2.2rem, 4vw, 3.4rem); margin: 16px 0 14px; }
   .exp-copy .lede { margin-bottom: 22px; }
   .exp-thumbs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0 0 22px; max-width: 420px; }
