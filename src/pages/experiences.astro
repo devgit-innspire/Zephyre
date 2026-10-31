@@ -15,7 +15,11 @@ import { experiences, nearby } from '../data/site';
     <div class="wrap exp-list">
       {experiences.map((e, i) => (
         <article class:list={['exp-row reveal', i % 2 && 'alt']}>
-          <div class="frame zoom" style={e.focus && `--focus: ${e.focus}`}><Img src={e.img} alt={e.title} sizes="(min-width: 900px) 50vw, 100vw" /></div>
+          <div class:list={['frame zoom', e.video && 'is-reel']} style={e.focus && `--focus: ${e.focus}`}>
+            {e.video
+              ? <video class="exp-video" data-autoplay autoplay muted loop playsinline preload="metadata" poster={`/reels/${e.video}.webp`} aria-label={e.title}><source src={`/reels/${e.video}.mp4`} type="video/mp4" /></video>
+              : <Img src={e.img} alt={e.title} sizes="(min-width: 900px) 50vw, 100vw" />}
+          </div>
           <div class="exp-copy">
             <span class="tag">{e.tag}</span>
             <h2>{e.title}</h2>
@@ -67,6 +71,10 @@ import { experiences, nearby } from '../data/site';
   }
   .exp-row .frame { aspect-ratio: 4 / 3; border-radius: var(--radius-l); box-shadow: var(--shadow-soft); }
   .exp-row .frame :global(img) { object-position: var(--focus, 50% 50%); }
+  /* Reels are portrait: show the whole 9:16 frame, centred in its column */
+  .exp-row .frame.is-reel { aspect-ratio: 9 / 16; width: min(100%, 380px); justify-self: center; }
+  @media (min-width: 900px) { .exp-row .frame.is-reel { width: min(100%, 400px, calc((100svh - 140px) * 9 / 16)); } }
+  .exp-video { width: 100%; height: 100%; object-fit: cover; display: block; }
   .exp-copy h2 { font-size: clamp(2.2rem, 4vw, 3.4rem); margin: 16px 0 14px; }
   .exp-copy .lede { margin-bottom: 22px; }
   .exp-thumbs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0 0 22px; max-width: 420px; }

@@ -19,8 +19,8 @@ export const site = {
   salesPhoneDisplay: '+91 98187 36764',
   // TODO(owner): confirm this number is on WhatsApp
   whatsapp: '919810010818',
-  // TODO(owner): replace with the real Instagram handle
-  instagram: 'https://www.instagram.com/',
+  // The estate's own account (uploader of the pizza workshop reel)
+  instagram: 'https://www.instagram.com/zephyr_estate_dimtastay/',
 };
 
 export const distances = [
@@ -219,9 +219,9 @@ export const totalRooms = stays.reduce((n, s) => n + s.units, 0); // 13
 
 // The Experiences page shows them all. The home page has its own pool section, so it skips `signature`
 // and shows the next six. `gallery` adds extra photos to an experience's row on the Experiences page.
-export const experiences: { title: string; text: string; img: string; tag: string; gallery?: string[]; signature?: boolean; focus?: string }[] = [
+export const experiences: { title: string; text: string; img: string; tag: string; gallery?: string[]; signature?: boolean; focus?: string; video?: string }[] = [
   { title: 'Our pools, a rarity in these hills', text: 'You won’t find pools like ours anywhere else around here. A blue-mosaic main pool and a kids’ pool sit in the pines, ringed by loungers, umbrellas and canna lilies. Swim by day, then come back after dark when the water glows for drinks, pizza and dinner at the poolside.', img: 'pool-pines', tag: 'Our signature', gallery: ['pools-above', 'pool-night-drinks', 'pool-winter'], signature: true },
-  { title: 'Wood-fired pizza & lavish spreads', text: 'Pizzas fresh from our wood-fired oven, smoky and blistered, served by the pool or round the fire. And when it’s time to feast: lavish breakfasts, high teas and dinner spreads cooked fresh at the estate.', img: 'pool-night-pizza', tag: 'Food', gallery: ['pool-dinner', 'breakfast-mountains', 'golden-hour-tea'] },
+  { title: 'Wood-fired pizza & lavish spreads', text: 'Join our pizza workshop: top your own base with fresh veg and cheese alongside our chef, then watch it blister in our mosaic-tiled wood-fired oven. Pizzas are served by the pool or round the fire. And when it’s time to feast: lavish breakfasts, high teas and dinner spreads cooked fresh at the estate.', img: 'pizza-oven-fire', tag: 'Food', video: 'reel-pizza-workshop', gallery: ['pizza-fresh-board', 'pool-night-pizza', 'pool-dinner'] },
   { title: 'Bonfire under the stars', text: 'Gather round the fire circle as the night cools. Bring stories; we bring the warmth.', img: 'bonfire-under-stars', tag: 'Evenings' },
   { title: 'Open-air movie nights', text: 'A screen by the crackling fire pit, fairy lights overhead, blankets, bolsters and your favourite film.', img: 'movie-night-firepit', tag: 'Nights' },
   { title: 'Pickleball in the forest', text: 'Rally on our own pickleball court, tucked against a stone wall with the forest all around. A favourite for families and friend groups between pool sessions.', img: 'pickleball-court', tag: 'Play', focus: '50% 62%' },
@@ -247,7 +247,8 @@ export const seasons = [
 ];
 
 export const reels = [
-  // Edited reels from the "zephyr dev" Drive folder, encoded into public/reels
+  // Edited reels from the "zephyr dev" Drive folder and the estate's Instagram, encoded into public/reels
+  { file: 'reel-pizza-workshop', title: 'Wood-fired pizza workshop' },
   { file: 'reel-zephr_stargazing', title: 'Stargazing in Mussoorie' },
   { file: 'reel-9_jan_ZEPHYR_1', title: 'Pool days, cloud views' },
   { file: 'reel-7_jan_zephyr_1', title: 'A cozy hideaway' },
