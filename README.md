@@ -30,7 +30,6 @@ Drop files into `media-src/photos/*.jpg`, `media-src/reels/*.mp4` or `media-src/
 ## Owner to confirm (TODOs in `src/data/site.ts`)
 
 - WhatsApp number (currently the bookings line +91 98100 10818)
-- Instagram handle (footer + reels link currently go to instagram.com)
 - Which photos belong to which stay (best-guess mapping from the shoots)
 - Real guest reviews (Google / Booking.com) to add a reviews section
 - Logo files (the site uses a typographic wordmark + mountain/wind mark for now)
