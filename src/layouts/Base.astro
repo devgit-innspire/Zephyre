@@ -3,17 +3,25 @@ import '../styles/global.css';
 import Logo from '../components/Logo.astro';
 import Icon from '../components/Icon.astro';
 import EnquiryDialog from '../components/EnquiryDialog.astro';
-import { site, stays, totalRooms, catalogueUrl } from '../data/site';
+import { site, stays, totalRooms, catalogueUrl, seo } from '../data/site';
+import dims from '../data/images.json';
 
 interface Props {
   title: string;
   description: string;
+  /** Exact <title> for search results (keyword-led, about 60 characters). Falls back to "title · Zephyr Estate, Mussoorie". */
+  seoTitle?: string;
   image?: string;
+  imageAlt?: string;
+  /** Extra JSON-LD objects for this page (FAQPage, HotelRoom, ItemList…) */
+  schema?: object[];
+  /** Breadcrumb trail after Home, e.g. [{ name: 'Stays', path: '/stays' }] */
+  crumbs?: { name: string; path: string }[];
   /** Nav starts transparent over a full-bleed hero */
   overHero?: boolean;
 }
-const { title, description, image = 'pool-pines', overHero = false } = Astro.props;
-const fullTitle = title === site.name ? `${site.name} @ Dimta Stay · Luxury hilltop stay near Kempty Falls, Mussoorie` : `${title} · ${site.name}, Mussoorie`;
+const { title, description, seoTitle, image = 'pool-pines', imageAlt, schema: pageSchema = [], crumbs = [], overHero = false } = Astro.props;
+const fullTitle = seoTitle ?? `${title} · ${site.name}, Mussoorie`;
 const path = Astro.url.pathname;
 const nav = [
   { href: '/stays', label: 'Stays' },
@@ -23,15 +31,25 @@ const nav = [
   { href: '/getting-here', label: 'Getting here' },
 ];
 const ogImage = new URL(`/images/${image}-1200.webp`, site.url).href;
+const canonical = new URL(path, site.url).href;
+const [imgW, imgH] = (dims as Record<string, [number, number]>)[image] ?? [1600, 1200];
+const ogH = Math.round((1200 * imgH) / imgW);
+const resortId = `${site.url}/#resort`;
 const schema = {
   '@context': 'https://schema.org',
-  '@type': 'Resort',
+  '@type': ['Resort', 'LodgingBusiness'],
+  '@id': resortId,
   name: `${site.name} @ Dimta Stay`,
-  description,
+  alternateName: ['Zephyr Estate Mussoorie', 'Zephyr by Dimta', 'Dimta Stay'],
+  description: seo.resortDescription,
+  slogan: site.tagline,
   url: site.url,
   telephone: site.phone,
   email: site.email,
-  image: ogImage,
+  image: seo.resortImages.map((i) => new URL(`/images/${i}-1200.webp`, site.url).href),
+  hasMap: site.mapsUrl,
+  sameAs: [site.instagram],
+  keywords: seo.keywords.join(', '),
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Village Bhediyana, Kempty Fall Rd',
@@ -41,12 +59,19 @@ const schema = {
     addressCountry: 'IN',
   },
   geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lon },
-  amenityFeature: ['Swimming pool', 'Kids play area', 'Bonfire', 'Free Wi-Fi'].map((name) => ({
-    '@type': 'LocationFeatureSpecification', name, value: true,
-  })),
-  containsPlace: stays.map((s) => ({ '@type': 'HotelRoom', name: s.name })),
+  amenityFeature: seo.amenities.map((name) => ({ '@type': 'LocationFeatureSpecification', name, value: true })),
+  containsPlace: stays.map((s) => ({ '@type': 'HotelRoom', name: s.name, url: `${site.url}/stays/${s.slug}` })),
   numberOfRooms: totalRooms,
+  touristType: ['Families', 'Couples', 'Friend groups', 'Weekend travellers from Delhi'],
 };
+const breadcrumb = crumbs.length ? {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [{ name: 'Home', path: '/' }, ...crumbs].map((c, i) => ({
+    '@type': 'ListItem', position: i + 1, name: c.name, item: new URL(c.path, site.url).href,
+  })),
+} : null;
+const ldBlocks = [schema, breadcrumb, ...pageSchema.map((b) => ({ '@context': 'https://schema.org', ...b }))].filter(Boolean);
 ---
 <!doctype html>
 <html lang="en" class="no-js">
@@ -56,13 +81,28 @@ const schema = {
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#17211c" />
-    <link rel="canonical" href={new URL(path, site.url).href} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+    <meta name="geo.region" content="IN-UT" />
+    <meta name="geo.placename" content="Mussoorie, Uttarakhand" />
+    <meta name="geo.position" content={`${site.geo.lat};${site.geo.lon}`} />
+    <meta name="ICBM" content={`${site.geo.lat}, ${site.geo.lon}`} />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={`${site.name} @ Dimta Stay`} />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content={String(ogH)} />
+    <meta property="og:image:alt" content={imageAlt ?? `${site.name}, Mussoorie`} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -70,7 +110,7 @@ const schema = {
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap"
     />
     <script is:inline>document.documentElement.classList.replace('no-js', 'js');</script>
-    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    {ldBlocks.map((b) => <script type="application/ld+json" set:html={JSON.stringify(b)} />)}
   </head>
   <body class:list={[overHero && 'has-hero']}>
     <a class="skip" href="#main">Skip to content</a>

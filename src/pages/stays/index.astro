@@ -5,11 +5,16 @@ import StayCard from '../../components/StayCard.astro';
 import Img from '../../components/Img.astro';
 import Icon from '../../components/Icon.astro';
 import BookingBar from '../../components/BookingBar.astro';
-import { stays, categories, totalRooms, catalogueUrl } from '../../data/site';
+import { stays, categories, totalRooms, catalogueUrl, seo, site } from '../../data/site';
+const roomList = {
+  '@type': 'ItemList',
+  name: 'Rooms at Zephyr Estate, Mussoorie',
+  itemListElement: stays.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.name, url: `${site.url}/stays/${s.slug}` })),
+};
 const groups = categories.map((c) => ({ ...c, items: stays.filter((s) => s.category === c.key) }));
 const count = (items: typeof stays) => items.reduce((n, s) => n + s.units, 0);
 ---
-<Base title="Stays" description={`All ${totalRooms} rooms at Zephyr Estate, Mussoorie: The Sierra villa, French Stoneva & Timber Hill, Kumaon Cottage, Heaven, Bliss, Utopia, Classic Huts, Classic Tents and the Grand Imperial Luxury Tent.`} image="sierra-lounge" overHero>
+<Base title="Stays" seoTitle={seo.pages.stays.title} description={seo.pages.stays.description} image="sierra-lounge" imageAlt="The Sierra villa lounge at Zephyr Estate, Mussoorie" crumbs={[{ name: 'Stays', path: '/stays' }]} schema={[roomList]} overHero>
   <PageHero img="sierra-lounge" alt="The Sierra villa lounge under a timber ceiling" eyebrow="The stays" title={`${totalRooms} rooms. <em>Six ways to stay.</em>`} lede="A family villa, twin French rooms, three luxury rooms, a Kumaon cottage, stone huts and luxury tents, each its own corner of the ridge.">
     <div class="ph-bar"><BookingBar /></div>
   </PageHero>

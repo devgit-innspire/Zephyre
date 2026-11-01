@@ -20,8 +20,24 @@ const iconFor = (f: string) =>
   /bonfire/i.test(f) ? 'flame' : /bed/i.test(f) ? 'bed' : /bath|ensuite|washroom/i.test(f) ? 'shower' : /heat|ac/i.test(f) ? 'thermo' : /wi-fi/i.test(f) ? 'wifi'
   : /tv/i.test(f) ? 'tv' : /locker/i.test(f) ? 'lock' : /kids/i.test(f) ? 'baby' : /balcony|passage|verandah|sit-out/i.test(f) ? 'door' : /bay window/i.test(f) ? 'door' : /ceiling|wood/i.test(f) ? 'trees' : /luxury/i.test(f) ? 'sparkles' : 'check';
 const [first, ...rest] = stay.gallery;
+
+// SEO: keyword-led title/description and HotelRoom structured data
+const kindLabel: Record<string, string> = { villa: 'Family Villa', french: 'French Room', luxury: 'Luxury Room', signature: 'Cottage', hut: 'Stone Hut', tent: 'Luxury Tent' };
+const baseTitle = `${stay.name} – ${kindLabel[stay.category]} in Mussoorie`;
+const seoTitle = `${baseTitle} | Zephyr Estate`.length <= 60 ? `${baseTitle} | Zephyr Estate` : baseTitle;
+const seoDesc = [`${stay.short} Near Kempty Falls, Mussoorie, with a pool, bonfires and wood-fired pizza on the estate.`, `${stay.short} At Zephyr Estate, Mussoorie, with a pool on site.`, stay.short].find((d) => d.length <= 160)!;
+const roomSchema = {
+  '@type': 'HotelRoom',
+  name: stay.name,
+  description: stay.story,
+  url: `${site.url}/stays/${stay.slug}`,
+  image: stay.gallery.map((g) => `${site.url}/images/${g}-1200.webp`),
+  ...(stay.size && { floorSize: { '@type': 'QuantitativeValue', value: stay.size, unitCode: 'FTK' } }),
+  amenityFeature: stay.features.map((name) => ({ '@type': 'LocationFeatureSpecification', name, value: true })),
+  containedInPlace: { '@id': `${site.url}/#resort` },
+};
 ---
-<Base title={stay.name} description={`${stay.name} at Zephyr Estate, Mussoorie: ${stay.short}`} image={stay.cover}>
+<Base title={stay.name} seoTitle={seoTitle} description={seoDesc} image={stay.cover} imageAlt={`${stay.name}, ${kindLabel[stay.category].toLowerCase()} at Zephyr Estate, Mussoorie`} crumbs={[{ name: 'Stays', path: '/stays' }, { name: stay.name, path: `/stays/${stay.slug}` }]} schema={[roomSchema]}>
   <section class="room-top">
     <div class="wrap">
       <nav class="crumbs" aria-label="Breadcrumb"><a href="/stays">Stays</a> <span aria-hidden="true">/</span> <span aria-current="page">{stay.name}</span></nav>

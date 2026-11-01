@@ -8,13 +8,20 @@ import BookingBar from '../components/BookingBar.astro';
 import StayCard from '../components/StayCard.astro';
 import Seasons from '../components/Seasons.astro';
 import Reels from '../components/Reels.astro';
-import { site, stays, experiences, dayTimeline, driveRoute, feast, faqs, gallery, categories, totalRooms, catalogueUrl } from '../data/site';
+import { site, seo, stays, experiences, dayTimeline, driveRoute, feast, faqs, gallery, categories, totalRooms, catalogueUrl } from '../data/site';
 const featured = stays.filter((s) => s.featured);
+const faqSchema = {
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
 const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
 ---
 <Base
   title={site.name}
-  description="A private hilltop estate on Kempty Fall Road, Mussoorie: a villa (2 rooms), French rooms, luxury rooms, a cottage, stone huts and luxury tents. Pools you won't find anywhere else nearby, wood-fired pizza, a pickleball court, bonfire nights and just 13 rooms. Book direct."
+  seoTitle={seo.pages.home.title}
+  description={seo.pages.home.description}
+  imageAlt="The swimming pool among the pines at Zephyr Estate, Mussoorie"
+  schema={[faqSchema]}
   overHero
 >
   <!-- ───────── HERO ───────── -->
@@ -31,8 +38,8 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
         <span class="chip"><Icon name="pin" size={15} /> Kempty Fall Road · Mussoorie</span>
         <span class="chip" hidden><Icon name="thermo" size={15} /><span data-temp></span></span>
       </p>
-      <h1>Stay. Breathe.<br /><em>Belong.</em></h1>
-      <p class="hero-lede">A private hilltop estate of cottages, stone huts, luxury tents and a family villa. Two pools in the pines, a rarity in these hills, and just {totalRooms} rooms wrapped in forest, with the Garhwal hills at your feet.</p>
+      <h1><span class="h1-kicker">Zephyr Estate · Resort with a pool in Mussoorie</span>Stay. Breathe.<br /><em>Belong.</em></h1>
+      <p class="hero-lede">A private hilltop resort near Kempty Falls, Mussoorie: cottages, stone huts, luxury tents and a family villa, with a swimming pool rare in these hills and just {totalRooms} rooms wrapped in forest.</p>
       <div class="hero-bar"><BookingBar /></div>
     </div>
     <a href="#story" class="scroll-cue" aria-label="Scroll to discover"><span></span></a>
@@ -77,7 +84,7 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
         <p class="pools-badge reveal"><Icon name="waves" size={16} /> Only at Zephyr</p>
         <h2 id="pools-h" class="reveal">A pool in the pines, <em class="wind">rare in these hills</em></h2>
         <WindLine />
-        <p class="lede reveal" data-delay="1">You won’t find pools like ours anywhere else around here. Along Kempty Fall Road, Zephyr is the place to swim with the forest all around you.</p>
+        <p class="lede reveal" data-delay="1">You won’t find a swimming pool like ours anywhere else around here. Along Kempty Fall Road in Mussoorie, Zephyr is the place to swim with the forest all around you.</p>
         <ul class="ticks reveal" data-delay="1">
           <li><Icon name="check" size={18} /> A blue-mosaic main pool and a separate kids’ pool</li>
           <li><Icon name="check" size={18} /> Loungers, umbrellas and stone decks in the shade of the pines</li>
@@ -351,6 +358,7 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
   .hero-eyebrow { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; animation: rise 1s var(--ease) 0.2s both; }
   .hero h1 { text-shadow: 0 2px 30px rgba(0, 0, 0, 0.25); animation: rise 1.1s var(--ease) 0.35s both; }
   .hero h1 em { font-style: italic; color: #f4d9b4; }
+  .h1-kicker { display: block; margin-bottom: 14px; font: 600 clamp(0.72rem, 1.1vw, 0.85rem)/1.4 var(--font-body); letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255, 255, 255, 0.85); }
   .hero-lede { max-width: 52ch; font-size: clamp(1.05rem, 1.5vw, 1.2rem); color: rgba(255, 255, 255, 0.9); margin: 22px 0 36px; animation: rise 1.1s var(--ease) 0.5s both; }
   .hero-bar { max-width: 1040px; animation: rise 1.1s var(--ease) 0.65s both; }
   @keyframes rise { from { opacity: 0; transform: translateY(24px); } }

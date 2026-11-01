@@ -3,12 +3,20 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import Img from '../components/Img.astro';
-import { nearby, site } from '../data/site';
+import { nearby, site, seo } from '../data/site';
+const placesList = {
+  '@type': 'ItemList',
+  name: 'Things to do near Zephyr Estate, Mussoorie',
+  itemListElement: nearby.flatMap((t) => t.places).map((p, i) => ({
+    '@type': 'ListItem', position: i + 1,
+    item: { '@type': 'TouristAttraction', name: p.name, description: p.text },
+  })),
+};
 const placeCount = nearby.reduce((n, t) => n + t.places.length, 0);
 // Places without a verified photo get an illustrated header so every card lines up
 const artIcon = (name: string) => /fall/i.test(name) ? 'waves' : /temple/i.test(name) ? 'sparkles' : /khai|view/i.test(name) ? 'mountain' : 'trees';
 ---
-<Base title="Explore nearby" description="Things to do around Zephyr Estate, Mussoorie: Lakhwar's Mahasu Devta Temple, Sainji village, Dimta waterfall, Landour cafés, Bairat Khai, Chakrata and the Dhanaulti loop, by drive time." image="valley-wide" overHero>
+<Base title="Explore nearby" seoTitle={seo.pages.explore.title} description={seo.pages.explore.description} image="valley-wide" imageAlt="Green Garhwal valley near Zephyr Estate, Mussoorie" crumbs={[{ name: 'Explore nearby', path: '/explore' }]} schema={[placesList]} overHero>
   <PageHero img="valley-clouds" alt="Clouds pouring through the valley below Zephyr Estate" eyebrow="Explore nearby" title="Step out, <em>wander a little</em>" lede="Temples, waterfalls, bakeries and big views, from a five-minute stroll to a full day out. Everything is flexible: pick whatever suits the mood.">
     <nav class="jump" aria-label="Jump to drive time">
       {nearby.map((t, i) => <a href={`#t${i}`}><Icon name="clock" size={15} /> {t.time}</a>)}
