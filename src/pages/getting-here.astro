@@ -2,14 +2,14 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
-import { site, distances, driveRoute, faqs } from '../data/site';
+import { site, distances, driveRoute, faqs, seo } from '../data/site';
 const ways = [
   { icon: 'car', title: 'By road', text: 'From Delhi, take the new Delhi–Dehradun Expressway, then the Dehradun–Paonta Sahib highway via Selaqui, turning off at Langha Road for Kata Patthar, Juddo Dam and Yamuna Pul. About 5.5 hours, without entering central Dehradun or Mussoorie.' },
   { icon: 'plane', title: 'By air', text: 'Jolly Grant Airport, Dehradun, is 84 km away. We can help arrange a cab from the airport on request.' },
   { icon: 'mountain', title: 'By train', text: 'Dehradun railway station is the nearest railhead. Take a cab via Selaqui and Yamuna Pul, or ask us to arrange one.' },
 ] as const;
 ---
-<Base title="Getting here" description="How to reach Zephyr Estate on Kempty Fall Road, Mussoorie: by road from Delhi, by air via Jolly Grant, or by train to Dehradun." image="aerial-forest" overHero>
+<Base title="Getting here" seoTitle={seo.pages.gettingHere.title} description={seo.pages.gettingHere.description} image="valley-wide" imageAlt="The valley on the drive to Zephyr Estate, Mussoorie" crumbs={[{ name: 'Getting here', path: '/getting-here' }]} overHero>
   <PageHero img="valley-wide" alt="Green Garhwal valley seen from Zephyr Estate" eyebrow="Getting here" title="The road <em>to the ridge</em>" lede={site.address}>
     <a class="btn" style="margin-top:28px" href={site.mapsUrl} target="_blank" rel="noopener"><Icon name="pin" /> Open in Google Maps</a>
   </PageHero>

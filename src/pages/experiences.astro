@@ -5,10 +5,10 @@ import Img from '../components/Img.astro';
 import Icon from '../components/Icon.astro';
 import Seasons from '../components/Seasons.astro';
 import Lightbox from '../components/Lightbox.astro';
-import { experiences, nearby } from '../data/site';
+import { experiences, nearby, seo } from '../data/site';
 
 ---
-<Base title="Experiences" description="Our pools in the pines, wood-fired pizza, pickleball, bonfires, stargazing, open-air movies and things to do nearby at Zephyr Estate, Mussoorie." image="teepee-bonfire" overHero>
+<Base title="Experiences" seoTitle={seo.pages.experiences.title} description={seo.pages.experiences.description} image="pool-pines" imageAlt="Swimming pool in the pines at Zephyr Estate, Mussoorie" crumbs={[{ name: 'Experiences', path: '/experiences' }]} overHero>
   <PageHero img="bonfire-terrace-dusk" alt="Bonfire on the stone terrace at dusk with the mountains behind" eyebrow="Experiences" title="Slow days, <em>glowing nights</em>" lede="The best things at Zephyr aren't on a schedule. Here's what a stay can hold." />
 
   <section class="section">

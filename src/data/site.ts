@@ -92,6 +92,52 @@ export const nearby: { time: string; label: string; places: NearbyPlace[] }[] = 
   },
 ];
 
+// ── SEO: target keywords, page titles/descriptions and schema amenities ──
+// Keywords are chosen by search intent (resort/stay + Mussoorie/Kempty Falls + pool, tents, cottages, family, Delhi getaway).
+// Verify volumes in Google Keyword Planner / Search Console once the domain is live; see SEO.md for the full plan.
+export const seo = {
+  keywords: [
+    'resort in Mussoorie with swimming pool', 'Mussoorie resort with pool', 'stay near Kempty Falls', 'resort on Kempty Fall Road',
+    'luxury tents in Mussoorie', 'glamping Mussoorie', 'cottage stay Mussoorie', 'family villa Mussoorie', 'family resort Mussoorie',
+    'boutique homestay Mussoorie', 'weekend getaway from Delhi', 'hill stay near Dehradun', 'wood-fired pizza Mussoorie',
+    'pickleball Mussoorie', 'bonfire stay Mussoorie', 'birthday celebration resort Mussoorie', 'Zephyr Estate', 'Dimta Stay',
+  ],
+  amenities: [
+    'Outdoor swimming pool', 'Kids’ pool', 'Wood-fired pizza oven', 'In-house dining', 'Pickleball court', 'Bonfire',
+    'Open-air movie nights', 'Kids’ play area', 'Garden and terraces', 'Free Wi-Fi', 'Room heaters', 'Daily housekeeping',
+    'Birthday and celebration set-ups',
+  ],
+  resortDescription:
+    'A private hilltop resort on Kempty Fall Road, Mussoorie, with a swimming pool and kids’ pool rare in these hills, a wood-fired pizza oven, a pickleball court, bonfires and stargazing. 13 rooms: a family villa, French rooms, luxury rooms, a Kumaon cottage, stone huts and luxury tents with solid washrooms.',
+  resortImages: ['pool-pines', 'pools-above', 'cat-sierra-living', 'pizza-oven-night', 'food-thali-tray', 'bonfire-under-stars'],
+  pages: {
+    home: {
+      title: 'Zephyr Estate Mussoorie | Resort with Pool near Kempty Falls',
+      description: 'Hilltop resort on Kempty Fall Road, Mussoorie, with a swimming pool rare in these hills, wood-fired pizza, cottages, luxury tents and a family villa.',
+    },
+    stays: {
+      title: 'Rooms, Cottages & Luxury Tents in Mussoorie | Zephyr Estate',
+      description: '13 rooms near Kempty Falls, Mussoorie: a 2-room family villa, French rooms, luxury rooms, a Kumaon cottage, stone huts and luxury tents. Pool on site.',
+    },
+    experiences: {
+      title: 'Pool, Wood-Fired Pizza & Bonfires | Zephyr Estate Mussoorie',
+      description: 'Swim in a pool rare in the Mussoorie hills, join a wood-fired pizza workshop, play pickleball, then end with bonfires, movie nights and stargazing.',
+    },
+    explore: {
+      title: 'Things to Do near Kempty Falls & Mussoorie | Zephyr Estate',
+      description: 'Places to visit near Zephyr Estate by drive time: Mahasu Devta Temple, Sainji village, Dimta waterfall, Landour, Lal Tibba, Chakrata and Dhanaulti.',
+    },
+    gallery: {
+      title: 'Photos of Our Pool, Rooms & Food | Zephyr Estate Mussoorie',
+      description: 'See Zephyr Estate, Mussoorie, in photos and reels: the swimming pool in the pines, cottages and luxury tents, wood-fired pizza, lavish food and bonfire nights.',
+    },
+    gettingHere: {
+      title: 'How to Reach Zephyr Estate, Mussoorie from Delhi & Dehradun',
+      description: 'Drive from Delhi in about 5.5 hours via the Delhi–Dehradun Expressway, Selaqui and Yamuna Pul, skipping central Dehradun and Mussoorie. Airport and rail tips.',
+    },
+  },
+};
+
 export const catalogueUrl ='https://wa.me/c/919810010818';
 
 export type Category = { key: string; label: string; blurb: string };

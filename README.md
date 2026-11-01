@@ -1,6 +1,6 @@
 # Zephyr Estate @ Dimta Stay — website
 
-Static Astro site for the hilltop estate on Kempty Fall Road, Mussoorie. See `SITE_PLAN.md` for the design rationale.
+Static Astro site for the hilltop estate on Kempty Fall Road, Mussoorie. See `SITE_PLAN.md` for the design rationale and `SEO.md` for keywords, structured data and listing copy (Google Business Profile, OTAs, Instagram).
 
 ```bash
 npm install
