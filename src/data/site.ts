@@ -217,11 +217,12 @@ export const stays: Stay[] = [
 
 export const totalRooms = stays.reduce((n, s) => n + s.units, 0); // 13
 
-// The Experiences page shows them all. The home page has its own pool section, so it skips `signature`
-// and shows the next six. `gallery` adds extra photos to an experience's row on the Experiences page.
+// The Experiences page shows them all. The home page has its own pool, pizza and food sections, so it skips
+// `signature` experiences and shows the next six. `gallery` adds extra photos to an experience's row on the Experiences page.
 export const experiences: { title: string; text: string; img: string; tag: string; gallery?: string[]; signature?: boolean; focus?: string; video?: string }[] = [
   { title: 'Our pools, a rarity in these hills', text: 'You won’t find pools like ours anywhere else around here. A blue-mosaic main pool and a kids’ pool sit in the pines, ringed by loungers, umbrellas and canna lilies. Swim by day, then come back after dark when the water glows for drinks, pizza and dinner at the poolside.', img: 'pool-pines', tag: 'Our signature', gallery: ['pools-above', 'pool-night-drinks', 'pool-winter'], signature: true },
-  { title: 'Wood-fired pizza & lavish spreads', text: 'Join our pizza workshop: top your own base with fresh veg and cheese alongside our chef, then watch it blister in our mosaic-tiled wood-fired oven. Pizzas are served by the pool or round the fire. And when it’s time to feast: lavish breakfast tables with fresh juices and fruit, high teas, and dinner spreads of rich curries, dal, rice, raita, fresh salad and hot rotis, all cooked fresh at the estate.', img: 'pizza-oven-fire', tag: 'Food', video: 'reel-pizza-workshop', gallery: ['food-thali-tray', 'food-dinner-spread', 'food-breakfast-table'] },
+  { title: 'Wood-fired pizza workshop', text: 'Top your own base with fresh veg and cheese alongside our chef, then watch it blister in our blue-mosaic wood-fired oven, out in the garden under the fairy lights. Eat it hot by the pool or round the fire.', img: 'pizza-oven-night', tag: 'Wood-fired', video: 'reel-pizza-workshop', gallery: ['pizza-oven-fire', 'pizza-fresh-board', 'pizza-topping'], signature: true },
+  { title: 'Lavish food, cooked fresh', text: 'Breakfast tables laid with fresh juices, fruit and hot toast, brunch by the pool, and dinner spreads of rich curries, dal, rice, raita, fresh salad and hot rotis, finished with something sweet. Every meal is generous and cooked fresh at the estate.', img: 'food-thali-tray', tag: 'Lavish food', gallery: ['food-dinner-spread', 'food-poolside-breakfast', 'food-breakfast-garden', 'food-dessert', 'food-poolside-snacks', 'food-breakfast-table'], signature: true },
   { title: 'Bonfire under the stars', text: 'Gather round the fire circle as the night cools. Bring stories; we bring the warmth.', img: 'bonfire-under-stars', tag: 'Evenings' },
   { title: 'Open-air movie nights', text: 'A screen by the crackling fire pit, fairy lights overhead, blankets, bolsters and your favourite film.', img: 'movie-night-firepit', tag: 'Nights' },
   { title: 'Pickleball in the forest', text: 'Rally on our own pickleball court, tucked against a stone wall with the forest all around. A favourite for families and friend groups between pool sessions.', img: 'pickleball-court', tag: 'Play', focus: '50% 62%' },
@@ -229,6 +230,17 @@ export const experiences: { title: string; text: string; img: string; tag: strin
   { title: 'Stargazing from the ridge', text: 'Far from city light, the Milky Way rises over the Garhwal hills on clear nights.', img: 'stars-valley', tag: 'Late night' },
   { title: 'High tea in the sun', text: 'Fresh bakes, pots of chai and a stone terrace that catches the afternoon light.', img: 'high-tea-sunrays', tag: 'Afternoons' },
   { title: 'Candlelit dinners & surprises', text: 'Anniversaries, proposals and surprises: tell us, and we will set the scene.', img: 'candlelight-dinner', tag: 'Romance' },
+];
+
+// Home page "Lavish food" mosaic (first photo is the large tile)
+export const feast = [
+  { img: 'food-thali-tray', label: 'Curries, dal & rice' },
+  { img: 'food-poolside-breakfast', label: 'Brunch by the pool' },
+  { img: 'food-dessert', label: 'Something sweet' },
+  { img: 'food-poolside-snacks', label: 'Poolside snacks' },
+  { img: 'food-dinner-spread', label: 'Dinner spread' },
+  { img: 'food-breakfast-garden', label: 'Breakfast with a view' },
+  { img: 'food-breakfast-table', label: 'Fresh juices & fruit' },
 ];
 
 export const dayTimeline = [
