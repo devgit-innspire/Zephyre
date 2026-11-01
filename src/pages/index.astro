@@ -8,7 +8,7 @@ import BookingBar from '../components/BookingBar.astro';
 import StayCard from '../components/StayCard.astro';
 import Seasons from '../components/Seasons.astro';
 import Reels from '../components/Reels.astro';
-import { site, stays, experiences, dayTimeline, driveRoute, faqs, gallery, categories, totalRooms, catalogueUrl } from '../data/site';
+import { site, stays, experiences, dayTimeline, driveRoute, feast, faqs, gallery, categories, totalRooms, catalogueUrl } from '../data/site';
 const featured = stays.filter((s) => s.featured);
 const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
 ---
@@ -131,6 +131,61 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
           <li><Icon name="check" size={18} /> Birthdays, anniversaries & reunions arranged</li>
         </ul>
         <button class="btn" data-enquire data-stay={`Whole estate (all ${totalRooms} rooms)`}>Enquire for the whole estate</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── WOOD-FIRED PIZZA ───────── -->
+  <section class="section pizza on-dark grain" id="pizza" aria-labelledby="pizza-h">
+    <div class="wrap pizza-grid">
+      <div class="pizza-reel frame reveal">
+        <video data-autoplay muted loop playsinline preload="none" poster="/reels/reel-pizza-workshop.webp" aria-label="Pizza workshop at Zephyr Estate">
+          <source src="/reels/reel-pizza-workshop.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="pizza-copy">
+        <p class="eyebrow reveal">From our wood-fired oven</p>
+        <h2 id="pizza-h" class="reveal">Wood-fired pizza, <em class="wind">made by you</em></h2>
+        <p class="lede reveal" data-delay="1">Our blue-mosaic oven sits out in the garden under the fairy lights. Join the pizza workshop, top your own base with fresh veg and cheese alongside our chef, then watch it blister over the wood fire.</p>
+        <ul class="ticks reveal" data-delay="1">
+          <li><Icon name="flame" size={18} /> Real wood fire, a crisp and smoky base</li>
+          <li><Icon name="sparkles" size={18} /> A hands-on pizza workshop with our chef</li>
+          <li><Icon name="check" size={18} /> Served hot by the pool or round the bonfire</li>
+        </ul>
+        <div class="pizza-stills reveal" data-delay="2">
+          {['pizza-oven-night', 'pizza-oven-fire', 'pizza-fresh-board'].map((p) => (
+            <a href="/gallery#pizza" class="frame zoom" aria-label="See wood-fired pizza photos"><Img src={p} alt="" sizes="(min-width: 900px) 180px, 30vw" /></a>
+          ))}
+        </div>
+        <div class="pizza-actions reveal" data-delay="2">
+          <button class="btn" data-enquire>Add the pizza workshop <Icon name="arrow" /></button>
+          <a class="link-arrow" href="/gallery#pizza">More pizza photos <Icon name="arrow" /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── LAVISH FOOD ───────── -->
+  <section class="section feast" id="food" aria-labelledby="feast-h">
+    <div class="wrap">
+      <div class="section-head split">
+        <div>
+          <p class="eyebrow">Lavish food</p>
+          <h2 id="feast-h">Generous tables, <em class="wind">cooked fresh</em></h2>
+        </div>
+        <p class="lede">Breakfast tables laid with fresh juices, fruit and hot toast, brunch by the pool, and dinner spreads of rich curries, dal, rice, raita and hot rotis, finished with something sweet.</p>
+      </div>
+      <div class="feast-grid">
+        {feast.map((f, i) => (
+          <a href="/gallery#food" class:list={['frame zoom reveal', `f-${i}`]} data-delay={String(i % 3)}>
+            <Img src={f.img} alt={f.label} sizes={i === 0 || i === 4 ? '(min-width: 900px) 50vw, 100vw' : '(min-width: 900px) 25vw, 50vw'} />
+            <span class="feast-label">{f.label}</span>
+          </a>
+        ))}
+      </div>
+      <div class="feast-actions">
+        <button class="btn forest" data-enquire>Plan meals for my stay</button>
+        <a class="link-arrow" href="/gallery#food">See all food photos <Icon name="arrow" /></a>
       </div>
     </div>
   </section>
@@ -360,6 +415,29 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
   .ticks { list-style: none; padding: 0; margin: 0 0 28px; display: grid; gap: 10px; }
   .ticks li { display: flex; gap: 10px; align-items: flex-start; }
   .ticks :global(svg) { color: var(--deodar); flex: none; margin-top: 3px; }
+
+  /* PIZZA */
+  .pizza-grid { display: grid; gap: 48px; align-items: center; position: relative; z-index: 1; }
+  @media (min-width: 900px) { .pizza-grid { grid-template-columns: auto 1fr; gap: 80px; } }
+  .pizza-reel { aspect-ratio: 9 / 16; width: min(100%, 360px); justify-self: center; border-radius: var(--radius-l); box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.7); }
+  @media (min-width: 900px) { .pizza-reel { width: min(400px, calc((100svh - 140px) * 9 / 16)); } }
+  .pizza-reel video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pizza-copy .lede { color: var(--on-dark-soft); margin: 22px 0 24px; }
+  .pizza .ticks :global(svg) { color: var(--ember); }
+  .pizza-stills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; max-width: 560px; margin-bottom: 32px; }
+  .pizza-stills .frame { display: block; aspect-ratio: 1; border-radius: var(--radius); }
+  .pizza-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; }
+
+  /* LAVISH FOOD */
+  .feast { background: var(--paper); }
+  .feast-grid { display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr); grid-auto-rows: 180px; grid-auto-flow: dense; margin-bottom: 40px; }
+  .feast-grid .frame { position: relative; display: block; border-radius: var(--radius); }
+  .feast-grid .f-0 { grid-column: span 2; grid-row: span 2; }
+  .feast-grid .f-1 { grid-row: span 2; }
+  .feast-grid .f-4 { grid-column: span 2; }
+  @media (min-width: 900px) { .feast-grid { grid-template-columns: repeat(4, 1fr); grid-auto-rows: 250px; gap: 16px; } }
+  .feast-label { position: absolute; left: 12px; bottom: 12px; z-index: 1; padding: 6px 12px; border-radius: 999px; background: rgba(255, 253, 248, 0.92); color: var(--ink); font-size: 0.8rem; font-weight: 600; }
+  .feast-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 18px 32px; }
 
   /* DAY: background drifts from dawn to night */
   .day { background: linear-gradient(180deg, #f7efe2 0%, #f3ead8 22%, #e6eadf 45%, #e2d2b4 72%, #2a3a40 88%, var(--pine-night) 100%); }
