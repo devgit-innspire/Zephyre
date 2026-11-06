@@ -263,15 +263,15 @@ export const stays: Stay[] = [
 
 export const totalRooms = stays.reduce((n, s) => n + s.units, 0); // 13
 
-// The Experiences page shows them all. The home page has its own pool, pizza and food sections, so it skips
+// The Experiences page shows them all. The home page has its own pool & pickleball, pizza and food sections, so it skips
 // `signature` experiences and shows the next six. `gallery` adds extra photos to an experience's row on the Experiences page.
 export const experiences: { title: string; text: string; img: string; tag: string; gallery?: string[]; signature?: boolean; focus?: string; video?: string }[] = [
   { title: 'Our pools, a rarity in these hills', text: 'You won’t find pools like ours anywhere else around here. A blue-mosaic main pool and a kids’ pool sit in the pines, ringed by loungers, umbrellas and canna lilies. Swim by day, then come back after dark when the water glows for drinks, pizza and dinner at the poolside.', img: 'pool-pines', tag: 'Our signature', gallery: ['pools-above', 'pool-night-drinks', 'pool-winter'], signature: true },
+  { title: 'Pickleball in the forest', text: 'Along with the pools, the estate has its own pickleball court, tucked against a stone wall with the forest all around. Swim, rally, swim again: a favourite for families and friend groups.', img: 'pickleball-court', tag: 'Pool & play', focus: '50% 62%', signature: true },
   { title: 'Wood-fired pizza workshop', text: 'Top your own base with fresh veg and cheese alongside our chef, then watch it blister in our blue-mosaic wood-fired oven, out in the garden under the fairy lights. Eat it hot by the pool or round the fire.', img: 'pizza-oven-night', tag: 'Wood-fired', video: 'reel-pizza-workshop', gallery: ['pizza-oven-fire', 'pizza-fresh-board', 'pizza-topping'], signature: true },
   { title: 'Lavish food, cooked fresh', text: 'Breakfast tables laid with fresh juices, fruit and hot toast, brunch by the pool, and dinner spreads of rich curries, dal, rice, raita, fresh salad and hot rotis, finished with something sweet. Every meal is generous and cooked fresh at the estate.', img: 'food-thali-tray', tag: 'Lavish food', gallery: ['food-dinner-spread', 'food-poolside-breakfast', 'food-breakfast-garden', 'food-dessert', 'food-poolside-snacks', 'food-breakfast-table'], signature: true },
   { title: 'Bonfire under the stars', text: 'Gather round the fire circle as the night cools. Bring stories; we bring the warmth.', img: 'bonfire-under-stars', tag: 'Evenings' },
   { title: 'Open-air movie nights', text: 'A screen by the crackling fire pit, fairy lights overhead, blankets, bolsters and your favourite film.', img: 'movie-night-firepit', tag: 'Nights' },
-  { title: 'Pickleball in the forest', text: 'Rally on our own pickleball court, tucked against a stone wall with the forest all around. A favourite for families and friend groups between pool sessions.', img: 'pickleball-court', tag: 'Play', focus: '50% 62%' },
   { title: 'Birthday & party decor', text: 'Balloons, a glowing Happy Birthday sign, fairy-lit canopies, candlelit lounges and a dinner table set just for you. Tell us the occasion and we will dress up the garden.', img: 'bday-full-setup', tag: 'Celebrations', gallery: ['bday-neon-balloons', 'bday-canopy-dinner', 'bday-lounge-candles'] },
   { title: 'Stargazing from the ridge', text: 'Far from city light, the Milky Way rises over the Garhwal hills on clear nights.', img: 'stars-valley', tag: 'Late night' },
   { title: 'High tea in the sun', text: 'Fresh bakes, pots of chai and a stone terrace that catches the afternoon light.', img: 'high-tea-sunrays', tag: 'Afternoons' },
@@ -292,7 +292,7 @@ export const feast = [
 export const dayTimeline = [
   { time: '6:30 am', title: 'Clouds below you', text: 'Tea on the terrace as mist pours through the valley.', img: 'valley-clouds' },
   { time: '9:00 am', title: 'Breakfast with a view', text: 'A slow breakfast with the hills laid out in front of you.', img: 'breakfast-mountains' },
-  { time: '12:00 pm', title: 'A swim in the pines', text: 'The pool is the one thing you won’t find anywhere else around here. Or chase Kempty Falls, 11 km away.', img: 'pool-loungers' },
+  { time: '12:00 pm', title: 'A swim and a game in the pines', text: 'The pool is the one thing you won’t find anywhere else around here. Swim, then play a round on the pickleball court, or chase Kempty Falls, 11 km away.', img: 'pool-loungers' },
   { time: '4:30 pm', title: 'Golden hour, high tea', text: 'Bakes and chai on the stone terrace.', img: 'golden-hour-tea' },
   { time: '7:30 pm', title: 'Fire, lights, stars', text: 'The estate glows; the bonfire crackles; the sky opens up.', img: 'fire-lights-stars' },
 ];

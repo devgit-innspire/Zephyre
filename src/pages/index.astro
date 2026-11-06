@@ -76,23 +76,24 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
   <section class="section pools" id="pools" aria-labelledby="pools-h">
     <div class="wrap pools-grid">
       <div class="pools-media">
-        <a href="/gallery#pools" class="frame zoom p-main reveal" aria-label="See all pool photos"><Img src="catalogue-pool" alt="The main pool and kids’ pool among tall trees, with stone paving and lounge chairs" sizes="(min-width: 900px) 46vw, 100vw" /></a>
-        <a href="/gallery#pools" class="frame zoom p-night reveal" data-delay="1" aria-label="See all pool photos"><Img src="pool-night-drinks" alt="The pool lit up at night, with drinks on a poolside table" sizes="(min-width: 900px) 18vw, 45vw" /></a>
-        <a href="/gallery#pools" class="frame zoom p-day reveal" data-delay="2" aria-label="See all pool photos"><Img src="pool-winter" alt="The blue-mosaic pool on a bright winter day, with the hills behind" sizes="(min-width: 900px) 18vw, 45vw" /></a>
+        <a href="/gallery#pools" class="frame zoom p-main reveal" aria-label="See all pool and pickleball photos"><Img src="catalogue-pool" alt="The main pool and kids’ pool among tall trees, with stone paving and lounge chairs" sizes="(min-width: 900px) 46vw, 100vw" /><span class="p-chip">Swimming pool & kids’ pool</span></a>
+        <a href="/gallery#pools" class="frame zoom p-night reveal" data-delay="1" aria-label="See all pool and pickleball photos"><Img src="pool-night-drinks" alt="The pool lit up at night, with drinks on a poolside table" sizes="(min-width: 900px) 18vw, 45vw" /><span class="p-chip">Pool by night</span></a>
+        <a href="/gallery#pools" class="frame zoom p-court reveal" data-delay="2" aria-label="See all pool and pickleball photos"><Img src="pickleball-court" alt="Zephyr Estate’s pickleball court against a stone wall, with the forest all around" sizes="(min-width: 900px) 18vw, 45vw" /><span class="p-chip">Pickleball court</span></a>
       </div>
       <div class="pools-copy">
-        <p class="pools-badge reveal"><Icon name="waves" size={16} /> Only at Zephyr</p>
-        <h2 id="pools-h" class="reveal">A pool in the pines, <em class="wind">rare in these hills</em></h2>
+        <p class="pools-badge reveal"><Icon name="waves" size={16} /> Only at Zephyr · Pool & pickleball</p>
+        <h2 id="pools-h" class="reveal">A pool and a pickleball court in the pines, <em class="wind">rare in these hills</em></h2>
         <WindLine />
-        <p class="lede reveal" data-delay="1">You won’t find a swimming pool like ours anywhere else around here. Along Kempty Fall Road in Mussoorie, Zephyr is the place to swim with the forest all around you.</p>
+        <p class="lede reveal" data-delay="1">You won’t find a swimming pool like ours anywhere else around here, and the estate has its own pickleball court too. Along Kempty Fall Road in Mussoorie, Zephyr is the place to swim, play and lounge with the forest all around you.</p>
         <ul class="ticks reveal" data-delay="1">
           <li><Icon name="check" size={18} /> A blue-mosaic main pool and a separate kids’ pool</li>
           <li><Icon name="check" size={18} /> Loungers, umbrellas and stone decks in the shade of the pines</li>
+          <li><Icon name="check" size={18} /> Our own pickleball court in the forest, for a game between swims</li>
           <li><Icon name="check" size={18} /> Lit up after dark for poolside drinks, wood-fired pizza and dinner</li>
         </ul>
         <div class="pools-actions reveal" data-delay="2">
           <button class="btn" data-enquire>Book a stay by the pool <Icon name="arrow" /></button>
-          <a class="link-arrow" href="/gallery#pools">See the pools <Icon name="arrow" /></a>
+          <a class="link-arrow" href="/gallery#pools">See the pool & court <Icon name="arrow" /></a>
         </div>
       </div>
     </div>
@@ -391,7 +392,10 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
   @media (max-width: 899px) { .pools-media { order: 2; } }
   .pools-media .frame { display: block; border-radius: var(--radius-l); box-shadow: var(--shadow-soft); }
   .p-main { grid-column: span 2; aspect-ratio: 4 / 3; }
-  .p-night, .p-day { aspect-ratio: 1; }
+  .p-night, .p-court { aspect-ratio: 1; }
+  .pools-media .frame { position: relative; }
+  .p-court :global(img) { object-position: 50% 62%; }
+  .p-chip { position: absolute; left: 12px; bottom: 12px; z-index: 1; padding: 6px 12px; border-radius: 999px; background: rgba(16, 40, 48, 0.72); color: #fff; font-size: 0.74rem; font-weight: 600; letter-spacing: 0.02em; backdrop-filter: blur(4px); pointer-events: none; }
   .pools-badge { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 18px; padding: 8px 16px; border-radius: 999px; background: #1d6f8c; color: #fff; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; }
   .pools-copy h2 { margin-bottom: 14px; }
   .pools-copy .lede { margin: 22px 0 24px; }
