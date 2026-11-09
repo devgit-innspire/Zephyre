@@ -1,42 +1,43 @@
 ---
 import Icon from './Icon.astro';
-import { stays, categories, totalRooms } from '../data/site';
+import { stays, categories, enquiry, ui, t } from '../data/site';
 interface Props { stay?: string; compact?: boolean }
 const { stay, compact = false } = Astro.props;
 const uid = Math.random().toString(36).slice(2, 7);
+const bb = ui.bookingBar;
 ---
-<form class:list={['bbar', compact && 'compact']} data-booking-bar aria-label="Check availability">
+<form class:list={['bbar', compact && 'compact']} data-booking-bar aria-label={bb.label}>
   <div class="bb-field">
-    <label for={`in-${uid}`}><Icon name="calendar" size={14} /> Check-in</label>
+    <label for={`in-${uid}`}><Icon name="calendar" size={14} /> {bb.checkin}</label>
     <input id={`in-${uid}`} type="date" name="checkin" />
   </div>
   <div class="bb-field">
-    <label for={`out-${uid}`}><Icon name="calendar" size={14} /> Check-out</label>
+    <label for={`out-${uid}`}><Icon name="calendar" size={14} /> {bb.checkout}</label>
     <input id={`out-${uid}`} type="date" name="checkout" />
   </div>
   <div class="bb-field">
-    <label for={`g-${uid}`}><Icon name="users" size={14} /> Guests</label>
+    <label for={`g-${uid}`}><Icon name="users" size={14} /> {bb.guests}</label>
     <select id={`g-${uid}`} name="adults">
-      {Array.from({ length: 16 }, (_, i) => <option value={i + 1} selected={i === 1}>{i + 1} {i ? 'adults' : 'adult'}</option>)}
+      {Array.from({ length: 16 }, (_, i) => <option value={i + 1} selected={i === 1}>{i + 1} {i ? bb.adults : bb.adult}</option>)}
     </select>
   </div>
   {stay ? (
     <input type="hidden" name="stay" value={stay} />
   ) : (
     <div class="bb-field">
-      <label for={`s-${uid}`}><Icon name="home" size={14} /> Stay</label>
+      <label for={`s-${uid}`}><Icon name="home" size={14} /> {bb.stay}</label>
       <select id={`s-${uid}`} name="stay">
-        <option value="Any – suggest the best">Any stay</option>
+        <option value={enquiry.anyStayValue}>{bb.anyStay}</option>
         {categories.map((c) => (
           <optgroup label={c.label}>
             {stays.filter((s) => s.category === c.key).map((s) => <option value={s.name}>{s.name}{s.units > 1 ? ` (${s.unitLabel})` : ''}</option>)}
           </optgroup>
         ))}
-        <option value={`Whole estate (all ${totalRooms} rooms)`}>Whole estate</option>
+        <option value={t(enquiry.wholeEstateValue)}>{bb.wholeEstate}</option>
       </select>
     </div>
   )}
-  <button class="btn" type="submit">Check availability <Icon name="arrow" /></button>
+  <button class="btn" type="submit">{bb.submit} <Icon name="arrow" /></button>
 </form>
 
 <style>

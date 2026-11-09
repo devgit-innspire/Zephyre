@@ -5,23 +5,24 @@ import StayCard from '../../components/StayCard.astro';
 import Img from '../../components/Img.astro';
 import Icon from '../../components/Icon.astro';
 import BookingBar from '../../components/BookingBar.astro';
-import { stays, categories, totalRooms, catalogueUrl, seo, site } from '../../data/site';
+import { stays, categories, catalogueUrl, seo, site, enquiry, pages, t, rich, richHtml } from '../../data/site';
+const c = pages.stays;
 const roomList = {
   '@type': 'ItemList',
-  name: 'Rooms at Zephyr Estate, Mussoorie',
+  name: c.roomListName,
   itemListElement: stays.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.name, url: `${site.url}/stays/${s.slug}` })),
 };
 const groups = categories.map((c) => ({ ...c, items: stays.filter((s) => s.category === c.key) }));
 const count = (items: typeof stays) => items.reduce((n, s) => n + s.units, 0);
 ---
-<Base title="Stays" seoTitle={seo.pages.stays.title} description={seo.pages.stays.description} image="sierra-lounge" imageAlt="The Sierra villa lounge at Zephyr Estate, Mussoorie" crumbs={[{ name: 'Stays', path: '/stays' }]} schema={[roomList]} overHero>
-  <PageHero img="sierra-lounge" alt="The Sierra villa lounge under a timber ceiling" eyebrow="The stays" title={`${totalRooms} rooms. <em>Six ways to stay.</em>`} lede="A family villa, twin French rooms, three luxury rooms, a Kumaon cottage, stone huts and luxury tents, each its own corner of the ridge.">
+<Base title={c.pageName} seoTitle={seo.pages.stays.title} description={seo.pages.stays.description} image={c.shareImage} imageAlt={c.shareImageAlt} crumbs={[{ name: c.breadcrumb, path: '/stays' }]} schema={[roomList]} overHero>
+  <PageHero img={c.hero.image} alt={c.hero.imageAlt} eyebrow={c.hero.eyebrow} title={richHtml(c.hero.heading)} lede={c.hero.lede}>
     <div class="ph-bar"><BookingBar /></div>
   </PageHero>
 
-  <nav class="wrap jump" aria-label="Room categories">
+  <nav class="wrap jump" aria-label={c.categoriesLabel}>
     {groups.map((g) => <a href={`#${g.key}`}>{g.label} <span>{count(g.items)}</span></a>)}
-    <a class="cat-wa" href={catalogueUrl} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /> WhatsApp catalogue</a>
+    <a class="cat-wa" href={catalogueUrl} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /> {c.catalogueLink}</a>
   </nav>
 
   {groups.map((g, gi) => (
@@ -29,7 +30,7 @@ const count = (items: typeof stays) => items.reduce((n, s) => n + s.units, 0);
       <div class="wrap">
         <div class="section-head split">
           <div>
-            <p class="eyebrow">{count(g.items)} {count(g.items) === 1 ? 'room' : 'rooms'}</p>
+            <p class="eyebrow">{t(count(g.items) === 1 ? c.roomCountOne : c.roomCountMany, { count: count(g.items) })}</p>
             <h2 id={`${g.key}-h`}>{g.label}</h2>
           </div>
           <p class="lede">{g.blurb}</p>
@@ -43,14 +44,14 @@ const count = (items: typeof stays) => items.reduce((n, s) => n + s.units, 0);
 
   <section class="section estate-sec on-dark grain" id="estate">
     <div class="wrap estate-grid">
-      <div class="frame reveal"><Img src="aerial-night-glow" alt="Zephyr Estate lit up at night, seen from above" sizes="(min-width: 900px) 50vw, 100vw" /></div>
+      <div class="frame reveal"><Img src={c.estate.image} alt={c.estate.imageAlt} sizes="(min-width: 900px) 50vw, 100vw" /></div>
       <div class="reveal" data-delay="1">
-        <p class="eyebrow">The Family Retreat</p>
-        <h2>Book the <em class="wind">whole estate</em></h2>
-        <p class="lede">All {totalRooms} rooms reserved for your group alone: the villa, French rooms, cottages, huts and tents, plus the pools, terraces, lawns and bonfire circle.</p>
+        <p class="eyebrow">{c.estate.eyebrow}</p>
+        <h2>{rich(c.estate.heading).map((p) => p.br ? <br /> : p.em ? <em class="wind">{p.text}</em> : p.text)}</h2>
+        <p class="lede">{t(c.estate.lede)}</p>
         <div class="estate-actions">
-          <button class="btn" data-enquire data-stay={`Whole estate (all ${totalRooms} rooms)`}>Enquire for the whole estate</button>
-          <a class="link-arrow" href={catalogueUrl} target="_blank" rel="noopener"><Icon name="whatsapp" /> View catalogue</a>
+          <button class="btn" data-enquire data-stay={t(enquiry.wholeEstateValue)}>{c.estate.button}</button>
+          <a class="link-arrow" href={catalogueUrl} target="_blank" rel="noopener"><Icon name="whatsapp" /> {c.estate.catalogueLink}</a>
         </div>
       </div>
     </div>

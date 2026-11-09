@@ -5,12 +5,13 @@ import Icon from '../../components/Icon.astro';
 import BookingBar from '../../components/BookingBar.astro';
 import StayCard from '../../components/StayCard.astro';
 import Lightbox from '../../components/Lightbox.astro';
-import { stays, site, catalogueUrl, type Stay } from '../../data/site';
+import { stays, site, catalogueUrl, pages, ui, fill, type Stay } from '../../data/site';
 
 export function getStaticPaths() {
   return stays.map((stay) => ({ params: { slug: stay.slug }, props: { stay } }));
 }
 const { stay } = Astro.props as { stay: Stay };
+const c = pages.stay;
 // One sibling from the same category, then featured rooms from other categories: three distinct looks
 const others = [
   ...stays.filter((s) => s.slug !== stay.slug && s.category === stay.category).slice(0, 1),
@@ -22,10 +23,11 @@ const iconFor = (f: string) =>
 const [first, ...rest] = stay.gallery;
 
 // SEO: keyword-led title/description and HotelRoom structured data
-const kindLabel: Record<string, string> = { villa: 'Family Villa', french: 'French Room', luxury: 'Luxury Room', signature: 'Cottage', hut: 'Stone Hut', tent: 'Luxury Tent' };
-const baseTitle = `${stay.name} – ${kindLabel[stay.category]} in Mussoorie`;
-const seoTitle = `${baseTitle} | Zephyr Estate`.length <= 60 ? `${baseTitle} | Zephyr Estate` : baseTitle;
-const seoDesc = [`${stay.short} Near Kempty Falls, Mussoorie, with a pool, bonfires and wood-fired pizza on the estate.`, `${stay.short} At Zephyr Estate, Mussoorie, with a pool on site.`, stay.short].find((d) => d.length <= 160)!;
+const kindLabel = (c.kindLabels as Record<string, string>)[stay.category] ?? stay.kind;
+const baseTitle = fill(c.seoTitle, { name: stay.name, kind: kindLabel });
+const seoTitle = `${baseTitle}${c.seoTitleSuffix}`.length <= 60 ? `${baseTitle}${c.seoTitleSuffix}` : baseTitle;
+const descOptions = c.seoDescriptions.map((d) => fill(d, { short: stay.short }));
+const seoDesc = descOptions.find((d) => d.length <= 160) ?? descOptions[descOptions.length - 1];
 const roomSchema = {
   '@type': 'HotelRoom',
   name: stay.name,
@@ -37,17 +39,17 @@ const roomSchema = {
   containedInPlace: { '@id': `${site.url}/#resort` },
 };
 ---
-<Base title={stay.name} seoTitle={seoTitle} description={seoDesc} image={stay.cover} imageAlt={`${stay.name}, ${kindLabel[stay.category].toLowerCase()} at Zephyr Estate, Mussoorie`} crumbs={[{ name: 'Stays', path: '/stays' }, { name: stay.name, path: `/stays/${stay.slug}` }]} schema={[roomSchema]}>
+<Base title={stay.name} seoTitle={seoTitle} description={seoDesc} image={stay.cover} imageAlt={fill(c.shareImageAlt, { name: stay.name, kindLowercase: kindLabel.toLowerCase() })} crumbs={[{ name: c.breadcrumbParent, path: '/stays' }, { name: stay.name, path: `/stays/${stay.slug}` }]} schema={[roomSchema]}>
   <section class="room-top">
     <div class="wrap">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="/stays">Stays</a> <span aria-hidden="true">/</span> <span aria-current="page">{stay.name}</span></nav>
+      <nav class="crumbs" aria-label={c.breadcrumbLabel}><a href="/stays">{c.breadcrumbParent}</a> <span aria-hidden="true">/</span> <span aria-current="page">{stay.name}</span></nav>
       <div class:list={['room-gallery', rest.length === 0 && 'solo']}>
         <a href={`/images/${first}-2000.webp`} class="frame g-main" data-lb data-alt={stay.name}>
-          <Img src={first} alt={`${stay.name} interior`} sizes="(min-width: 900px) 60vw, 100vw" eager />
+          <Img src={first} alt={fill(c.mainPhotoAlt, { name: stay.name })} sizes="(min-width: 900px) 60vw, 100vw" eager />
         </a>
         {rest.slice(0, 4).map((g, i) => (
           <a href={`/images/${g}-2000.webp`} class:list={['frame zoom', `g-${i}`]} data-lb data-alt={stay.name}>
-            <Img src={g} alt={`${stay.name}, photo ${i + 2}`} sizes="(min-width: 900px) 20vw, 50vw" />
+            <Img src={g} alt={fill(c.photoAlt, { name: stay.name, number: i + 2 })} sizes="(min-width: 900px) 20vw, 50vw" />
           </a>
         ))}
       </div>
@@ -57,29 +59,29 @@ const roomSchema = {
   <section class="section room-body">
     <div class="wrap room-grid">
       <div>
-        <p class="eyebrow">{stay.kind}{stay.units > 1 ? ` · ${stay.unitLabel}` : ''}{stay.size ? ` · ${stay.size} sq. ft.` : ''}</p>
+        <p class="eyebrow">{stay.kind}{stay.units > 1 ? ` · ${stay.unitLabel}` : ''}{stay.size ? ` · ${stay.size} ${ui.stayCard.sizeUnit}` : ''}</p>
         <h1>{stay.name}</h1>
         <p class="lede">{stay.story}</p>
-        <h2 class="feat-h">What you’ll find</h2>
+        <h2 class="feat-h">{c.featuresHeading}</h2>
         <ul class="feats">
-          {stay.size && <li><Icon name="ruler" /> {stay.size} sq. ft.{stay.units > 1 ? ' each' : ''}</li>}
+          {stay.size && <li><Icon name="ruler" /> {fill(stay.units > 1 ? c.sizeLabelEach : c.sizeLabel, { size: stay.size })}</li>}
           {stay.features.map((f) => <li><Icon name={iconFor(f) as any} /> {f}</li>)}
         </ul>
         <div class="note">
           <Icon name="sparkles" />
-          <p>Celebrating something? We can decorate the room, arrange a candlelit dinner or set up a bonfire just for you. Mention it when you enquire.</p>
+          <p>{c.celebrationNote}</p>
         </div>
       </div>
-      <aside class="book-card" aria-label="Book this stay">
-        <p class="bc-title">Reserve {stay.name}</p>
-        <p class="bc-sub">Best rate when you book direct. No payment needed to enquire.</p>
+      <aside class="book-card" aria-label={c.bookCard.label}>
+        <p class="bc-title">{fill(c.bookCard.title, { name: stay.name })}</p>
+        <p class="bc-sub">{c.bookCard.subtitle}</p>
         <BookingBar stay={stay.name} compact />
         <div class="bc-alt">
           <a href={`tel:${site.phone}`}><Icon name="phone" size={16} /> {site.phoneDisplay}</a>
-          <a href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent(`Hi! I'd like to know about ${stay.name}.`)}`} target="_blank" rel="noopener"><Icon name="whatsapp" size={16} /> WhatsApp</a>
+          <a href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent(fill(c.bookCard.whatsappMessage, { name: stay.name }))}`} target="_blank" rel="noopener"><Icon name="whatsapp" size={16} /> {c.bookCard.whatsappLink}</a>
         </div>
         <div class="bc-alt">
-          <a href={catalogueUrl} target="_blank" rel="noopener">View all rooms in our WhatsApp catalogue</a>
+          <a href={catalogueUrl} target="_blank" rel="noopener">{c.bookCard.catalogueLink}</a>
         </div>
       </aside>
     </div>
@@ -88,14 +90,14 @@ const roomSchema = {
   <section class="section more">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow">You may also love</p>
-        <h2>Other stays on the ridge</h2>
+        <p class="eyebrow">{c.more.eyebrow}</p>
+        <h2>{c.more.heading}</h2>
       </div>
       <div class="more-grid">{others.map((s, i) => <StayCard stay={s} index={i} />)}</div>
     </div>
   </section>
 
-  <Lightbox />
+  <Lightbox labels={ui.lightbox} />
 </Base>
 
 <style>

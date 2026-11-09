@@ -1,17 +1,18 @@
 ---
 import Img from './Img.astro';
-import { seasons } from '../data/site';
+import { seasons, ui, fill, rich } from '../data/site';
+const c = ui.seasons;
 ---
 <section class="seasons" data-seasons aria-labelledby="seasons-h">
   {seasons.map((s, i) => (
     <div class:list={['season-bg', i === 0 && 'is-active']} id={`season-${s.key}`} role="tabpanel" aria-labelledby={`tab-${s.key}`}>
-      <Img src={s.img} alt={`Zephyr Estate in ${s.label.toLowerCase()}`} sizes="100vw" />
+      <Img src={s.img} alt={fill(c.imageAlt, { season: s.label.toLowerCase() })} sizes="100vw" />
     </div>
   ))}
   <div class="wrap seasons-inner">
-    <p class="eyebrow">Four seasons, one ridge</p>
-    <h2 id="seasons-h">When will <em class="wind">you</em> come?</h2>
-    <div class="season-tabs" role="tablist" aria-label="Seasons">
+    <p class="eyebrow">{c.eyebrow}</p>
+    <h2 id="seasons-h">{rich(c.heading).map((p) => p.br ? <br /> : p.em ? <em class="wind">{p.text}</em> : p.text)}</h2>
+    <div class="season-tabs" role="tablist" aria-label={c.tabsLabel}>
       {seasons.map((s, i) => (
         <button role="tab" id={`tab-${s.key}`} aria-controls={`season-${s.key}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>
           <span class="st-label">{s.label}</span>
@@ -24,7 +25,7 @@ import { seasons } from '../data/site';
         <p class:list={['season-text', i === 0 && 'is-active']} data-for={s.key}>{s.text}</p>
       ))}
     </div>
-    <button class="btn light" data-enquire>Plan my season</button>
+    <button class="btn light" data-enquire>{c.button}</button>
   </div>
 </section>
 

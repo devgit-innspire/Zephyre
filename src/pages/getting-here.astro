@@ -2,16 +2,14 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
-import { site, distances, driveRoute, faqs, seo } from '../data/site';
-const ways = [
-  { icon: 'car', title: 'By road', text: 'From Delhi, take the new Delhi–Dehradun Expressway, then the Dehradun–Paonta Sahib highway via Selaqui, turning off at Langha Road for Kata Patthar, Juddo Dam and Yamuna Pul. About 5.5 hours, without entering central Dehradun or Mussoorie.' },
-  { icon: 'plane', title: 'By air', text: 'Jolly Grant Airport, Dehradun, is 84 km away. We can help arrange a cab from the airport on request.' },
-  { icon: 'mountain', title: 'By train', text: 'Dehradun railway station is the nearest railhead. Take a cab via Selaqui and Yamuna Pul, or ask us to arrange one.' },
-] as const;
+import { site, distances, driveRoute, faqs, seo, pages, richHtml, rich } from '../data/site';
+const c = pages.gettingHere;
+// `icon` is one of the names in components/Icon.astro (car, plane, mountain, …)
+const ways = c.ways as { icon: any; title: string; text: string }[];
 ---
-<Base title="Getting here" seoTitle={seo.pages.gettingHere.title} description={seo.pages.gettingHere.description} image="valley-wide" imageAlt="The valley on the drive to Zephyr Estate, Mussoorie" crumbs={[{ name: 'Getting here', path: '/getting-here' }]} overHero>
-  <PageHero img="valley-wide" alt="Green Garhwal valley seen from Zephyr Estate" eyebrow="Getting here" title="The road <em>to the ridge</em>" lede={site.address}>
-    <a class="btn" style="margin-top:28px" href={site.mapsUrl} target="_blank" rel="noopener"><Icon name="pin" /> Open in Google Maps</a>
+<Base title={c.pageName} seoTitle={seo.pages.gettingHere.title} description={seo.pages.gettingHere.description} image={c.shareImage} imageAlt={c.shareImageAlt} crumbs={[{ name: c.breadcrumb, path: '/getting-here' }]} overHero>
+  <PageHero img={c.hero.image} alt={c.hero.imageAlt} eyebrow={c.hero.eyebrow} title={richHtml(c.hero.heading)} lede={site.address}>
+    <a class="btn" style="margin-top:28px" href={site.mapsUrl} target="_blank" rel="noopener"><Icon name="pin" /> {c.hero.mapsButton}</a>
   </PageHero>
 
   <section class="section">
@@ -28,8 +26,8 @@ const ways = [
 
   <section class="section drive" aria-labelledby="drive-h">
     <div class="wrap">
-      <p class="eyebrow">The drive from Delhi</p>
-      <h2 id="drive-h">About {driveRoute.hours} hours, <em class="wind">the scenic way</em></h2>
+      <p class="eyebrow">{c.drive.eyebrow}</p>
+      <h2 id="drive-h">{rich(c.drive.heading, { hours: driveRoute.hours }).map((p) => p.br ? <br /> : p.em ? <em class="wind">{p.text}</em> : p.text)}</h2>
       <ol class="stops">
         {driveRoute.stops.map((d, i) => (
           <li class="reveal" data-delay={String(i % 4)}>
@@ -45,25 +43,25 @@ const ways = [
 
   <section class="section map-sec">
     <div class="wrap map-grid">
-      <div class="frame map"><iframe title="Map to Zephyr Estate" src={site.mapEmbed} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+      <div class="frame map"><iframe title={c.mapTitle} src={site.mapEmbed} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
       <div>
-        <p class="eyebrow">Distances</p>
-        <h2>From Zephyr Estate</h2>
+        <p class="eyebrow">{c.distances.eyebrow}</p>
+        <h2>{c.distances.heading}</h2>
         <ul class="dist">
-          {distances.map((d) => <li><span>{d.place}</span><b>{d.km} km</b></li>)}
+          {distances.map((d) => <li><span>{d.place}</span><b>{d.km} {c.distances.unit}</b></li>)}
         </ul>
-        <p class="tip"><Icon name="sun" /> Tip: leave Delhi early to reach by lunch, and keep the last stretch for daylight.</p>
+        <p class="tip"><Icon name="sun" /> {c.distances.tip}</p>
       </div>
     </div>
   </section>
 
   <section class="section faq-sec">
     <div class="wrap narrow">
-      <h2>Before you set out</h2>
+      <h2>{c.faq.heading}</h2>
       {faqs.map((f) => (
         <details><summary>{f.q}<Icon name="chevron" /></summary><p>{f.a}</p></details>
       ))}
-      <p class="cta"><button class="btn" data-enquire>Check availability</button></p>
+      <p class="cta"><button class="btn" data-enquire>{c.faq.button}</button></p>
     </div>
   </section>
 </Base>

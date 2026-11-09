@@ -12,7 +12,8 @@ npm run build     # → dist/ (deploy to Vercel / Netlify / any static host)
 
 | Path | What |
 |---|---|
-| `src/data/site.ts` | All content: contact, stays, experiences, seasons, reels, FAQs |
+| `src/data/content.json` | All editable content: contact, stays, experiences, seasons, reels, FAQs, plus every page/nav/footer/form text (see its `_notes`) |
+| `src/data/site.ts` | Typed re-exports of `content.json` + helpers (`totalRooms`, `{placeholder}` filling) |
 | `src/pages/` | Home, `/stays`, `/stays/[slug]`, `/experiences`, `/gallery`, `/getting-here` |
 | `src/components/` | BookingBar, EnquiryDialog, StayCard, Reels, Seasons, Ridge, Img… |
 | `src/styles/global.css` | "Mountain Wind" design tokens (deodar / mist / pine night / brass) |
@@ -21,13 +22,17 @@ npm run build     # → dist/ (deploy to Vercel / Netlify / any static host)
 
 ## Adding photos or reels
 
-Drop files into `media-src/photos/*.jpg`, `media-src/reels/*.mp4` or `media-src/video/*.mp4` (git-ignored originals), then run `npm run media`. Reference photos by file name (without extension) in `site.ts`.
+Drop files into `media-src/photos/*.jpg`, `media-src/reels/*.mp4` or `media-src/video/*.mp4` (git-ignored originals), then run `npm run media`. Reference photos by file name (without extension) in `content.json`.
 
 ## Booking flow
 
 "Check availability" opens a dialog that validates dates, guests, name and phone, then sends a pre-filled message to WhatsApp (or email). No backend is needed. A `generate_lead` event fires if GA4 (`gtag`) is installed.
 
-## Owner to confirm (TODOs in `src/data/site.ts`)
+## Admin panel hooks
+
+Set `PUBLIC_ADMIN_URL` (see `.env.example`) to load the admin tracker (`<PUBLIC_ADMIN_URL>/t.js`) on every page; enquiries are then reported as leads and admin popups can open the enquiry dialog (`sa:open-enquiry` event). Unset, the site builds without any tracking.
+
+## Owner to confirm (TODOs in `_notes` of `src/data/content.json`)
 
 - WhatsApp number (currently the bookings line +91 98100 10818)
 - Which photos belong to which stay (best-guess mapping from the shoots)

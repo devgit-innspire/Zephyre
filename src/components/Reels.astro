@@ -2,35 +2,36 @@
 // Instagram-style vertical reels. Videos load lazily (data-src) and only play when on screen.
 import Icon from './Icon.astro';
 import WindLine from './WindLine.astro';
-import { reels, site } from '../data/site';
+import { reels, site, ui, fill } from '../data/site';
 interface Props { heading?: string; limit?: number }
-const { heading = 'Life on the ridge, in reels', limit = reels.length } = Astro.props;
+const c = ui.reels;
+const { heading = c.defaultHeading, limit = reels.length } = Astro.props;
 const list = reels.slice(0, limit);
 ---
 <section class="reels section on-dark grain" aria-labelledby="reels-h" data-scroller>
   <div class="wrap reels-head">
     <div>
-      <p class="eyebrow">Reels from Zephyr</p>
+      <p class="eyebrow">{c.eyebrow}</p>
       <h2 id="reels-h">{heading}</h2>
       <WindLine />
     </div>
     <div class="reels-nav">
-      <a class="link-arrow" href={site.instagram} target="_blank" rel="noopener"><Icon name="instagram" /> Follow on Instagram</a>
+      <a class="link-arrow" href={site.instagram} target="_blank" rel="noopener"><Icon name="instagram" /> {c.instagramLink}</a>
       <div class="reels-arrows">
-        <button class="round" aria-label="Previous reels" data-prev><Icon name="arrow" size={20} class="flip-x" /></button>
-        <button class="round" aria-label="Next reels" data-next><Icon name="arrow" size={20} /></button>
+        <button class="round" aria-label={c.previousLabel} data-prev><Icon name="arrow" size={20} class="flip-x" /></button>
+        <button class="round" aria-label={c.nextLabel} data-next><Icon name="arrow" size={20} /></button>
       </div>
     </div>
   </div>
-  <div class="reels-track" data-track tabindex="0" aria-label="Reels, scroll sideways">
+  <div class="reels-track" data-track tabindex="0" aria-label={c.trackLabel}>
     {list.map((r) => (
       <figure class="reel" data-reel>
         <video
           data-src={`/reels/${r.file}.mp4`} poster={`/reels/${r.file}.webp`}
           muted loop playsinline preload="none" aria-label={r.title}
         ></video>
-        <button class="reel-play" data-play aria-label={`Play or pause: ${r.title}`}><Icon name="play" size={22} /></button>
-        <button class="reel-sound" data-sound aria-pressed="false" aria-label={`Sound for ${r.title}`}>
+        <button class="reel-play" data-play aria-label={fill(c.playLabel, { title: r.title })}><Icon name="play" size={22} /></button>
+        <button class="reel-sound" data-sound aria-pressed="false" aria-label={fill(c.soundLabel, { title: r.title })}>
           <Icon name="mute" size={18} class="i-mute" /><Icon name="volume" size={18} class="i-vol" />
         </button>
         <figcaption>{r.title}</figcaption>

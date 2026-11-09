@@ -1,5 +1,20 @@
 // Site-wide behaviour: nav state, mobile drawer, scroll reveals, enquiry dialog, live weather, reels.
-const site = { whatsapp: '919810010818', email: 'contact@zephyrbydimta.com', lat: 30.49, lon: 78.0 };
+// Contact details and message text come from src/data/content.json via the #site-config JSON that Base.astro emits.
+type SiteConfig = {
+  whatsapp: string;
+  email: string;
+  lat: number;
+  lon: number;
+  message: Record<string, string>;
+  liveTemperature: string;
+  menuOpenLabel: string;
+  menuCloseLabel: string;
+};
+const site: SiteConfig = JSON.parse(document.getElementById('site-config')?.textContent || '{}');
+const msgText = site.message || {};
+/** Replace {placeholder} tokens with values (same rules as fill() in src/data/site.ts). */
+const fill = (text: string | undefined, vars: Record<string, string | number>) =>
+  (text ?? '').replace(/\{(\w+)\}/g, (m, k: string) => (k in vars ? String(vars[k]) : m));
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ── Nav: solid after hero, hide on scroll down, show on scroll up ── */
@@ -21,7 +36,7 @@ menuBtn?.addEventListener('click', () => {
   const open = drawer!.hidden;
   drawer!.hidden = !open;
   menuBtn.setAttribute('aria-expanded', String(open));
-  menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  menuBtn.setAttribute('aria-label', open ? site.menuCloseLabel : site.menuOpenLabel);
   document.body.style.overflow = open ? 'hidden' : '';
   nav?.classList.add('is-solid');
   if (!open) onScroll();
@@ -67,6 +82,8 @@ document.addEventListener('click', (e) => {
   e.preventDefault();
   openEnquiry({ stay: t.dataset.stay });
 });
+// Admin panel popups can open the enquiry dialog (optionally preselecting a stay)
+window.addEventListener('sa:open-enquiry', (e) => openEnquiry({ stay: (e as CustomEvent).detail?.stay }));
 dialog?.addEventListener('close', () => { document.body.style.overflow = ''; });
 dialog?.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
 dialog?.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
@@ -98,20 +115,38 @@ form?.addEventListener('submit', (e) => {
   e.preventDefault();
   if (!validate(form)) return;
   const d = Object.fromEntries(new FormData(form)) as Record<string, string>;
-  const nights = Math.round((new Date(d.checkout).getTime() - new Date(d.checkin).getTime()) / 86400000);
-  const msg = [
-    'Hello Zephyr Estate! I would like to book a stay.',
-    '',
-    `Dates: ${fmt(d.checkin)} → ${fmt(d.checkout)} (${nights} night${nights > 1 ? 's' : ''})`,
-    `Guests: ${d.adults} adult${d.adults === '1' ? '' : 's'}${d.children !== '0' ? `, ${d.children} child${d.children === '1' ? '' : 'ren'}` : ''}`,
-    `Stay: ${d.stay}`,
-    `Name: ${d.name}`,
-    `Phone: ${d.phone}`,
-    d.note ? `Note: ${d.note}` : '',
-  ].filter(Boolean).join('\n');
   const via = (e as SubmitEvent).submitter?.getAttribute('value');
+  // Admin panel lead capture (no-op unless the tracker from PUBLIC_ADMIN_URL is loaded)
+  (window as any).sa?.('lead', {
+    source: 'enquiry',
+    channel: via === 'email' ? 'email' : 'whatsapp',
+    name: d.name,
+    phone: d.phone,
+    checkin: d.checkin,
+    checkout: d.checkout,
+    adults: d.adults,
+    children: d.children,
+    guests: (Number(d.adults) || 0) + (Number(d.children) || 0),
+    stay: d.stay,
+    note: d.note || '',
+  });
+  const nights = Math.round((new Date(d.checkout).getTime() - new Date(d.checkin).getTime()) / 86400000);
+  const m = msgText;
+  const childrenPart = d.children !== '0'
+    ? fill(m.childrenPart, { children: d.children, childrenWord: d.children === '1' ? m.child : m.children })
+    : '';
+  const msg = [
+    m.greeting,
+    '',
+    fill(m.datesLine, { checkin: fmt(d.checkin), checkout: fmt(d.checkout), nights, nightsWord: nights > 1 ? m.nights : m.night }),
+    fill(m.guestsLine, { adults: d.adults, adultsWord: d.adults === '1' ? m.adult : m.adults, childrenPart }),
+    fill(m.stayLine, { stay: d.stay }),
+    fill(m.nameLine, { name: d.name }),
+    fill(m.phoneLine, { phone: d.phone }),
+    d.note ? fill(m.noteLine, { note: d.note }) : '',
+  ].filter(Boolean).join('\n');
   if (via === 'email') {
-    location.href = `mailto:${site.email}?subject=${encodeURIComponent(`Stay enquiry · ${fmt(d.checkin)}`)}&body=${encodeURIComponent(msg)}`;
+    location.href = `mailto:${site.email}?subject=${encodeURIComponent(fill(m.emailSubject, { checkin: fmt(d.checkin) }))}&body=${encodeURIComponent(msg)}`;
   } else {
     window.open(`https://wa.me/${site.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
   }
@@ -142,7 +177,7 @@ if (tempEl) {
     .then((r) => r.json())
     .then((j) => {
       const t = Math.round(j?.current?.temperature_2m);
-      if (Number.isFinite(t)) { tempEl.textContent = `${t}°C on the ridge right now`; tempEl.closest('[hidden]')?.removeAttribute('hidden'); }
+      if (Number.isFinite(t)) { tempEl.textContent = fill(site.liveTemperature, { temp: t }); tempEl.closest('[hidden]')?.removeAttribute('hidden'); }
     })
     .catch(() => {});
 }

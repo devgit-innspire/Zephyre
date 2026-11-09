@@ -5,11 +5,11 @@ import Img from '../components/Img.astro';
 import Icon from '../components/Icon.astro';
 import Seasons from '../components/Seasons.astro';
 import Lightbox from '../components/Lightbox.astro';
-import { experiences, nearby, seo } from '../data/site';
-
+import { experiences, nearby, seo, pages, ui, richHtml } from '../data/site';
+const c = pages.experiences;
 ---
-<Base title="Experiences" seoTitle={seo.pages.experiences.title} description={seo.pages.experiences.description} image="pool-pines" imageAlt="Swimming pool in the pines at Zephyr Estate, Mussoorie" crumbs={[{ name: 'Experiences', path: '/experiences' }]} overHero>
-  <PageHero img="bonfire-terrace-dusk" alt="Bonfire on the stone terrace at dusk with the mountains behind" eyebrow="Experiences" title="Slow days, <em>glowing nights</em>" lede="The best things at Zephyr aren't on a schedule. Here's what a stay can hold." />
+<Base title={c.pageName} seoTitle={seo.pages.experiences.title} description={seo.pages.experiences.description} image={c.shareImage} imageAlt={c.shareImageAlt} crumbs={[{ name: c.breadcrumb, path: '/experiences' }]} overHero>
+  <PageHero img={c.hero.image} alt={c.hero.imageAlt} eyebrow={c.hero.eyebrow} title={richHtml(c.hero.heading)} lede={c.hero.lede} />
 
   <section class="section">
     <div class="wrap exp-list">
@@ -31,7 +31,7 @@ import { experiences, nearby, seo } from '../data/site';
                 ))}
               </div>
             )}
-            <button class="link-arrow as-btn" data-enquire>Add to my stay <Icon name="arrow" /></button>
+            <button class="link-arrow as-btn" data-enquire>{c.addButton} <Icon name="arrow" /></button>
           </div>
         </article>
       ))}
@@ -41,8 +41,8 @@ import { experiences, nearby, seo } from '../data/site';
   <section class="section">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow">Around Zephyr</p>
-        <h2>Worth the short drive</h2>
+        <p class="eyebrow">{c.nearby.eyebrow}</p>
+        <h2>{c.nearby.heading}</h2>
       </div>
       <ol class="nearby">
         {nearby.map((t, i) => (
@@ -53,13 +53,13 @@ import { experiences, nearby, seo } from '../data/site';
           </li>
         ))}
       </ol>
-      <a class="btn forest" href="/explore">Explore everything nearby <Icon name="arrow" /></a>
+      <a class="btn forest" href="/explore">{c.nearby.button} <Icon name="arrow" /></a>
       </div>
     </div>
   </section>
 
   <Seasons />
-  <Lightbox />
+  <Lightbox labels={ui.lightbox} />
 </Base>
 
 <style>

@@ -8,24 +8,32 @@ import BookingBar from '../components/BookingBar.astro';
 import StayCard from '../components/StayCard.astro';
 import Seasons from '../components/Seasons.astro';
 import Reels from '../components/Reels.astro';
-import { site, seo, stays, experiences, dayTimeline, driveRoute, feast, faqs, gallery, categories, totalRooms, catalogueUrl } from '../data/site';
+import { site, seo, stays, experiences, dayTimeline, driveRoute, feast, faqs, gallery, categories, catalogueUrl, enquiry, pages, t, rich } from '../data/site';
+const c = pages.home;
 const featured = stays.filter((s) => s.featured);
 const faqSchema = {
   '@type': 'FAQPage',
   mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
 };
 const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
+// Layout of the three pool photos (by position) and the icons for the pizza points
+const poolTiles = [
+  { cls: 'p-main', delay: undefined, sizes: '(min-width: 900px) 46vw, 100vw' },
+  { cls: 'p-night', delay: '1', sizes: '(min-width: 900px) 18vw, 45vw' },
+  { cls: 'p-court', delay: '2', sizes: '(min-width: 900px) 18vw, 45vw' },
+];
+const pizzaIcons = ['flame', 'sparkles', 'check'] as const;
 ---
 <Base
   title={site.name}
   seoTitle={seo.pages.home.title}
   description={seo.pages.home.description}
-  imageAlt="The swimming pool among the pines at Zephyr Estate, Mussoorie"
+  imageAlt={c.shareImageAlt}
   schema={[faqSchema]}
   overHero
 >
   <!-- ───────── HERO ───────── -->
-  <section class="hero" aria-label="Welcome">
+  <section class="hero" aria-label={c.hero.label}>
     <video class="hero-video" data-autoplay autoplay muted loop playsinline preload="auto" poster="/video/hero.webp" aria-hidden="true">
       <source src="/video/hero.mp4" type="video/mp4" />
     </video>
@@ -35,39 +43,39 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
 
     <div class="wrap hero-inner">
       <p class="hero-eyebrow">
-        <span class="chip"><Icon name="pin" size={15} /> Kempty Fall Road · Mussoorie</span>
+        <span class="chip"><Icon name="pin" size={15} /> {c.hero.locationChip}</span>
         <span class="chip" hidden><Icon name="thermo" size={15} /><span data-temp></span></span>
       </p>
-      <h1><span class="h1-kicker">Zephyr Estate · Resort with a pool in Mussoorie</span>Stay. Breathe.<br /><em>Belong.</em></h1>
-      <p class="hero-lede">A private hilltop resort near Kempty Falls, Mussoorie: cottages, stone huts, luxury tents and a family villa, with a swimming pool rare in these hills and just {totalRooms} rooms wrapped in forest.</p>
+      <h1><span class="h1-kicker">{c.hero.kicker}</span>{rich(c.hero.heading).map((p) => p.br ? <br /> : p.em ? <em>{p.text}</em> : p.text)}</h1>
+      <p class="hero-lede">{t(c.hero.intro)}</p>
       <div class="hero-bar"><BookingBar /></div>
     </div>
-    <a href="#story" class="scroll-cue" aria-label="Scroll to discover"><span></span></a>
+    <a href="#story" class="scroll-cue" aria-label={c.hero.scrollLabel}><span></span></a>
   </section>
 
   <!-- ───────── STORY ───────── -->
   <section class="section story" id="story">
     <div class="wrap story-grid">
       <div class="story-copy">
-        <p class="eyebrow reveal">The Restoration Ethos</p>
-        <h2 class="reveal">Some roads take you <em class="wind">home to the forest</em></h2>
+        <p class="eyebrow reveal">{c.story.eyebrow}</p>
+        <h2 class="reveal">{rich(c.story.heading).map((p) => p.br ? <br /> : p.em ? <em class="wind">{p.text}</em> : p.text)}</h2>
         <WindLine />
         <p class="lede reveal" data-delay="1">
-          Travel used to be about fitting it all in. Now, we travel with a different intention: to feel better, not just go somewhere new. This isn't about escape — it's about restoration.
+          {c.story.lede}
         </p>
         <p class="reveal" data-delay="1" style="color: var(--ink-soft); font-size: 1.05rem; line-height: 1.7; margin-top: -0.2em;">
-          Unwind on the garden patio overlooking misty hills, dip into twin blue-mosaic plunge pools nestled in the pine forest, and end the day around a crackling fire under a sky of stars.
+          {c.story.text}
         </p>
         <dl class="facts reveal" data-delay="2">
-          <div><dt>{totalRooms}</dt><dd>rooms only<br />never crowded</dd></div>
-          <div><dt>1,780<small>m</small></dt><dd>ridge<br />altitude</dd></div>
-          <div><dt>2</dt><dd>pools in the pines,<br />rare in these hills</dd></div>
+          {c.story.facts.map((f) => (
+            <div><dt>{t(f.value)}{f.unit && <small>{f.unit}</small>}</dt><dd>{rich(f.label).map((p) => p.br ? <br /> : p.em ? <em>{p.text}</em> : p.text)}</dd></div>
+          ))}
         </dl>
       </div>
       <div class="story-media">
-        <div class="frame arch story-main reveal"><Img src="firepit-garden-dusk" alt="Fire pit at dusk in the gravel garden, ringed by daybeds, warm lanterns and a barbecue" sizes="(min-width: 900px) 440px, 80vw" /></div>
-        <div class="frame story-float reveal" data-delay="2"><Img src="courtyard-fairy" alt="The courtyard strung with fairy lights at night" sizes="(min-width: 900px) 240px, 40vw" /></div>
-        <p class="story-note reveal" data-delay="3"><Icon name="sparkles" size={16} /> Evenings of bonfires, fairy lights & stars</p>
+        <div class="frame arch story-main reveal"><Img src={c.story.mainPhoto.image} alt={c.story.mainPhoto.alt} sizes="(min-width: 900px) 440px, 80vw" /></div>
+        <div class="frame story-float reveal" data-delay="2"><Img src={c.story.smallPhoto.image} alt={c.story.smallPhoto.alt} sizes="(min-width: 900px) 240px, 40vw" /></div>
+        <p class="story-note reveal" data-delay="3"><Icon name="sparkles" size={16} /> {c.story.note}</p>
       </div>
     </div>
   </section>
@@ -76,24 +84,22 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
   <section class="section pools" id="pools" aria-labelledby="pools-h">
     <div class="wrap pools-grid">
       <div class="pools-media">
-        <a href="/gallery#pools" class="frame zoom p-main reveal" aria-label="See all pool and pickleball photos"><Img src="catalogue-pool" alt="The main pool and kids’ pool among tall trees, with stone paving and lounge chairs" sizes="(min-width: 900px) 46vw, 100vw" /><span class="p-chip">Swimming pool & kids’ pool</span></a>
-        <a href="/gallery#pools" class="frame zoom p-night reveal" data-delay="1" aria-label="See all pool and pickleball photos"><Img src="pool-night-drinks" alt="The pool lit up at night, with drinks on a poolside table" sizes="(min-width: 900px) 18vw, 45vw" /><span class="p-chip">Pool by night</span></a>
-        <a href="/gallery#pools" class="frame zoom p-court reveal" data-delay="2" aria-label="See all pool and pickleball photos"><Img src="pickleball-court" alt="Zephyr Estate’s pickleball court against a stone wall, with the forest all around" sizes="(min-width: 900px) 18vw, 45vw" /><span class="p-chip">Pickleball court</span></a>
+        {c.pools.photos.map((ph, i) => {
+          const tile = poolTiles[i] ?? poolTiles[poolTiles.length - 1];
+          return <a href="/gallery#pools" class:list={['frame zoom', tile.cls, 'reveal']} data-delay={tile.delay} aria-label={c.pools.photoLinkLabel}><Img src={ph.image} alt={ph.alt} sizes={tile.sizes} /><span class="p-chip">{ph.label}</span></a>;
+        })}
       </div>
       <div class="pools-copy">
-        <p class="pools-badge reveal"><Icon name="waves" size={16} /> Only at Zephyr · Pool & pickleball</p>
-        <h2 id="pools-h" class="reveal">A pool and a pickleball court in the pines, <em class="wind">rare in these hills</em></h2>
+        <p class="pools-badge reveal"><Icon name="waves" size={16} /> {c.pools.badge}</p>
+        <h2 id="pools-h" class="reveal">{rich(c.pools.heading).map((p) => p.br ? <br /> : p.em ? <em class="wind">{p.text}</em> : p.text)}</h2>
         <WindLine />
-        <p class="lede reveal" data-delay="1">You won’t find a swimming pool like ours anywhere else around here, and the estate has its own pickleball court too. Along Kempty Fall Road in Mussoorie, Zephyr is the place to swim, play and lounge with the forest all around you.</p>
+        <p class="lede reveal" data-delay="1">{c.pools.lede}</p>
         <ul class="ticks reveal" data-delay="1">
-          <li><Icon name="check" size={18} /> A blue-mosaic main pool and a separate kids’ pool</li>
-          <li><Icon name="check" size={18} /> Loungers, umbrellas and stone decks in the shade of the pines</li>
-          <li><Icon name="check" size={18} /> Our own pickleball court in the forest, for a game between swims</li>
-          <li><Icon name="check" size={18} /> Lit up after dark for poolside drinks, wood-fired pizza and dinner</li>
+          {c.pools.points.map((pt) => <li><Icon name="check" size={18} /> {pt}</li>)}
         </ul>
         <div class="pools-actions reveal" data-delay="2">
-          <button class="btn" data-enquire>Book a stay by the pool <Icon name="arrow" /></button>
-          <a class="link-arrow" href="/gallery#pools">See the pool & court <Icon name="arrow" /></a>
+          <button class="btn" data-enquire>{c.pools.bookButton} <Icon name="arrow" /></button>
+          <a class="link-arrow" href="/gallery#pools">{c.pools.galleryLink} <Icon name="arrow" /></a>
         </div>
       </div>
     </div>
@@ -104,12 +110,12 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
     <div class="wrap">
       <div class="section-head split">
         <div>
-          <p class="eyebrow">The stays</p>
-          <h2 id="stays-h">{totalRooms} rooms, <em class="wind">six ways to stay</em></h2>
+          <p class="eyebrow">{c.stays.eyebrow}</p>
+          <h2 id="stays-h">{rich(c.stays.heading).map((p) => p.br ? <br /> : p.em ? <em class="wind">{p.text}</em> : p.text)}</h2>
         </div>
-        <p class="lede">A family villa, twin French rooms, three luxury rooms, a Kumaon cottage, cosy stone huts and luxury tents under the trees. Each has its own ensuite, warmth for crisp hill nights, and the forest right outside.</p>
+        <p class="lede">{c.stays.lede}</p>
       </div>
-      <ul class="cat-chips" aria-label="Room categories">
+      <ul class="cat-chips" aria-label={c.stays.categoriesLabel}>
         {categories.map((c) => {
           const n = stays.filter((s) => s.category === c.key).reduce((a, s) => a + s.units, 0);
           return <li><a href={`/stays#${c.key}`}>{c.label} <span>{n}</span></a></li>;
@@ -119,26 +125,24 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
         {featured.map((s, i) => <StayCard stay={s} index={i} />)}
       </div>
       <div class="stays-more">
-        <a class="btn forest" href="/stays">See all {totalRooms} rooms</a>
-        <a class="link-arrow" href={catalogueUrl} target="_blank" rel="noopener"><Icon name="whatsapp" /> Browse our WhatsApp catalogue</a>
+        <a class="btn forest" href="/stays">{t(c.stays.allRoomsButton)}</a>
+        <a class="link-arrow" href={catalogueUrl} target="_blank" rel="noopener"><Icon name="whatsapp" /> {c.stays.catalogueLink}</a>
       </div>
     </div>
   </section>
 
   <!-- ───────── WHOLE ESTATE ───────── -->
   <section class="estate" id="estate" aria-labelledby="estate-h">
-    <div class="estate-bg"><Img src="pools-above" alt="Zephyr Estate's two pools among the pines, seen from the terrace" sizes="100vw" /></div>
+    <div class="estate-bg"><Img src={c.estate.image} alt={c.estate.imageAlt} sizes="100vw" /></div>
     <div class="wrap estate-inner">
       <div class="estate-card reveal">
-        <p class="eyebrow">The Family Retreat</p>
-        <h2 id="estate-h">All {totalRooms} rooms. One hilltop. <em class="wind">Just yours.</em></h2>
-        <p>Take the entire estate for a big family, a group of friends or a celebration: the villa, French rooms, cottages, huts and tents, plus the pools, lawns and bonfire circle to yourselves.</p>
+        <p class="eyebrow">{c.estate.eyebrow}</p>
+        <h2 id="estate-h">{rich(c.estate.heading).map((p) => p.br ? <br /> : p.em ? <em class="wind">{p.text}</em> : p.text)}</h2>
+        <p>{c.estate.text}</p>
         <ul class="ticks">
-          <li><Icon name="check" size={18} /> Sleeps a big family or friend group</li>
-          <li><Icon name="check" size={18} /> Private pools, terraces & fire circle</li>
-          <li><Icon name="check" size={18} /> Birthdays, anniversaries & reunions arranged</li>
+          {c.estate.points.map((pt) => <li><Icon name="check" size={18} /> {pt}</li>)}
         </ul>
-        <button class="btn" data-enquire data-stay={`Whole estate (all ${totalRooms} rooms)`}>Enquire for the whole estate</button>
+        <button class="btn" data-enquire data-stay={t(enquiry.wholeEstateValue)}>{c.estate.button}</button>
       </div>
     </div>
   </section>
@@ -147,27 +151,25 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
   <section class="section pizza on-dark grain" id="pizza" aria-labelledby="pizza-h">
     <div class="wrap pizza-grid">
       <div class="pizza-reel frame reveal">
-        <video data-autoplay muted loop playsinline preload="none" poster="/reels/reel-pizza-workshop.webp" aria-label="Pizza workshop at Zephyr Estate">
+        <video data-autoplay muted loop playsinline preload="none" poster="/reels/reel-pizza-workshop.webp" aria-label={c.pizza.videoLabel}>
           <source src="/reels/reel-pizza-workshop.mp4" type="video/mp4" />
         </video>
       </div>
       <div class="pizza-copy">
-        <p class="eyebrow reveal">From our wood-fired oven</p>
-        <h2 id="pizza-h" class="reveal">Wood-fired pizza, <em class="wind">made by you</em></h2>
-        <p class="lede reveal" data-delay="1">Our blue-mosaic oven sits out in the garden under the fairy lights. Join the pizza workshop, top your own base with fresh veg and cheese alongside our chef, then watch it blister over the wood fire.</p>
+        <p class="eyebrow reveal">{c.pizza.eyebrow}</p>
+        <h2 id="pizza-h" class="reveal">{rich(c.pizza.heading).map((p) => p.br ? <br /> : p.em ? <em class="wind">{p.text}</em> : p.text)}</h2>
+        <p class="lede reveal" data-delay="1">{c.pizza.lede}</p>
         <ul class="ticks reveal" data-delay="1">
-          <li><Icon name="flame" size={18} /> Real wood fire, a crisp and smoky base</li>
-          <li><Icon name="sparkles" size={18} /> A hands-on pizza workshop with our chef</li>
-          <li><Icon name="check" size={18} /> Served hot by the pool or round the bonfire</li>
+          {c.pizza.points.map((pt, i) => <li><Icon name={pizzaIcons[i] ?? 'check'} size={18} /> {pt}</li>)}
         </ul>
         <div class="pizza-stills reveal" data-delay="2">
-          {['pizza-oven-night', 'pizza-oven-fire', 'pizza-fresh-board'].map((p) => (
-            <a href="/gallery#pizza" class="frame zoom" aria-label="See wood-fired pizza photos"><Img src={p} alt="" sizes="(min-width: 900px) 180px, 30vw" /></a>
+          {c.pizza.photos.map((p) => (
+            <a href="/gallery#pizza" class="frame zoom" aria-label={c.pizza.photoLinkLabel}><Img src={p} alt="" sizes="(min-width: 900px) 180px, 30vw" /></a>
           ))}
         </div>
         <div class="pizza-actions reveal" data-delay="2">
-          <button class="btn" data-enquire>Add the pizza workshop <Icon name="arrow" /></button>
-          <a class="link-arrow" href="/gallery#pizza">More pizza photos <Icon name="arrow" /></a>
+          <button class="btn" data-enquire>{c.pizza.button} <Icon name="arrow" /></button>
+          <a class="link-arrow" href="/gallery#pizza">{c.pizza.galleryLink} <Icon name="arrow" /></a>
         </div>
       </div>
     </div>
@@ -178,10 +180,10 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
     <div class="wrap">
       <div class="section-head split">
         <div>
-          <p class="eyebrow">Lavish food</p>
-          <h2 id="feast-h">Generous tables, <em class="wind">cooked fresh</em></h2>
+          <p class="eyebrow">{c.food.eyebrow}</p>
+          <h2 id="feast-h">{rich(c.food.heading).map((p) => p.br ? <br /> : p.em ? <em class="wind">{p.text}</em> : p.text)}</h2>
         </div>
-        <p class="lede">Breakfast tables laid with fresh juices, fruit and hot toast, brunch by the pool, and dinner spreads of rich curries, dal, rice, raita and hot rotis, finished with something sweet.</p>
+        <p class="lede">{c.food.lede}</p>
       </div>
       <div class="feast-grid">
         {feast.map((f, i) => (
@@ -192,8 +194,8 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
         ))}
       </div>
       <div class="feast-actions">
-        <button class="btn forest" data-enquire>Plan meals for my stay</button>
-        <a class="link-arrow" href="/gallery#food">See all food photos <Icon name="arrow" /></a>
+        <button class="btn forest" data-enquire>{c.food.button}</button>
+        <a class="link-arrow" href="/gallery#food">{c.food.galleryLink} <Icon name="arrow" /></a>
       </div>
     </div>
   </section>
@@ -202,8 +204,8 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
   <section class="section day" aria-labelledby="day-h">
     <div class="wrap">
       <div class="section-head day-head">
-        <p class="eyebrow">A day at Zephyr</p>
-        <h2 id="day-h">From clouds at dawn<br />to <em class="wind">stars at night</em></h2>
+        <p class="eyebrow">{c.day.eyebrow}</p>
+        <h2 id="day-h">{rich(c.day.heading).map((p) => p.br ? <br /> : p.em ? <em class="wind">{p.text}</em> : p.text)}</h2>
       </div>
       <ol class="timeline">
         {dayTimeline.map((d, i) => (
@@ -221,12 +223,12 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
   </section>
 
   <!-- ───────── MIST BAND ───────── -->
-  <section class="band" aria-label="Interlude">
+  <section class="band" aria-label={c.interlude.label}>
     <video data-autoplay autoplay muted loop playsinline preload="none" poster="/video/mist.webp" aria-hidden="true">
       <source src="/video/mist.mp4" type="video/mp4" />
     </video>
     <div class="band-copy wrap">
-      <p class="display reveal">“Some places you visit.<br />Some places <em>breathe you back in.</em>”</p>
+      <p class="display reveal">{rich(c.interlude.quote).map((p) => p.br ? <br /> : p.em ? <em>{p.text}</em> : p.text)}</p>
     </div>
   </section>
 
@@ -235,10 +237,10 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
     <div class="wrap">
       <div class="section-head split">
         <div>
-          <p class="eyebrow">Experiences</p>
-          <h2 id="exp-h">Little rituals <em class="wind">you will miss</em> back home</h2>
+          <p class="eyebrow">{c.experiences.eyebrow}</p>
+          <h2 id="exp-h">{rich(c.experiences.heading).map((p) => p.br ? <br /> : p.em ? <em class="wind">{p.text}</em> : p.text)}</h2>
         </div>
-        <p class="lede">Nothing is scheduled and everything is possible. Ask, and the estate arranges it, from a sunlit high tea to a candlelit proposal.</p>
+        <p class="lede">{c.experiences.lede}</p>
       </div>
       <div class="exp-grid">
         {homeExperiences.map((e, i) => (
@@ -252,7 +254,7 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
           </article>
         ))}
       </div>
-      <p class="exp-more"><a class="link-arrow" href="/experiences">See all experiences & things to do nearby <Icon name="arrow" /></a></p>
+      <p class="exp-more"><a class="link-arrow" href="/experiences">{c.experiences.moreLink} <Icon name="arrow" /></a></p>
     </div>
   </section>
 
@@ -265,19 +267,19 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
     <div class="wrap">
       <div class="section-head split">
         <div>
-          <p class="eyebrow">Moments</p>
-          <h2 id="mom-h">Every corner, <em class="wind">a postcard</em></h2>
+          <p class="eyebrow">{c.moments.eyebrow}</p>
+          <h2 id="mom-h">{rich(c.moments.heading).map((p) => p.br ? <br /> : p.em ? <em class="wind">{p.text}</em> : p.text)}</h2>
         </div>
-        <p class="lede">Stone stairways, a vine tunnel, a Buddha garden, fairy-lit courtyards and bonfires under the hills.</p>
+        <p class="lede">{c.moments.lede}</p>
       </div>
       <div class="mosaic">
         {gallery.slice(0, 7).map((g, i) => (
-          <a href="/gallery" class:list={['frame zoom reveal', `m-${i}`]} data-delay={String(i % 3)} aria-label="Open gallery">
+          <a href="/gallery" class:list={['frame zoom reveal', `m-${i}`]} data-delay={String(i % 3)} aria-label={c.moments.photoLinkLabel}>
             <Img src={g} alt="" sizes="(min-width: 900px) 33vw, 50vw" />
           </a>
         ))}
       </div>
-      <p class="center"><a class="btn forest" href="/gallery">Open the full gallery</a></p>
+      <p class="center"><a class="btn forest" href="/gallery">{c.moments.button}</a></p>
     </div>
   </section>
 
@@ -286,22 +288,22 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
     <Ridge variant="light" flip />
     <div class="wrap route-grid">
       <div>
-        <p class="eyebrow">Getting here</p>
-        <h2 id="route-h">Closer than <em class="wind">you think</em></h2>
-        <p class="lede">About {driveRoute.hours} hours from Delhi, without entering central Dehradun or Mussoorie. The drive itself becomes part of the stay.</p>
-        <ol class="route-line" aria-label="Driving route from Delhi to Zephyr Estate">
+        <p class="eyebrow">{c.route.eyebrow}</p>
+        <h2 id="route-h">{rich(c.route.heading).map((p) => p.br ? <br /> : p.em ? <em class="wind">{p.text}</em> : p.text)}</h2>
+        <p class="lede">{t(c.route.lede, { hours: driveRoute.hours })}</p>
+        <ol class="route-line" aria-label={c.route.routeLabel}>
           {driveRoute.stops.map((d, i) => (
             <li class:list={[i === driveRoute.stops.length - 1 && 'rl-here']}><span class="rl-dot"></span><span class="rl-place">{d.place}</span><span class="rl-km">{d.note}</span></li>
           ))}
         </ol>
         <div class="route-actions">
-          <a class="btn light" href={site.mapsUrl} target="_blank" rel="noopener"><Icon name="pin" /> Get directions</a>
-          <a class="link-arrow" href="/getting-here">Travel tips <Icon name="arrow" /></a>
-          <a class="link-arrow" href="/explore">Things to do nearby <Icon name="arrow" /></a>
+          <a class="btn light" href={site.mapsUrl} target="_blank" rel="noopener"><Icon name="pin" /> {c.route.directionsButton}</a>
+          <a class="link-arrow" href="/getting-here">{c.route.travelTipsLink} <Icon name="arrow" /></a>
+          <a class="link-arrow" href="/explore">{c.route.nearbyLink} <Icon name="arrow" /></a>
         </div>
       </div>
       <div class="route-map frame">
-        <iframe title="Map showing Zephyr Estate on Kempty Fall Road" src={site.mapEmbed} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe title={c.route.mapTitle} src={site.mapEmbed} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
   </section>
@@ -310,10 +312,10 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
   <section class="section faq" aria-labelledby="faq-h">
     <div class="wrap faq-grid">
       <div>
-        <p class="eyebrow">Good to know</p>
-        <h2 id="faq-h">Questions, <em class="wind">answered</em></h2>
-        <p class="lede">Anything else? We are a call or a WhatsApp away.</p>
-        <a class="btn forest" href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener"><Icon name="whatsapp" /> Ask on WhatsApp</a>
+        <p class="eyebrow">{c.faq.eyebrow}</p>
+        <h2 id="faq-h">{rich(c.faq.heading).map((p) => p.br ? <br /> : p.em ? <em class="wind">{p.text}</em> : p.text)}</h2>
+        <p class="lede">{c.faq.lede}</p>
+        <a class="btn forest" href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener"><Icon name="whatsapp" /> {c.faq.whatsappButton}</a>
       </div>
       <div class="faq-list">
         {faqs.map((f, i) => (
@@ -333,11 +335,11 @@ const homeExperiences = experiences.filter((e) => !e.signature).slice(0, 6);
     </video>
     <div class="closing-shade"></div>
     <div class="wrap closing-inner">
-      <p class="eyebrow">Tonight, the fire is lit</p>
-      <h2 id="close-h">Your hilltop <em>is waiting.</em></h2>
-      <p class="lede">Tell us your dates. We will hold the view, warm the room and light the bonfire.</p>
+      <p class="eyebrow">{c.closing.eyebrow}</p>
+      <h2 id="close-h">{rich(c.closing.heading).map((p) => p.br ? <br /> : p.em ? <em>{p.text}</em> : p.text)}</h2>
+      <p class="lede">{c.closing.lede}</p>
       <div class="closing-actions">
-        <button class="btn" data-enquire>Check availability <Icon name="arrow" /></button>
+        <button class="btn" data-enquire>{c.closing.button} <Icon name="arrow" /></button>
         <a class="btn ghost" href={`tel:${site.phone}`}><Icon name="phone" /> {site.phoneDisplay}</a>
       </div>
     </div>

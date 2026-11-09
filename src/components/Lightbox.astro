@@ -1,11 +1,15 @@
 ---
 import Icon from './Icon.astro';
+// Labels come from content.json (components.lightbox), passed in by the page. The component deliberately
+// does not import the data module itself: doing so changes Vite's CSS chunk order in the built pages.
+interface Props { labels: { label: string; closeLabel: string; previousLabel: string; nextLabel: string } }
+const { labels: c } = Astro.props;
 ---
-<dialog class="lightbox" data-lightbox aria-label="Photo viewer">
+<dialog class="lightbox" data-lightbox aria-label={c.label}>
     <figure><img alt="" /><figcaption></figcaption></figure>
-    <button class="lb-btn lb-close" data-lb-close aria-label="Close"><Icon name="x" /></button>
-    <button class="lb-btn lb-prev" data-lb-prev aria-label="Previous photo"><Icon name="arrow" class="flip-x" /></button>
-    <button class="lb-btn lb-next" data-lb-next aria-label="Next photo"><Icon name="arrow" /></button>
+    <button class="lb-btn lb-close" data-lb-close aria-label={c.closeLabel}><Icon name="x" /></button>
+    <button class="lb-btn lb-prev" data-lb-prev aria-label={c.previousLabel}><Icon name="arrow" class="flip-x" /></button>
+    <button class="lb-btn lb-next" data-lb-next aria-label={c.nextLabel}><Icon name="arrow" /></button>
   </dialog>
 
 <style>
